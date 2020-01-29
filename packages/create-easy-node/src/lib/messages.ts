@@ -10,12 +10,12 @@ export const help = () => {
   return `
     Only ${chalk.green('<project-directory>')} is required.
     If you have any problems, do not hesitate to file an issue:
-      ${chalk.cyan('https://github.com/nicejs/nice/issues/new')}
+      ${chalk.cyan('https://github.com/zhongzhi107/easy-node/issues/new')}
   `;
 };
 
 export const exampleHelp = () => {
-  return `Example from https://github.com/nicejs/nice/tree/master/examples/ ${param(
+  return `Example from https://github.com/zhongzhi107/easy-node/tree/master/examples/ ${param(
     'example-path'
   )}`;
 };
@@ -25,7 +25,7 @@ export const missingProjectName = () => {
 Please specify the project directory:
   ${chalk.cyan(program.name)} ${chalk.green('<project-directory>')}
 For example:
-  ${chalk.cyan(program.name)} ${chalk.green('my-nice-app')}
+  ${chalk.cyan(program.name)} ${chalk.green('my-easy-node')}
   ${chalk.cyan(program.name)} ${chalk.cyan(
     '--example with-preact'
   )} ${chalk.green('my-preact-app')}
@@ -95,6 +95,6 @@ export const start = (projectName: string) => {
     ${cmd(commands.start)}
     
   Questions? Feedback? Please let me know!
-  ${chalk.green('https://github.com/nicejs/nice/issues')}
+  ${chalk.green('https://github.com/zhongzhi107/easy-node/issues')}
 `;
 };

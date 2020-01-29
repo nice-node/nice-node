@@ -1,9 +1,9 @@
-# Create nice App
+# Create easy typescript app
 
 Create UNIVERSAL React, Preact, and Inferno apps in one command.
 
 ```
-npx create-nice-app my-proj
+npx create-easy-node my-proj
 cd my-proj
 npm start
 ```
@@ -11,7 +11,7 @@ npm start
 or.... with the `yarn create` command:
 
 ```
-yarn create nice-app my-proj
+yarn create easy-node my-proj
 cd my-proj
 yarn start
 ```
@@ -19,7 +19,7 @@ yarn start
 You can also initialize a project from one of the examples.
 
 ```
-npx create-nice-app --example bacis my-preact-app
+npx create-easy-node --example bacis my-preact-app
 cd my-preact-app
 npm start
 ```
@@ -27,6 +27,6 @@ npm start
 or
 
 ```
-yarn create nice-app --example bacis my-preact-app
+yarn create easy-node --example bacis my-preact-app
 cd my-preact-app
 ```

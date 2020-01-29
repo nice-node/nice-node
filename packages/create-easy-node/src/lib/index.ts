@@ -5,13 +5,13 @@ import install from './utils/install';
 import loadExample from './utils/load-example';
 import { missingProjectName, alreadyExists, start } from './messages';
 
-interface createNiceAppOptions {
+interface createEasyTsOptions {
   projectName?: string,
   projectPath?: string,
   example?: string
 }
 
-export default (opts: createNiceAppOptions) => {
+export default (opts: createEasyTsOptions) => {
   const projectName = opts.projectName;
 
   if (!projectName) {
@@ -54,7 +54,7 @@ export default (opts: createNiceAppOptions) => {
   }
 };
 
-function installWithMessageFactory(opts: createNiceAppOptions) {
+function installWithMessageFactory(opts: createEasyTsOptions) {
   const projectName = opts.projectName;
   const projectPath = opts.projectPath;
 
@@ -62,7 +62,7 @@ function installWithMessageFactory(opts: createNiceAppOptions) {
     return install({
       projectName: projectName,
       projectPath: projectPath,
-      packages: ['nice'],
+      packages: ['easy-node'],
     })
       .then(function() {
         console.log(start(projectName));

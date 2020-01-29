@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import createNiceApp from '../lib';
+import createEasyTs from '../lib';
 import inquirer from 'inquirer';
 
 const prompts = [
@@ -35,5 +35,5 @@ const prompts = [
 inquirer
   .prompt(prompts)
   .then((answers: any) => {
-    createNiceApp(answers);
+    createEasyTs(answers);
   });

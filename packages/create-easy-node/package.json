@@ -1,7 +1,7 @@
 {
-  "name": "create-nice-app",
+  "name": "create-easy-node",
   "version": "0.0.1",
-  "description": "CLI tool to bootstrap Nice applications with no configuration",
+  "description": "CLI tool to bootstrap typescript applications with no configuration",
   "engines": {
     "node": ">=12"
   },
@@ -9,7 +9,7 @@
     "dist",
     "templates"
   ],
-  "repository": "@qnpm/nice",
+  "repository": "zhongzhi107/easy-node",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
@@ -17,7 +17,7 @@
     "release": "standard-version --release-as patch && npm publish"
   },
   "bin": {
-    "create-nice-app": "./dist/bin/create-nice-app.js"
+    "create-easy-node": "./dist/bin/create-easy-node.js"
   },
   "dependencies": {
     "@types/ansi-escapes": "^4.0.0",
