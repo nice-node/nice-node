@@ -3,7 +3,7 @@ import getInstallCmd from './utils/get-install-cmd';
 import { param, error, cmd } from './utils/output';
 
 const program = {
-  name: 'create-nice-app',
+  name: 'create-easy-node',
 };
 
 export const help = () => {

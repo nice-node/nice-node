@@ -1,7 +1,7 @@
 {
   "packages": [
-    "packages/nice",
-    "packages/create-nice-app"
+    "packages/easy-node",
+    "packages/create-easy-node"
   ],
   "version": "1.0.0"
 }

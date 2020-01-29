@@ -1,0 +1,5 @@
+#! /bin/bash
+
+APP_CODE="h_pc_ssr"
+
+source "/home/q/www/${APP_CODE}/webapps/node_modules/easy-node/scripts/stop.sh"
