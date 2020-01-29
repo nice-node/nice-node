@@ -1,7 +1,6 @@
-import Nice from 'nice';
-// import App from './App';
+import EasyNode from 'easy-node';
 
-const app = new Nice();
+const app = new EasyNode();
 
 const { PORT } = process.env;
 

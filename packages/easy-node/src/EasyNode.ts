@@ -7,7 +7,7 @@ import checkurls from './middlewares/checkurls';
 import healthcheck from './middlewares/healthcheck';
 import accessLog from './middlewares/access-log';
 
-export default class Nice {
+export default class EasyNode {
   server: Koa;
 
   constructor() {
