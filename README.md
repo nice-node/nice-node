@@ -1,1 +1,2 @@
-# Nice
+# Easy node
+
