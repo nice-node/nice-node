@@ -1,0 +1,7 @@
+{
+  "packages": [
+    "packages/nice",
+    "packages/create-nice-app"
+  ],
+  "version": "1.0.0"
+}

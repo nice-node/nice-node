@@ -1,0 +1,29 @@
+{
+  "name": "<%= projectName%>",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "nodemon",
+    "start:debug": "nodemon --config nodemon-debug.json",
+    "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">= 12.14"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,tsx,jsx}": "eslint"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "create-nice-app",
+  "version": "0.0.1",
+  "description": "CLI tool to bootstrap Nice applications with no configuration",
+  "engines": {
+    "node": ">=12"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "repository": "@qnpm/nice",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postrelease": "git push && git push origin --tags",
+    "release": "standard-version --release-as patch && npm publish"
+  },
+  "bin": {
+    "create-nice-app": "./dist/bin/create-nice-app.js"
+  },
+  "dependencies": {
+    "@types/ansi-escapes": "^4.0.0",
+    "@types/ejs": "^3.0.0",
+    "@types/fs-extra": "^8.0.1",
+    "@types/inquirer": "^6.5.0",
+    "@types/ms": "^0.7.31",
+    "@types/node": "^13.5.0",
+    "@types/ora": "^3.2.0",
+    "ansi-escapes": "^2.0.0",
+    "chalk": "^1.1.3",
+    "cross-spawn": "^5.1.0",
+    "ejs": "^3.0.1",
+    "execa": "^0.6.3",
+    "fs-extra": "^3.0.0",
+    "inquirer": "^7.0.4",
+    "isbinaryfile": "^4.0.4",
+    "mkdirp-then": "^1.2.0",
+    "ms": "^1.0.0",
+    "mz": "^2.6.0",
+    "ora": "^1.2.0",
+    "promise": "^7.1.1"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-qunar-typescript-node": "^1.1.8",
+    "husky": "^4.2.1",
+    "lint-staged": "^10.0.3",
+    "rimraf": "^3.0.1",
+    "ts-optchain": "^0.1.8",
+    "typescript": "^3.7.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,tsx,jsx}": "eslint"
+  }
+}
