@@ -34,9 +34,10 @@ npm i && npm start
 ## features
 - [x] check urls
 - [x] health check
-- [ ] watcher
-- [ ] access log
+- [x] watcher
+- [x] axios
+- [x] access log
 - [ ] request log
-- [ ] debug
-- [ ] crontab
+- [x] debug
+- [x] crontab
 - [x] import resolver

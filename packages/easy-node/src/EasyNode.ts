@@ -1,19 +1,16 @@
 import path from 'path';
 import Koa from 'koa';
+import './utils/set-node-path';
+import './utils/load-env';
 import bodyParser from 'koa-bodyparser';
-import setNodePath from './utils/set-node-path';
-import loadEnv from './utils/load-env';
-import checkurls from './middlewares/checkurls';
-import healthcheck from './middlewares/healthcheck';
+import checkUrls from './middlewares/check-urls';
+import healthCheck from './middlewares/health-check';
 import accessLog from './middlewares/access-log';
 
 export default class EasyNode {
   server: Koa;
 
   constructor() {
-    setNodePath('dist');
-    loadEnv();
-
     this.createServer();
   }
 
@@ -35,8 +32,8 @@ export default class EasyNode {
           '/favicon.ico'
         ].includes(req.baseUrl)
       }))
-      .use(checkurls)
-      .use(healthcheck)
+      .use(checkUrls)
+      .use(healthCheck)
       .use(bodyParser());
   }
 }
