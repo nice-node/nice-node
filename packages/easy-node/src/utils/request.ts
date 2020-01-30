@@ -26,6 +26,7 @@
 
 
 import axios from 'axios';
+// import debug from 'debug-filename';
 import { increment, timing } from './watcher';
 
 const instance = axios.create({
@@ -58,7 +59,7 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use((response) => {
   // Do something with response data
-  console.log(response);
+  // debug('response:', response);
   const { metric, startTime } = response.config.headers.watcher;
 
   if (metric) {

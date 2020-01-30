@@ -3,6 +3,7 @@ import Router from 'koa-router';
 import debug from 'debug-filename';
 import watcher from 'easy-node/dist/middlewares/watcher';
 import request from 'easy-node/dist/utils/request';
+import logger from 'easy-node/dist/utils/logger';
 
 // 设置监控打点名称
 const metric = 'home';
@@ -10,21 +11,25 @@ const metric = 'home';
 const router = new Router();
 router.get('/', watcher(metric), async (ctx: Koa.Context) => {
   debug('==== home ====');
+  logger.info('aa');
+  const url = 'https://jsonplaceholder.typicode.com/todos/1';
   const requestOptions = {
     headers: {
       watcher: {
-        metric: 'home' // <- 这里设置打点名称
+        metric // <- 这里设置打点名称
       }
     }
   };
-  const url = 'https://jsonplaceholder.typicode.com/todos/1';
+
+  let data: any;
   try {
-    const { data } = await request.get(url, requestOptions);
-    console.log(data);
+    const response = await request.get(url, requestOptions);
+    data = response.data;
   } catch (error) {
+    data = {};
     console.log(error);
   }
-  ctx.body = 'home';
+  ctx.body = data;
 });
 
 export default router.routes();

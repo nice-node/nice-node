@@ -1,0 +1,6 @@
+::1 - [2020-01-30 22:17:32] "GET / HTTP/1.1" 200 66 - 838.228 ms "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0"
+::1 - [2020-01-30 22:18:29] "GET / HTTP/1.1" 200 66 - 839.396 ms "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0"
+::1 - [2020-01-30 22:19:26] "GET / HTTP/1.1" 200 66 - 1166.678 ms "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0"
+::1 - [2020-01-30 22:19:51] "GET / HTTP/1.1" 200 66 - 1050.012 ms "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0"
+::1 - [2020-01-30 22:22:31] "GET / HTTP/1.1" 200 66 - 1115.035 ms "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0"
+::1 - [2020-01-30 22:25:25] "GET / HTTP/1.1" 200 66 - 1219.416 ms "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0"
