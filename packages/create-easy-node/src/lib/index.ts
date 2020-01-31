@@ -41,7 +41,7 @@ export default (opts: createEasyTsOptions) => {
       templateFiles: [
         'README.md',
         'package.json',
-        'profiles/common/app.env',
+        'profiles/default/app.env',
         'crontab/crontab.txt',
         'crontab/deleteLogs.sh',
         'deploy_scripts/<%=appCode%>_start',
