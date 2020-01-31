@@ -6,5 +6,5 @@ const { PORT } = process.env;
 const app = new EasyNode();
 app.server.use(homeRouter);
 app.server.listen(PORT, () => {
-  console.log(`🚀 http://localhost:${PORT}`);
+  console.log(`\n🚀 http://localhost:${PORT}`);
 });
