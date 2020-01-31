@@ -10,6 +10,8 @@ import dotenv from 'dotenv';
 import _ from 'lodash';
 import glob from 'glob';
 
+const easyNodeEnvPath = resolve(__dirname, '../../easynode.env');
+
 /**
  * 获取 `profiles` 目录下的对应的 `env` 文件绝对路径
  * @param profileId profile 类型
@@ -26,20 +28,24 @@ const getEnvAbsolutePath: (profileId: string) => string[] = (profileId: string) 
  * @param profileId `env` 类型
  * @returns `env` 文件中包含的所有配置的 `key` 值
  */
-const getKeys: (profileId: string) => (string | ConcatArray<string>)[] = (profileId: string) => {
-  const dotenvFiles = getEnvAbsolutePath(profileId);
+const getKeys: (dotenvFiles: string|string[]) => (string | ConcatArray<string>)[] = (dotenvFiles: string|string[]) => {
+  if (!Array.isArray(dotenvFiles)) {
+    dotenvFiles = [dotenvFiles];
+  }
   return _.union(_.flattenDeep(dotenvFiles.map((dotenvFile) => {
     const content = readFileSync(dotenvFile, 'utf-8');
     return Object.keys(dotenv.parse(content));
   })));
 };
 
-const checkEnv: (profileId: string) => string[] = (profileId: string) => {
-  const profileKeys = getKeys(profileId);
-  const defaultKeys = getKeys('default');
+const getMissKeys: (profileId: string) => string[] = (profileId: string) => {
+  const profileKeys = getKeys(getEnvAbsolutePath(profileId));
+  const defaultKeys = getKeys(getEnvAbsolutePath('default'));
+  const easyNodeKeys = getKeys(easyNodeEnvPath);
+  const allDefaultKeys = defaultKeys.concat(easyNodeKeys);
   const foundKeys = [];
   profileKeys.forEach((key) => {
-    if (!defaultKeys.includes(key)) {
+    if (!allDefaultKeys.includes(key)) {
       foundKeys.push(key);
     }
   });
@@ -66,22 +72,29 @@ dotenv.config();
 
 // 不存在 NODE_ENV 时强制退出程序
 if (!('NODE_ENV' in process.env)) {
-  console.warn('[启动失败]未找到必要的环境变量 `NODE_ENV` ，请尝试以下方法：');
-  console.warn('  * 运行 `npm run env:{NODE_ENV}` 创建 .env 文件');
-  console.warn('  * 启动程序时加上环境变量 `NODE_ENV={NODE_ENV}`');
+  console.log('[启动失败]未找到必要的环境变量 `NODE_ENV` ，请尝试以下方法：');
+  console.log('  * 运行 `npm run env:{NODE_ENV}` 创建 .env 文件');
+  console.log('  * 启动程序时加上环境变量 `NODE_ENV={NODE_ENV}`');
   process.exit(1);
 }
 
 const { NODE_ENV, PROFILE_ID } = process.env;
 const profileId = PROFILE_ID || NODE_ENV;
 
-const errorKeys = checkEnv(profileId);
+const errorKeys = getMissKeys(profileId);
 if (errorKeys.length === 0) {
-  console.log('加载配置:');
+  console.log('load profile files:');
   loadEnv(profileId);
   loadEnv('default');
+
+  console.log('load easynode config file:');
+  console.log(` - ${easyNodeEnvPath}`);
+  dotenv.config({
+    path: easyNodeEnvPath
+  });
 } else {
   const directory = resolve('profiles/default');
-  const error = `默认配置(${directory})中没找到配置项：'${errorKeys.join(', ')}'`;
-  throw new Error(error);
+  const error = `默认配置${directory}中没找到配置项：'${errorKeys.join(', ')}'`;
+  console.log(error);
+  process.exit(1);
 }

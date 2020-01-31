@@ -51,17 +51,22 @@ interface AccessLogOptions {
 }
 
 export default (options: AccessLogOptions = {}) => {
-  const skipUrls = [
-    '/healthcheck',
-    '/favicon.ico'
-  ];
   const {
-    format = ':remote-addr - [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms ":referrer" ":user-agent"',
-    root = path.resolve(process.env.LOG_ROOT),
-    dateFormat = 'YYYY-MM-DD-HH',
-    skip = (req: any) => skipUrls.includes(req.baseUrl),
-    filename = 'access.%DATE%.log',
-    frequency = 'daily',
+    ACCESS_LOG_FORMAT,
+    ACCESS_LOG_FILENAME,
+    ACCESS_LOG_FILENAME_DATEFORMAT,
+    ACCESS_LOG_FREQUENCY,
+    ACCESS_LOG_SKIP_ENDPOINTS = '',
+    ACCESS_LOG_DATEFORMAT,
+    LOG_ROOT
+  } = process.env;
+  const {
+    format = ACCESS_LOG_FORMAT,
+    root = path.resolve(LOG_ROOT),
+    filename = ACCESS_LOG_FILENAME,
+    dateFormat = ACCESS_LOG_FILENAME_DATEFORMAT,
+    frequency = ACCESS_LOG_FREQUENCY,
+    skip = (req: any) => ACCESS_LOG_SKIP_ENDPOINTS.split(',').includes(req.baseUrl),
     verbose = false
   } = options;
 
@@ -82,7 +87,7 @@ export default (options: AccessLogOptions = {}) => {
     return ip || req.socket.remoteAddress || undefined;
   });
 
-  morgan.token('date', () => dateFnsFormat(new Date(), 'yyyy-MM-dd HH:mm:ss'));
+  morgan.token('date', () => dateFnsFormat(new Date(), ACCESS_LOG_DATEFORMAT));
 
   return morgan(format, { stream, skip });
 };

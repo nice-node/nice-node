@@ -16,13 +16,9 @@ export default class EasyNode {
 
   // 可以重写该方法来满足自定义需求
   createServer(): void {
-    const { LOG_ROOT } = process.env;
-
     this.server = new Koa();
-
     this.server
       // 记录访问日志
-      // TODO 封装
       .use(accessLog())
       .use(logger)
       .use(checkUrls)

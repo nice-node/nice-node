@@ -30,14 +30,21 @@ const {
   printf
 } = format;
 
-const { NODE_ENV, LOG_LEVEL, LOG_ROOT } = process.env;
+const { 
+  NODE_ENV,
+  LOG_LEVEL,
+  LOG_ROOT,
+  LOG_FILE_DATE_PATTERN,
+  LOG_FILE_ZIPPED_ARCHIVE,
+  LOG_DATEFORMAT
+} = process.env;
 
 const isLocal = NODE_ENV === 'local';
 
 const rotateOptions = {
   dirname: LOG_ROOT,
-  datePattern: 'YYYY-MM-DD-HH',
-  zippedArchive: true
+  datePattern: LOG_FILE_DATE_PATTERN,
+  zippedArchive: LOG_FILE_ZIPPED_ARCHIVE == 'true'
 };
 
 const combinedTransport = new DailyRotateFile({
@@ -55,7 +62,7 @@ const formatter = printf(({ level, message, timestamp: time }) => {
   if (isObject(message)) {
     message = JSON.stringify(message);
   }
-  const localeDateString = dateFormat(new Date(time), 'yyyy-MM-dd HH:mm:ss');
+  const localeDateString = dateFormat(new Date(time), LOG_DATEFORMAT);
   return `${localeDateString} ${level}: ${message}`;
 });
 

@@ -6,6 +6,8 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 
+const { CHECK_URLS_ENDPOINT } = process.env;
+
 const router = new Router();
 
 // router.get('/', async (ctx: Koa.Context) => {
@@ -15,7 +17,7 @@ const router = new Router();
 //   ctx.body = 'ok';
 // });
 
-router.get('/check_urls', async (ctx: Koa.Context) => {
+router.get(CHECK_URLS_ENDPOINT, async (ctx: Koa.Context) => {
   // portal使用 /check_urls
   // 并且需要等待所有的依赖完成后调用checkurlReady改变状态
   ctx.status = 200;
