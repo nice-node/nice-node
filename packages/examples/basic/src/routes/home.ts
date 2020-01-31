@@ -1,17 +1,16 @@
 import Koa from 'koa';
 import Router from 'koa-router';
-import debug from 'debug-filename';
+// import debug from 'debug-filename';
 import watcher from 'easy-node/dist/middlewares/watcher';
 import request from 'easy-node/dist/utils/request';
-import logger from 'easy-node/dist/utils/logger';
 
 // 设置监控打点名称
 const metric = 'home';
 
 const router = new Router();
 router.get('/', watcher(metric), async (ctx: Koa.Context) => {
-  debug('==== home ====');
-  logger.info('aa');
+  // debug('==== home ====');
+  ctx.logger.info({ a: 'a', b: 2, c: { d: 'd' } });
   const url = 'https://jsonplaceholder.typicode.com/todos/1';
   const requestOptions = {
     headers: {

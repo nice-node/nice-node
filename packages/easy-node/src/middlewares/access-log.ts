@@ -22,13 +22,7 @@ import fs from 'fs';
 import path from 'path';
 import morgan from 'koa-morgan';
 import FileStreamRotator from 'file-stream-rotator';
-
-const padding = (s: number) => {
-  if (`${s}`.length === 1) {
-    return `0${s}`;
-  }
-  return s;
-};
+import { format as dateFnsFormat } from 'date-fns'
 
 /**
  * @param {object} options
@@ -45,13 +39,28 @@ const padding = (s: number) => {
  * - m: Rotate on given minutes using the 'm' option i.e. 5m or 30m
  * @see https://www.npmjs.com/package/file-stream-rotator
  */
-export default (options) => {
+
+interface AccessLogOptions {
+  format?: string,
+  root?: string,
+  dateFormat?: string,
+  skip?: any,
+  filename?: string,
+  frequency?: string,
+  verbose?: boolean
+}
+
+export default (options: AccessLogOptions = {}) => {
+  const skipUrls = [
+    '/healthcheck',
+    '/favicon.ico'
+  ];
   const {
-    format = 'combined',
-    skip = null,
-    root = 'logs',
+    format = ':remote-addr - [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms ":referrer" ":user-agent"',
+    root = path.resolve(process.env.LOG_ROOT),
+    dateFormat = 'YYYY-MM-DD-HH',
+    skip = (req: any) => skipUrls.includes(req.baseUrl),
     filename = 'access.%DATE%.log',
-    dateFormat = 'YYYY-MM-DD',
     frequency = 'daily',
     verbose = false
   } = options;
@@ -69,20 +78,11 @@ export default (options) => {
   });
 
   morgan.token('remote-addr', (req) => {
-    const [ip] = (req.headers['x-forwarded-for'] || '').split(',');
+    const [ip] = ((req.headers['x-forwarded-for'] || '') as string).split(',');
     return ip || req.socket.remoteAddress || undefined;
   });
 
-  morgan.token('date', () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = padding(now.getMonth() + 1);
-    const date = padding(now.getDate());
-    const hour = padding(now.getHours());
-    const minute = padding(now.getMinutes());
-    const second = padding(now.getSeconds());
-    return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
-  });
+  morgan.token('date', () => dateFnsFormat(new Date(), 'yyyy-MM-dd HH:mm:ss'));
 
   return morgan(format, { stream, skip });
 };

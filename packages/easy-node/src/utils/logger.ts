@@ -22,18 +22,17 @@ import { createLogger, format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import { Format } from 'logform';
 import { format as dateFormat } from 'date-fns';
+import { isObject } from 'util';
 
 const {
   combine,
   timestamp,
-  printf,
-  colorize,
-  json
+  printf
 } = format;
 
-const { LOG_LEVEL, NODE_ENV, LOG_ROOT } = process.env;
+const { NODE_ENV, LOG_LEVEL, LOG_ROOT } = process.env;
 
-const isProduction = NODE_ENV === 'prod';
+const isLocal = NODE_ENV === 'local';
 
 const rotateOptions = {
   dirname: LOG_ROOT,
@@ -53,28 +52,23 @@ const errorTransport = new DailyRotateFile({
 });
 
 const formatter = printf(({ level, message, timestamp: time }) => {
-  if (typeof message !== 'string') {
+  if (isObject(message)) {
     message = JSON.stringify(message);
   }
-  const localeDateString = dateFormat(new Date(time), "yyyy-MM-dd HH:mm:ss.SSS");
+  const localeDateString = dateFormat(new Date(time), 'yyyy-MM-dd HH:mm:ss');
   return `${localeDateString} ${level}: ${message}`;
 });
 
 const features: Format[] = [timestamp(), formatter];
-if (!isProduction) {
-  features.push(colorize());
-}
-
 const logger = createLogger({
   level: LOG_LEVEL,
   format: combine(...features),
   transports: [combinedTransport, errorTransport]
 });
 
-if (!isProduction) {
-  logger.add(new transports.Console({
-    format: json()
-  }));
+if (isLocal) {
+  // 本地开发时在控制台输出日志
+  logger.add(new transports.Console());
 }
 
 export default logger;
