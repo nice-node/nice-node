@@ -1,3 +1,11 @@
 {
-  "extends": "./node_modules/easy-node/tsconfig.json"
+  "extends": "./node_modules/easy-node/tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "sourceMap": false,
+    "outDir": "./dist",
+    "baseUrl": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

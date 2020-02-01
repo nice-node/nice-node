@@ -67,7 +67,7 @@ const formatter = printf(({ level, message, timestamp: time }) => {
 });
 
 const features: Format[] = [timestamp(), formatter];
-const logger = createLogger({
+const logger: any = createLogger({
   level: LOG_LEVEL,
   format: combine(...features),
   transports: [combinedTransport, errorTransport]

@@ -50,6 +50,8 @@
     "file-stream-rotator": "^0.5.7",
     "glob": "^7.1.6",
     "graphql": "^14.6.0",
+    "graphql-tools": "^4.0.6",
+    "graphql-type-json": "^0.3.1",
     "husky": "4.2.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",

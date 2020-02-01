@@ -25,11 +25,11 @@
  */
 
 
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 // import debug from 'debug-filename';
 import { increment, timing } from './watcher';
 
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
   timeout: 1000
 });
 
