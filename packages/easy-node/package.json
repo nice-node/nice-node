@@ -6,6 +6,8 @@
   "files": [
     "dist",
     "scripts",
+    "easynode.env",
+    "*.js",
     "tsconfig.json"
   ],
   "scripts": {
@@ -47,13 +49,16 @@
     "eslint-config-qunar-typescript-node": "1.1.8",
     "file-stream-rotator": "^0.5.7",
     "glob": "^7.1.6",
+    "graphql": "^14.6.0",
     "husky": "4.2.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
+    "koa-graphql-fix": "^0.8.0",
     "koa-morgan": "^1.0.1",
     "koa-router": "^8.0.6",
     "lint-staged": "10.0.4",
     "lodash": "^4.17.15",
+    "merge-graphql-schemas": "^1.7.6",
     "nodemon": "2.0.2",
     "rimraf": "3.0.1",
     "statsd-client": "^0.4.4",

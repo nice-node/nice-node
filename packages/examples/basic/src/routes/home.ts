@@ -1,8 +1,8 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 // import debug from 'debug-filename';
-import watcher from 'easy-node/dist/middlewares/watcher';
-import request from 'easy-node/dist/utils/request';
+import watcherMiddleware from 'easy-node/watcher-middleware';
+import request from 'easy-node/request';
 
 // 设置监控打点名称
 const metric = 'home';
@@ -10,7 +10,7 @@ const metric = 'home';
 const { TODO_DETAIL_URL, TODO_DETAIL_TIMEOUT } = process.env;
 
 const router = new Router();
-router.get('/', watcher(metric), async (ctx: Koa.Context) => {
+router.get('/', watcherMiddleware(metric), async (ctx: Koa.Context) => {
   // debug('==== home ====');
   ctx.logger.debug({ a: 'a', b: 2, c: { d: 'd' } });
   const requestOptions = {
