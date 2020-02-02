@@ -34,9 +34,9 @@ function copyTpl(from: string, to: string, context: any) {
 }
 
 export default (opts: dirOptions) => {
-  const { templatePath, projectPath, projectName, templateFiles = [] } = opts;
+  const { templatePath, projectPath, templateFiles = [], ...features } = opts;
 
-  console.log(copying(projectName));
+  console.log(copying(features.projectName));
 
   return new Promise(function(resolve, reject) {
     const stopCopySpinner = wait('正在拷贝文件...');
@@ -47,10 +47,7 @@ export default (opts: dirOptions) => {
           if (typeof file === 'string') {}
           const from = typeof file === 'string' ? file : file.from;
           const to = typeof file === 'string' ? file : file.to;
-          copyTpl(path.resolve(templatePath, from), path.resolve(projectPath, to), {
-            projectName,
-            appCode: projectName
-          });
+          copyTpl(path.resolve(templatePath, from), path.resolve(projectPath, to), features);
         });
         return this;
         // return fsExtra.move(

@@ -1,11 +1,6 @@
 {
   "name": "example_basic",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
@@ -27,37 +22,6 @@
     "src/**/*.{ts,js,tsx,jsx}": "eslint"
   },
   "dependencies": {
-    "@types/debug": "4.1.5",
-    "@types/glob": "^7.1.1",
-    "@types/koa": "^2.11.0",
-    "@types/koa-bodyparser": "^4.3.0",
-    "@types/koa-router": "^7.4.0",
-    "@types/lodash": "^4.14.149",
-    "@types/node": "13.5.1",
-    "@types/statsd-client": "^0.4.0",
-    "@typescript-eslint/eslint-plugin": "2.18.0",
-    "@typescript-eslint/parser": "2.18.0",
-    "axios": "^0.19.2",
-    "debug-filename": "^1.0.2",
-    "dotenv": "^8.2.0",
-    "easy-node": "../../easy-node",
-    "eslint": "6.8.0",
-    "eslint-config-qunar-typescript-node": "1.1.8",
-    "file-stream-rotator": "^0.5.7",
-    "glob": "^7.1.6",
-    "husky": "4.2.1",
-    "koa": "^2.11.0",
-    "koa-bodyparser": "^4.2.1",
-    "koa-morgan": "^1.0.1",
-    "koa-router": "^8.0.6",
-    "lint-staged": "10.0.4",
-    "lodash": "^4.17.15",
-    "nodemon": "2.0.2",
-    "rimraf": "3.0.1",
-    "statsd-client": "^0.4.4",
-    "ts-node": "8.6.2",
-    "ts-optchain": "0.1.8",
-    "tsconfig-paths": "3.9.0",
-    "typescript": "3.7.5"
+    "easy-node": "../../easy-node"
   }
 }

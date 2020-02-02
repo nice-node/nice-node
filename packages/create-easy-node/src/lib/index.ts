@@ -5,13 +5,7 @@ import install from './utils/install';
 import loadExample from './utils/load-example';
 import { missingProjectName, alreadyExists, start } from './messages';
 
-interface createEasyTsOptions {
-  projectName?: string,
-  projectPath?: string,
-  example?: string
-}
-
-export default (opts: createEasyTsOptions) => {
+export default (opts: any) => {
   const projectName = opts.projectName;
 
   if (!projectName) {
@@ -35,9 +29,9 @@ export default (opts: createEasyTsOptions) => {
     const templatePath = path.resolve(__dirname, '../../templates');
 
     copyDir({
+      ...opts,
       templatePath: templatePath,
       projectPath: projectPath,
-      projectName: projectName,
       templateFiles: [
         'README.md',
         'package.json',
@@ -55,7 +49,7 @@ export default (opts: createEasyTsOptions) => {
   }
 };
 
-function installWithMessageFactory(opts: createEasyTsOptions) {
+function installWithMessageFactory(opts: any) {
   const projectName = opts.projectName;
   const projectPath = opts.projectPath;
 

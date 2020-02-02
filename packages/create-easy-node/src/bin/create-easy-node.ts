@@ -29,6 +29,12 @@ const prompts = [
         value: 'basic'
       }
     ]
+  },
+  {
+    type: 'confirm',
+    name: 'graphql',
+    message: '使用 graphql 吗？',
+    default: true
   }
 ];
 

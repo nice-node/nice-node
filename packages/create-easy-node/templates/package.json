@@ -1,16 +1,11 @@
 {
   "name": "<%= projectName%>",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc -p tsconfig.build.json",
-    "start": "nodemon",
-    "start:debug": "nodemon --config nodemon-debug.json",
+    "build": "tsc",
+    "postbuild": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
+    "start": "NODE_ENV=local nodemon",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "npm run build"
@@ -25,5 +20,8 @@
   },
   "lint-staged": {
     "src/**/*.{ts,js,tsx,jsx}": "eslint"
+  },
+  "dependencies": {
+    "easy-node": "../../easy-node"
   }
 }

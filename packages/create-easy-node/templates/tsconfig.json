@@ -1,19 +1,10 @@
 {
+  "extends": "./node_modules/easy-node/tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
     "declaration": false,
-    "removeComments": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es2017",
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "./dist",
-    "baseUrl": "./src",
-    "allowSyntheticDefaultImports": true,
-    "plugins": [
-      { "transform": "ts-optchain/transform" },
-    ]
+    "baseUrl": "./src"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
