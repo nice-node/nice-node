@@ -1,6 +1,6 @@
 export default {
   Query: {
-    async todoDetail(resolvers, { id }) {
+    async todoDetail(root, { id }) {
       return {
         id,
         name: 'Joe'

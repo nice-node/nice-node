@@ -17,24 +17,18 @@
 import Router from 'koa-router';
 import graphqlHTTP from 'koa-graphql-fix';
 
-const isProd = process.env.NODE_ENV === 'prod';
+const { GRAPHQL_ENDPOINT, NODE_ENV } = process.env;
 
 export default (options: any) => {
-  // 设置中间件默认参数
-  let defaultOptions: any = {
-    endpoint: '/graphql'
-  };
-
-  defaultOptions = {
-    graphiql: !isProd, // 线上环境关闭graphiql
+  const { endpoint = GRAPHQL_ENDPOINT, ...graphqlOptions } = {
+    graphiql: NODE_ENV !== 'prod', // 线上环境关闭graphiql
     pretty: true,
-    ...defaultOptions
+    ...options
   };
-  options = { ...defaultOptions, ...options };
 
   const router = new Router();
-  router.all(options.endpoint, (ctx, next) => {
-    return graphqlHTTP(options)(ctx, next);
+  router.all(endpoint, (ctx, next) => {
+    return graphqlHTTP(graphqlOptions)(ctx, next);
   });
   return router.routes();
 };
