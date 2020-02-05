@@ -21,7 +21,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { GraphQLJSON } from 'graphql-type-json';
 import isNodeRuntime from '../utils/is-node-runtime';
 
-const { 
+const {
   GRAPHQL_ENDPOINT,
   GRAPHQL_TYPEDEFS_PATTERN,
   GRAPHQL_RESOLVERS_PATTERN,
@@ -34,10 +34,11 @@ export default (options: any = {}) => {
   const ext = isNodeRuntime ? 'js' : 'ts';
   const src = isNodeRuntime ? DIST : 'src';
   const cwd = process.cwd();
-  const typeDefsPattern = GRAPHQL_TYPEDEFS_PATTERN.replace('${src}', src);
+  const typeDefsPattern = GRAPHQL_TYPEDEFS_PATTERN.replace('${src}', src); /* eslint-disable-line no-template-curly-in-string */
+
   const resolversPattern = GRAPHQL_RESOLVERS_PATTERN
-    .replace('${src}', src)
-    .replace('${ext}', ext);
+    .replace('${src}', src) /* eslint-disable-line no-template-curly-in-string */
+    .replace('${ext}', ext); /* eslint-disable-line no-template-curly-in-string */
   const typesArray = fileLoader(join(cwd, typeDefsPattern));
   const typeDefs = mergeTypes(typesArray, { all: true });
   const resolversArray = fileLoader(join(cwd, resolversPattern));
@@ -45,7 +46,7 @@ export default (options: any = {}) => {
     JSON: GraphQLJSON,
     ...mergeResolvers(resolversArray)
   };
-  const executableSchema = makeExecutableSchema({ typeDefs, resolvers });  
+  const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
 
   const router = new Router();
   router.all(GRAPHQL_ENDPOINT, graphqlHTTP({

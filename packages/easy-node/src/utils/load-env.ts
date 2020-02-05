@@ -7,7 +7,6 @@
 // import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import dotenv from 'dotenv';
-import _ from 'lodash';
 import glob from 'glob';
 
 const easyNodeEnvPath = resolve(__dirname, '../../easynode.env');
@@ -22,36 +21,6 @@ const getEnvAbsolutePath: (profileId: string) => string[] = (profileId: string) 
   const globOptions = { absolute: true };
   return glob.sync(`profiles/${profileId}/**/*.env`, globOptions);
 };
-
-/**
- * 获取 `profiles` 目录下的对应的 `env` 文件中包含的所有配置的 `key` 值
- * @param profileId `env` 类型
- * @returns `env` 文件中包含的所有配置的 `key` 值
- */
-// const getKeys: (dotenvFiles: string|string[]) => (string | ConcatArray<string>)[] = (dotenvFiles: string|string[]) => {
-//   if (!Array.isArray(dotenvFiles)) {
-//     dotenvFiles = [dotenvFiles];
-//   }
-//   return _.union(_.flattenDeep(dotenvFiles.map((dotenvFile) => {
-//     const content = readFileSync(dotenvFile, 'utf-8');
-//     return Object.keys(dotenv.parse(content));
-//   })));
-// };
-
-// const getMissKeys: (profileId: string) => string[] = (profileId: string) => {
-//   const profileKeys = getKeys(getEnvAbsolutePath(profileId));
-//   const defaultKeys = getKeys(getEnvAbsolutePath('default'));
-//   const easyNodeKeys = getKeys(easyNodeEnvPath);
-//   const allDefaultKeys = defaultKeys.concat(easyNodeKeys);
-//   const foundKeys = [];
-//   profileKeys.forEach((key) => {
-//     if (!allDefaultKeys.includes(key)) {
-//       foundKeys.push(key);
-//     }
-//   });
-
-//   return foundKeys;
-// };
 
 /**
  * 加载 `profiles` 目录下的对应的 `env` 文件
@@ -81,20 +50,12 @@ if (!('NODE_ENV' in process.env)) {
 const { NODE_ENV, PROFILE_ID } = process.env;
 const profileId = PROFILE_ID || NODE_ENV;
 
-// const errorKeys = getMissKeys(profileId);
-// if (errorKeys.length === 0) {
-  console.log('\nload profile files:');
-  loadEnv(profileId);
-  loadEnv('default');
+console.log('\nload profile files:');
+loadEnv(profileId);
+loadEnv('default');
 
-  console.log('\nload easynode config file:');
-  console.log(` - ${easyNodeEnvPath}`);
-  dotenv.config({
-    path: easyNodeEnvPath
-  });
-// } else {
-//   const directory = resolve('profiles/default');
-//   const error = `默认配置${directory}中没找到配置项：'${errorKeys.join(', ')}'`;
-//   console.log(error);
-//   process.exit(1);
-// }
+console.log('\nload easynode config file:');
+console.log(` - ${easyNodeEnvPath}`);
+dotenv.config({
+  path: easyNodeEnvPath
+});

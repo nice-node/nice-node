@@ -13,7 +13,7 @@ const router = new Router();
 const { HEALTH_CHECK_ENDPOINT } = process.env;
 router.get(HEALTH_CHECK_ENDPOINT, async (ctx: Koa.Context) => {
   const file = resolve(HEALTH_CHECK_ENDPOINT.substr(1, HEALTH_CHECK_ENDPOINT.length));
-  ctx.status = existsSync(file) ? 200 : 404;;
+  ctx.status = existsSync(file) ? 200 : 404;
 });
 
 export default router.routes();

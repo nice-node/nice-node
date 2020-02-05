@@ -1,50 +1,36 @@
 import chalk from 'chalk';
-import getInstallCmd from './utils/get-install-cmd';
-import { param, error, cmd } from './utils/output';
+import getInstallCmd from './get-install-cmd';
+import { param, error, cmd } from './output';
 
 const program = {
-  name: 'create-easy-node',
+  name: 'create-easy-node'
 };
 
-export const help = () => {
-  return `
-    Only ${chalk.green('<project-directory>')} is required.
-    If you have any problems, do not hesitate to file an issue:
-      ${chalk.cyan('https://github.com/zhongzhi107/easy-node/issues/new')}
-  `;
-};
+export const help = () => `
+Only ${chalk.green('<project-directory>')} is required.
+If you have any problems, do not hesitate to file an issue:
+  ${chalk.cyan('https://github.com/zhongzhi107/easy-node/issues/new')}
+`;
 
-export const exampleHelp = () => {
-  return `Example from https://github.com/zhongzhi107/easy-node/tree/master/examples/ ${param(
-    'example-path'
-  )}`;
-};
+export const exampleHelp = () => `Example from https://github.com/zhongzhi107/easy-node/tree/master/examples/ ${param(
+  'example-path'
+)}`;
 
-export const missingProjectName = () => {
-  return `
+export const missingProjectName = () => `
 Please specify the project directory:
   ${chalk.cyan(program.name)} ${chalk.green('<project-directory>')}
 For example:
   ${chalk.cyan(program.name)} ${chalk.green('my-easy-node')}
-  ${chalk.cyan(program.name)} ${chalk.cyan(
-    '--example with-preact'
-  )} ${chalk.green('my-preact-app')}
+  ${chalk.cyan(program.name)} ${chalk.cyan('--example with-graphql')} ${chalk.green('my-preact-app')}
 Run ${chalk.cyan(`${program.name} --help`)} to see all options.
 `;
-};
 
-export const alreadyExists = (projectName: string) => {
-  return `
-Uh oh! Looks like there's already a directory called ${chalk.red(
-    projectName
-  )}. Please try a different name or delete that folder.`;
-};
+export const alreadyExists = (projectName: string) => `
+Uh oh! Looks like there's already a directory called ${chalk.red(projectName)}. Please try a different name or delete that folder.`;
 
-export const installing = (packages) => {
+export const installing = (packages: any[]) => {
   const pkgText = packages
-    .map(function(pkg) {
-      return `    ${chalk.cyan(chalk.bold(pkg))}`;
-    })
+    .map((pkg) => `    ${chalk.cyan(chalk.bold(pkg))}`)
     .join('\n');
 
   return `
@@ -55,19 +41,15 @@ ${pkgText}
 
 export const installError = (packages) => {
   const pkgText = packages
-    .map(function(pkg) {
-      return `${chalk.cyan(chalk.bold(pkg))}`;
-    })
+    .map((pkg: string) => `${chalk.cyan(chalk.bold(pkg))}`)
     .join(', ');
 
   error(`Failed to install ${pkgText}, try again.`);
 };
 
-export const copying = (projectName: string) => {
-  return `
-正在创建 ${chalk.bold(chalk.green(projectName))} ...
+export const copying = (projectName: string) => `
+Creating ${chalk.bold(chalk.green(projectName))}...
 `;
-};
 
 export const start = (projectName: string) => {
   const installCmd: string = getInstallCmd();
@@ -76,7 +58,7 @@ export const start = (projectName: string) => {
     install: installCmd === 'npm' ? 'npm install' : 'yarn',
     build: installCmd === 'npm' ? 'npm run build' : 'yarn build',
     start: installCmd === 'npm' ? 'npm run start:prod' : 'yarn start:prod',
-    dev: installCmd === 'npm' ? 'npm start' : 'yarn start',
+    dev: installCmd === 'npm' ? 'npm start' : 'yarn start'
   };
 
   return `

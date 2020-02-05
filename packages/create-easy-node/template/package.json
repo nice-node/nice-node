@@ -2,13 +2,14 @@
   "name": "<%= projectName%>",
   "version": "1.0.0",
   "scripts": {
-    "prebuild": "rimraf dist",
+    "clean": "rimraf dist",
+    "copy:graphql": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
+    "prebuild": "npm run clean",
     "build": "tsc",
-    "postbuild": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
+    "postbuild": "npm run copy:graphql",
     "start": "NODE_ENV=local nodemon",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
-    "lint:fix": "npm run lint -- --fix",
-    "prepare": "npm run build"
+    "lint:fix": "npm run lint -- --fix"
   },
   "engines": {
     "node": ">= 12.14"
@@ -22,6 +23,5 @@
     "src/**/*.{ts,js,tsx,jsx}": "eslint"
   },
   "dependencies": {
-    "easy-node": "../../easy-node"
   }
 }

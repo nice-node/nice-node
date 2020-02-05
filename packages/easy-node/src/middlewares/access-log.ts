@@ -22,7 +22,7 @@ import fs from 'fs';
 import path from 'path';
 import morgan from 'koa-morgan';
 import FileStreamRotator from 'file-stream-rotator';
-import { format as dateFnsFormat } from 'date-fns'
+import { format as dateFnsFormat } from 'date-fns';
 
 /**
  * @param {object} options

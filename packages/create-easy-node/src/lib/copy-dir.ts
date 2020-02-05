@@ -1,11 +1,13 @@
 import path from 'path';
 import Promise from 'promise';
-import { copying, } from '../messages';
-import { wait, cmd, success, error } from'./output';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
-import { isBinaryFileSync } from 'isbinaryfile';
 import ejs from 'ejs';
+import { isBinaryFileSync } from 'isbinaryfile';
+import { copying } from './messages';
+import {
+  wait, cmd, success, error
+} from './output';
 
 interface copyOptions {
   from: string,
@@ -34,17 +36,18 @@ function copyTpl(from: string, to: string, context: any) {
 }
 
 export default (opts: dirOptions) => {
-  const { templatePath, projectPath, templateFiles = [], ...features } = opts;
+  const {
+    templatePath, projectPath, templateFiles = [], ...features
+  } = opts;
 
   console.log(copying(features.projectName));
 
-  return new Promise(function(resolve, reject) {
-    const stopCopySpinner = wait('正在拷贝文件...');
+  return new Promise((resolve, reject) => {
+    const stopCopySpinner = wait('Copying files');
 
     fsExtra.copy(templatePath, projectPath)
       .then(() => {
         templateFiles.forEach((file: string | copyOptions) => {
-          if (typeof file === 'string') {}
           const from = typeof file === 'string' ? file : file.from;
           const to = typeof file === 'string' ? file : file.to;
           copyTpl(path.resolve(templatePath, from), path.resolve(projectPath, to), features);
@@ -55,16 +58,16 @@ export default (opts: dirOptions) => {
         //   path.resolve(projectPath, './.gitignore')
         // );
       })
-      .then(function() {
+      .then(() => {
         stopCopySpinner();
-        success('文件拷贝成功。');
+        success(`Created files for "${cmd(features.projectName)}`);
         return this;
       })
       .then(resolve)
-      .catch(function(err) {
+      .catch((err) => {
         console.error(err);
         stopCopySpinner();
-        error('文件拷贝失败，请重试。');
+        error('Copy command failed, try again.');
         reject(err);
         process.exit(1);
       });

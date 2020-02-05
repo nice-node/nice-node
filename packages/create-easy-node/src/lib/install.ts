@@ -1,6 +1,6 @@
 import execa from 'execa';
 import Promise from 'promise';
-import { installing, installError } from '../messages';
+import { installing, installError } from './messages';
 import getInstallCmd from './get-install-cmd';
 import { wait, success } from './output';
 
@@ -10,10 +10,18 @@ interface installOptions {
   packages: string[]
 }
 
+function getInstallArgs(cmd: string, packages: string[]) {
+  let args: string[];
+  if (cmd === 'npm') {
+    args = ['install', '--save', '--save-exact', '--registry=https://registry.npm.taobao.org'];
+    return args.concat(packages, ['--verbose']);
+  }
+  args = ['add'];
+  return args.concat(packages);
+}
+
 export default (opts: installOptions) => {
-  const projectName: string = opts.projectName;
-  const projectPath: string = opts.projectPath;
-  const packages: string[] = opts.packages || [];
+  const { projectName, projectPath, packages = [] } = opts;
 
   if (packages.length === 0) {
     console.log('Missing packages in `install`, try running again.');
@@ -26,33 +34,20 @@ export default (opts: installOptions) => {
   console.log(installing(packages));
   process.chdir(projectPath);
 
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     const stopInstallSpinner = wait('Installing modules');
 
     execa(installCmd, installArgs)
-      .then(function() {
-        // Confirm that all dependencies were installed
-        return execa(installCmd, ['install']);
-      })
-      .then(function() {
+      .then(() => execa(installCmd, ['install']))
+      .then(() => {
         stopInstallSpinner();
         success(`Installed dependencies for ${projectName}`);
         resolve();
       })
-      .catch(function() {
+      .catch(() => {
         stopInstallSpinner();
         console.log(installError(packages));
         return reject(new Error(`${installCmd} installation failed`));
       });
   });
 };
-
-function getInstallArgs(cmd: string, packages: string[]) {
-  if (cmd === 'npm') {
-    const args = ['install', '--save', '--save-exact', '--registry=https://registry.npm.taobao.org'];
-    return args.concat(packages, ['--verbose']);
-  } else if (cmd === 'yarn') {
-    const args = ['add'];
-    return args.concat(packages);
-  }
-}

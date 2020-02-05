@@ -30,7 +30,7 @@ const {
   printf
 } = format;
 
-const { 
+const {
   NODE_ENV,
   LOG_LEVEL,
   LOG_ROOT,
@@ -44,7 +44,7 @@ const isLocal = NODE_ENV === 'local';
 const rotateOptions = {
   dirname: LOG_ROOT,
   datePattern: LOG_FILE_DATE_PATTERN,
-  zippedArchive: LOG_FILE_ZIPPED_ARCHIVE == 'true'
+  zippedArchive: LOG_FILE_ZIPPED_ARCHIVE === 'true'
 };
 
 const combinedTransport = new DailyRotateFile({

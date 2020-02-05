@@ -8,7 +8,8 @@ export default () => {
   }
 
   try {
-    execa.sync('yarnpkg', '--version');
+    execa.commandSync('yarn --version');
+    // execa.sync('yarn', '--version');
     cmd = 'yarn';
   } catch (e) {
     cmd = 'npm';
