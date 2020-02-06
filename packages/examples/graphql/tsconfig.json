@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/easy-node/tsconfig.json",
+  "extends": "./node_modules/nice-node/tsconfig.json",
   "compilerOptions": {
     "declaration": false,
     "sourceMap": false,

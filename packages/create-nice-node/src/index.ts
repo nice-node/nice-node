@@ -11,4 +11,4 @@ Please update your version of Node.
   process.exit(1);
 }
 
-require('./lib/create-easy-node');
+require('./lib/create-nice-node');

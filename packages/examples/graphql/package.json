@@ -7,8 +7,7 @@
     "postbuild": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
     "start": "NODE_ENV=local nodemon",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
-    "lint:fix": "npm run lint -- --fix",
-    "prepare": "npm run build"
+    "lint:fix": "npm run lint -- --fix"
   },
   "engines": {
     "node": ">= 12.14"
@@ -28,6 +27,6 @@
     "graphql-type-json": "^0.3.1",
     "koa-graphql-fix": "^0.8.1",
     "merge-graphql-schemas": "^1.7.6",
-    "easy-node": "../../easy-node"
+    "nice-node": "../../nice-node"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "create-easy-node",
+  "name": "create-nice-node",
   "version": "0.0.1",
   "description": "Create EasyNode apps with no build configuration.",
   "engines": {
@@ -9,7 +9,7 @@
     "dist",
     "template"
   ],
-  "repository": "zhongzhi107/easy-node",
+  "repository": "zhongzhi107/nice-node",
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
@@ -19,7 +19,7 @@
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\""
   },
   "bin": {
-    "create-easy-node": "./dist/index.js"
+    "create-nice-node": "./dist/index.js"
   },
   "dependencies": {
     "ansi-escapes": "^4.3.0",

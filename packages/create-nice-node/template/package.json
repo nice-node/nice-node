@@ -2,11 +2,11 @@
   "name": "<%= projectName%>",
   "version": "1.0.0",
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist",<%if (graphql) {%>
     "copy:graphql": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
+    "postbuild": "npm run copy:graphql",<%}%>
     "prebuild": "npm run clean",
     "build": "tsc",
-    "postbuild": "npm run copy:graphql",
     "start": "NODE_ENV=local nodemon",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
     "lint:fix": "npm run lint -- --fix"
@@ -21,7 +21,5 @@
   },
   "lint-staged": {
     "src/**/*.{ts,js,tsx,jsx}": "eslint"
-  },
-  "dependencies": {
   }
 }

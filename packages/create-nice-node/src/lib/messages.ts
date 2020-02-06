@@ -3,16 +3,16 @@ import getInstallCmd from './get-install-cmd';
 import { param, error, cmd } from './output';
 
 const program = {
-  name: 'create-easy-node'
+  name: 'create-nice-node'
 };
 
 export const help = () => `
 Only ${chalk.green('<project-directory>')} is required.
 If you have any problems, do not hesitate to file an issue:
-  ${chalk.cyan('https://github.com/zhongzhi107/easy-node/issues/new')}
+  ${chalk.cyan('https://github.com/zhongzhi107/nice-node/issues/new')}
 `;
 
-export const exampleHelp = () => `Example from https://github.com/zhongzhi107/easy-node/tree/master/examples/ ${param(
+export const exampleHelp = () => `Example from https://github.com/zhongzhi107/nice-node/tree/master/examples/ ${param(
   'example-path'
 )}`;
 
@@ -20,7 +20,7 @@ export const missingProjectName = () => `
 Please specify the project directory:
   ${chalk.cyan(program.name)} ${chalk.green('<project-directory>')}
 For example:
-  ${chalk.cyan(program.name)} ${chalk.green('my-easy-node')}
+  ${chalk.cyan(program.name)} ${chalk.green('my-nice-node')}
   ${chalk.cyan(program.name)} ${chalk.cyan('--example with-graphql')} ${chalk.green('my-preact-app')}
 Run ${chalk.cyan(`${program.name} --help`)} to see all options.
 `;
@@ -77,6 +77,6 @@ export const start = (projectName: string) => {
     ${cmd(commands.start)}
     
   Questions? Feedback? Please let me know!
-  ${chalk.green('https://github.com/zhongzhi107/easy-node/issues')}
+  ${chalk.green('https://github.com/zhongzhi107/nice-node/issues')}
 `;
 };

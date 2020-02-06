@@ -10,10 +10,9 @@ function installWithMessageFactory(opts: any) {
   const {
     projectName, projectPath, graphql, pug, qconfig
   } = opts;
-  const packages = ['arg'];
+  const packages = ['nice-node'];
   if (graphql) {
     packages.push(
-      // 'easy-node',
       '@types/graphql-type-json',
       'graphql',
       'graphql-tools',
@@ -61,7 +60,7 @@ function create(opts: any) {
 
   opts.projectPath = `${process.cwd()}/${projectName}`;
 
-  if (opts.example !== '') {
+  if (opts.example) {
     loadExample({
       projectName,
       example: opts.example

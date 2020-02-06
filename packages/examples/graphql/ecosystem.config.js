@@ -6,7 +6,7 @@
  * ecosystem({ script: 'entry.js' })
  */
 
-const ecosystem = require('easy-node/ecosystem.config').default;
+const ecosystem = require('nice-node/ecosystem.config').default;
 
 const config = ecosystem();
 console.log(config);

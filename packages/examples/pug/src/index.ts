@@ -1,4 +1,4 @@
-import EasyNode from 'easy-node';
+import EasyNode from 'nice-node';
 import homeRouter from './routes/home';
 import detailRouter from './routes/detail';
 

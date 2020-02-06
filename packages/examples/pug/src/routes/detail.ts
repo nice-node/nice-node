@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
-import watcherMiddleware from 'easy-node/watcher-middleware';
-import request from 'easy-node/request';
+import watcherMiddleware from 'nice-node/watcher-middleware';
+import request from 'nice-node/request';
 
 // 设置监控打点名称
 const metric = 'detail';

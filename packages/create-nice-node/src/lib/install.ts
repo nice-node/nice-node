@@ -38,7 +38,7 @@ export default (opts: installOptions) => {
     const stopInstallSpinner = wait('Installing modules');
 
     execa(installCmd, installArgs)
-      .then(() => execa(installCmd, ['install']))
+      // .then(() => execa(installCmd, ['install']))
       .then(() => {
         stopInstallSpinner();
         success(`Installed dependencies for ${projectName}`);

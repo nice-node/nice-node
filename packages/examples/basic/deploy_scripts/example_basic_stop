@@ -2,4 +2,4 @@
 
 APP_CODE="example_basic"
 
-source "/home/q/www/${APP_CODE}/webapps/node_modules/easy-node/scripts/stop.sh"
+source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/stop.sh"
