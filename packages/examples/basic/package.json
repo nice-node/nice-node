@@ -21,6 +21,6 @@
     "src/**/*.{ts,js,tsx,jsx}": "eslint"
   },
   "dependencies": {
-    "nice-node": "../../nice-node"
+    "nice-node": "1.0.0-beta.1"
   }
 }

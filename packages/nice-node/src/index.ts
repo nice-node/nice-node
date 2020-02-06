@@ -1,3 +1,3 @@
-import EasyNode from './EasyNode';
+import NiceNode from './NiceNode';
 
-export default EasyNode;
+export default NiceNode;

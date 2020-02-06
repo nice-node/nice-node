@@ -1,6 +1,5 @@
 import Koa from 'koa';
 import Router from 'koa-router';
-// import debug from 'debug-filename';
 import watcherMiddleware from 'nice-node/watcher-middleware';
 import request from 'nice-node/request';
 
@@ -11,7 +10,6 @@ const { TODO_DETAIL_URL, TODO_DETAIL_TIMEOUT } = process.env;
 
 const router = new Router();
 router.get('/', watcherMiddleware(metric), async (ctx: Koa.Context) => {
-  // debug('==== home ====');
   ctx.logger.debug({ a: 'a', b: 2, c: { d: 'd' } });
   const requestOptions = {
     headers: {

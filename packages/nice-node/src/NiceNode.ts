@@ -7,7 +7,6 @@ import checkUrls from './middlewares/check-urls';
 import healthCheck from './middlewares/health-check';
 import accessLog from './middlewares/access-log';
 import logger from './middlewares/logger';
-// import graphql from './middlewares/graphql';
 
 export default class EasyNode {
   server: Koa;

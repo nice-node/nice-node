@@ -75,6 +75,7 @@ function create(opts: any) {
       templateFiles: [
         'README.md',
         'package.json',
+        'nodemon.json',
         'profiles/default/app.env',
         'crontab/crontab.txt',
         'crontab/deleteLogs.sh',

@@ -9,7 +9,7 @@ import { resolve } from 'path';
 import dotenv from 'dotenv';
 import glob from 'glob';
 
-const easyNodeEnvPath = resolve(__dirname, '../../easynode.env');
+const easyNodeEnvPath = resolve(__dirname, '../../nicenode.env');
 
 /**
  * 获取 `profiles` 目录下的对应的 `env` 文件绝对路径
