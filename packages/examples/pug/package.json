@@ -1,0 +1,28 @@
+{
+  "name": "example_pug",
+  "version": "1.0.0",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
+    "start": "NODE_ENV=local nodemon",
+    "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">= 12.14"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,tsx,jsx}": "eslint"
+  },
+  "dependencies": {
+    "easy-node": "../../easy-node",
+    "koa-pug": "^4.0.3"
+  }
+}

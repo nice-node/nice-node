@@ -1,0 +1,17 @@
+{
+  // eslint 检查的文件类型
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+
+  // 搜索时排除的目录
+  "search.exclude": {
+    "package-lock.json": true,
+    "**/node_modules": true,
+    "**/dist": true
+  },
+
+  // 保持文件时删除行尾的空格
+  "files.trimTrailingWhitespace": true
+}

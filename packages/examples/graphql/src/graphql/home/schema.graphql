@@ -1,0 +1,12 @@
+type TodoDetail {
+    id: Int,
+    name: String
+}
+
+type Query {
+    todoDetail(id: ID): TodoDetail
+}
+
+type Mutation {
+  postPhoto(name:String! description: String): Boolean
+}

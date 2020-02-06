@@ -7,9 +7,11 @@ import loadExample from './load-example';
 import { missingProjectName, alreadyExists, start } from './messages';
 
 function installWithMessageFactory(opts: any) {
-  const { projectName, projectPath } = opts;
+  const {
+    projectName, projectPath, graphql, pug, qconfig
+  } = opts;
   const packages = ['arg'];
-  if (opts.graphql) {
+  if (graphql) {
     packages.push(
       // 'easy-node',
       '@types/graphql-type-json',
@@ -19,6 +21,14 @@ function installWithMessageFactory(opts: any) {
       'koa-graphql-fix',
       'merge-graphql-schemas'
     );
+  }
+
+  if (pug) {
+    packages.push('koa-pug');
+  }
+
+  if (qconfig) {
+    packages.push('@qnpm/qconfig-client-plus');
   }
 
   return function installWithMessage() {
@@ -99,26 +109,38 @@ const prompts = [
       return 'Invalid appCode. Please enter letters, numbers and underscores.';
     }
   },
-  {
-    type: 'list',
-    name: 'example',
-    message: '从以下哪个例子中复制',
-    choices: [
-      {
-        name: 'none',
-        value: ''
-      },
-      {
-        name: 'basic',
-        value: 'basic'
-      }
-    ]
-  },
+  // {
+  //   type: 'list',
+  //   name: 'example',
+  //   message: '从以下哪个例子中复制',
+  //   choices: [
+  //     {
+  //       name: 'none',
+  //       value: ''
+  //     },
+  //     {
+  //       name: 'basic',
+  //       value: 'basic'
+  //     }
+  //   ]
+  // },
   {
     type: 'confirm',
     name: 'graphql',
-    message: '使用 graphql 吗？',
-    default: true
+    message: 'Use graphql?',
+    default: false
+  },
+  {
+    type: 'confirm',
+    name: 'pug',
+    message: 'Use pug template?',
+    default: false
+  },
+  {
+    type: 'confirm',
+    name: 'qconfig',
+    message: 'Use qconfig?',
+    default: false
   }
 ];
 

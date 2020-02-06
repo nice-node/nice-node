@@ -1,0 +1,2 @@
+# 每天凌晨5点删除过期的日志文件
+0 5 * * * sh /home/q/www/example_pug/webapps/crontab/deleteLogs.sh 1>/dev/null

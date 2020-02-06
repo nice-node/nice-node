@@ -15,13 +15,10 @@
 
 import { join } from 'path';
 import Router from 'koa-router';
-import graphqlHTTP from 'koa-graphql-fix';
-import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
-import { makeExecutableSchema } from 'graphql-tools';
-import { GraphQLJSON } from 'graphql-type-json';
 import isNodeRuntime from '../utils/is-node-runtime';
 
 const {
+  GRAPHQL_ENABLE,
   GRAPHQL_ENDPOINT,
   GRAPHQL_TYPEDEFS_PATTERN,
   GRAPHQL_RESOLVERS_PATTERN,
@@ -31,30 +28,37 @@ const {
 const isDebug = NODE_ENV !== 'prod';
 
 export default (options: any = {}) => {
-  const ext = isNodeRuntime ? 'js' : 'ts';
-  const src = isNodeRuntime ? DIST : 'src';
-  const cwd = process.cwd();
-  const typeDefsPattern = GRAPHQL_TYPEDEFS_PATTERN.replace('${src}', src); /* eslint-disable-line no-template-curly-in-string */
+  if (GRAPHQL_ENABLE === 'true') {
+    const graphqlHTTP = require('koa-graphql-fix');
+    const { fileLoader, mergeTypes, mergeResolvers } = require('merge-graphql-schemas');
+    const { makeExecutableSchema } = require('graphql-tools');
+    const { GraphQLJSON } = require('graphql-type-json');
 
-  const resolversPattern = GRAPHQL_RESOLVERS_PATTERN
-    .replace('${src}', src) /* eslint-disable-line no-template-curly-in-string */
-    .replace('${ext}', ext); /* eslint-disable-line no-template-curly-in-string */
-  const typesArray = fileLoader(join(cwd, typeDefsPattern));
-  const typeDefs = mergeTypes(typesArray, { all: true });
-  const resolversArray = fileLoader(join(cwd, resolversPattern));
-  const resolvers = {
-    JSON: GraphQLJSON,
-    ...mergeResolvers(resolversArray)
-  };
-  const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
+    const ext = isNodeRuntime ? 'js' : 'ts';
+    const src = isNodeRuntime ? DIST : 'src';
+    const cwd = process.cwd();
+    const typeDefsPattern = GRAPHQL_TYPEDEFS_PATTERN.replace('${src}', src); /* eslint-disable-line no-template-curly-in-string */
 
-  const router = new Router();
-  router.all(GRAPHQL_ENDPOINT, graphqlHTTP({
-    schema: executableSchema,
-    rootValue: { ...resolvers.Query, ...resolvers.Mutation },
-    graphiql: isDebug,
-    ...options
-  }));
+    const resolversPattern = GRAPHQL_RESOLVERS_PATTERN
+      .replace('${src}', src) /* eslint-disable-line no-template-curly-in-string */
+      .replace('${ext}', ext); /* eslint-disable-line no-template-curly-in-string */
+    const typesArray = fileLoader(join(cwd, typeDefsPattern));
+    const typeDefs = mergeTypes(typesArray, { all: true });
+    const resolversArray = fileLoader(join(cwd, resolversPattern));
+    const resolvers = {
+      JSON: GraphQLJSON,
+      ...mergeResolvers(resolversArray)
+    };
+    const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
 
-  return router.routes();
+    const router = new Router();
+    router.all(GRAPHQL_ENDPOINT, graphqlHTTP({
+      schema: executableSchema,
+      rootValue: { ...resolvers.Query, ...resolvers.Mutation },
+      graphiql: isDebug,
+      ...options
+    }));
+
+    return router.routes();
+  }
 };

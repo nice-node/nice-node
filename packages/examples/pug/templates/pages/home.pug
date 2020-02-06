@@ -1,0 +1,12 @@
+extends /layout/default.pug
+
+block content
+  h1 Todo list
+  ul
+  each todo, index in todos
+    li
+      input(type="checkbox" checked=todo.completed disabled="true")
+      a(href=`/todos/${todo.id}`)= todo.title
+
+block title
+  title Todo list

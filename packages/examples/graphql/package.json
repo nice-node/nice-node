@@ -1,0 +1,33 @@
+{
+  "name": "example_graphql",
+  "version": "1.0.0",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
+    "start": "NODE_ENV=local nodemon",
+    "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">= 12.14"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,tsx,jsx}": "eslint"
+  },
+  "dependencies": {
+    "@types/graphql-type-json": "^0.3.2",
+    "graphql": "^14.6.0",
+    "graphql-tools": "^4.0.6",
+    "graphql-type-json": "^0.3.1",
+    "koa-graphql-fix": "^0.8.1",
+    "merge-graphql-schemas": "^1.7.6",
+    "easy-node": "../../easy-node"
+  }
+}

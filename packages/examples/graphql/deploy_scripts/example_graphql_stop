@@ -1,5 +1,5 @@
 #! /bin/bash
 
-APP_CODE="example_basic"
+APP_CODE="example_graphql"
 
 source "/home/q/www/${APP_CODE}/webapps/node_modules/easy-node/scripts/stop.sh"
