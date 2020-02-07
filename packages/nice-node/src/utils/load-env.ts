@@ -29,7 +29,7 @@ const getEnvAbsolutePath: (profileId: string) => string[] = (profileId: string) 
 const loadEnv = (profileId: string) => {
   const dotenvFiles = getEnvAbsolutePath(profileId);
   dotenvFiles.forEach((dotenvFile) => {
-    console.log(` - ${dotenvFile}`);
+    console.log(` - ${dotenvFile.replace(process.cwd(), '')}`);
     dotenv.config({
       path: dotenvFile
     });
@@ -55,7 +55,7 @@ loadEnv(profileId);
 loadEnv('default');
 
 console.log('\nload easynode config file:');
-console.log(` - ${easyNodeEnvPath}`);
+console.log(` - ${easyNodeEnvPath.replace(process.cwd(), '')}`);
 dotenv.config({
   path: easyNodeEnvPath
 });

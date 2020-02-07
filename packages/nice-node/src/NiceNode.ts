@@ -8,16 +8,30 @@ import healthCheck from './middlewares/health-check';
 import accessLog from './middlewares/access-log';
 import logger from './middlewares/logger';
 
+interface EasyNodeOptions {
+  static?: any,
+  bodyParser?: any
+}
+
 export default class EasyNode {
   server: Koa;
 
-  constructor() {
+  options: EasyNodeOptions;
+
+  constructor(options: EasyNodeOptions = {}) {
+    this.options = {
+      static: {},
+      bodyParser: {},
+      ...options
+    };
+
     this.createServer();
   }
 
   // 可以重写该方法来满足自定义需求
   createServer(): void {
-    const { 
+    const {
+      STATIC_ENABLE,
       GRAPHQL_ENABLE,
       PUG_ENABLE,
       PUG_BASEDIR,
@@ -25,22 +39,28 @@ export default class EasyNode {
     } = process.env;
 
     this.server = new Koa();
+
+    if (STATIC_ENABLE === 'true') {
+      // eslint-disable-next-line global-require,import/no-unresolved
+      this.server.use(require('koa-static')(this.options.static));
+    }
+
     this.server
       // 记录访问日志
       .use(accessLog())
       .use(logger)
       .use(checkUrls)
       .use(healthCheck)
-      .use(bodyParser());
+      .use(bodyParser(this.options.bodyParser));
 
     if (GRAPHQL_ENABLE === 'true') {
+      // eslint-disable-next-line global-require
       const graphql = require('./middlewares/graphql');
       this.server.use(graphql());
     }
 
-    console.log(PUG_ENABLE === 'true');
-
     if (PUG_ENABLE === 'true') {
+      // eslint-disable-next-line global-require,import/no-unresolved
       const Pug = require('koa-pug');
       const pug = new Pug({
         basedir: resolve(PUG_BASEDIR),

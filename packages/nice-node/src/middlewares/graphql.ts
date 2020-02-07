@@ -28,10 +28,15 @@ const {
 const isDebug = NODE_ENV !== 'prod';
 
 export default (options: any = {}) => {
+  const router = new Router();
   if (GRAPHQL_ENABLE === 'true') {
+    // eslint-disable-next-line global-require,import/no-unresolved
     const graphqlHTTP = require('koa-graphql-fix');
+    // eslint-disable-next-line global-require,import/no-unresolved
     const { fileLoader, mergeTypes, mergeResolvers } = require('merge-graphql-schemas');
+    // eslint-disable-next-line global-require,import/no-unresolved
     const { makeExecutableSchema } = require('graphql-tools');
+    // eslint-disable-next-line global-require,import/no-unresolved
     const { GraphQLJSON } = require('graphql-type-json');
 
     const ext = isNodeRuntime ? 'js' : 'ts';
@@ -51,14 +56,12 @@ export default (options: any = {}) => {
     };
     const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
 
-    const router = new Router();
     router.all(GRAPHQL_ENDPOINT, graphqlHTTP({
       schema: executableSchema,
       rootValue: { ...resolvers.Query, ...resolvers.Mutation },
       graphiql: isDebug,
       ...options
     }));
-
-    return router.routes();
   }
+  return router.routes();
 };
