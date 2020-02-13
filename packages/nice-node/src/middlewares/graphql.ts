@@ -22,10 +22,10 @@ const {
   GRAPHQL_ENDPOINT,
   GRAPHQL_TYPEDEFS_PATTERN,
   GRAPHQL_RESOLVERS_PATTERN,
-  NODE_ENV,
+  PROFILE,
   DIST
 } = process.env;
-const isDebug = NODE_ENV !== 'prod';
+const isDebug = PROFILE !== 'prod';
 
 export default (options: any = {}) => {
   const router = new Router();

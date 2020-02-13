@@ -7,7 +7,7 @@
     "postbuild": "npm run copy:graphql",<%}%>
     "prebuild": "npm run clean",
     "build": "tsc",
-    "start": "NODE_ENV=local nodemon",
+    "start": "PROFILE=local nodemon",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
     "lint:fix": "npm run lint -- --fix"
   },

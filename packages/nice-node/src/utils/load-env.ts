@@ -39,16 +39,16 @@ const loadEnv = (profileId: string) => {
 // 加载工程根目录下的 `.env` 文件
 dotenv.config();
 
-// 不存在 NODE_ENV 时强制退出程序
-if (!('NODE_ENV' in process.env)) {
-  console.log('[启动失败]未找到必要的环境变量 `NODE_ENV` ，请尝试以下方法：');
-  console.log(' - 运行 `npm run env:{NODE_ENV}` 创建 .env 文件');
-  console.log(' - 启动程序时加上环境变量 `NODE_ENV={NODE_ENV}`');
+// 不存在 PROFILE 时强制退出程序
+if (!('PROFILE' in process.env)) {
+  console.log('[启动失败]未找到必要的环境变量 `PROFILE` ，请尝试以下方法：');
+  console.log(' - 运行 `echo \"PROFILE=local\">.env` 创建 .env 文件');
+  console.log(' - 启动程序时加上环境变量 `PROFILE={PROFILE}`');
   process.exit(1);
 }
 
-const { NODE_ENV, PROFILE_ID } = process.env;
-const profileId = PROFILE_ID || NODE_ENV;
+const { PROFILE, PROFILE_ID } = process.env;
+const profileId = PROFILE_ID || PROFILE;
 
 console.log('\nload profile files:');
 loadEnv(profileId);

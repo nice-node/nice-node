@@ -5,7 +5,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc",
     "postbuild": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
-    "start": "NODE_ENV=local nodemon",
+    "start": "PROFILE=local nodemon",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
     "lint:fix": "npm run lint -- --fix"
   },

@@ -31,7 +31,7 @@ const {
 } = format;
 
 const {
-  NODE_ENV,
+  PROFILE,
   LOG_LEVEL,
   LOG_ROOT,
   LOG_FILE_DATE_PATTERN,
@@ -39,7 +39,7 @@ const {
   LOG_DATEFORMAT
 } = process.env;
 
-const isLocal = NODE_ENV === 'local';
+const isLocal = PROFILE === 'local';
 
 const rotateOptions = {
   dirname: LOG_ROOT,
