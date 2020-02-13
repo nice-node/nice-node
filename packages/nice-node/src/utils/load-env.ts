@@ -43,15 +43,14 @@ dotenv.config();
 if (!('PROFILE' in process.env)) {
   console.log('[启动失败]未找到必要的环境变量 `PROFILE` ，请尝试以下方法：');
   console.log(' - 运行 `echo \"PROFILE=local\">.env` 创建 .env 文件');
-  console.log(' - 启动程序时加上环境变量 `PROFILE={PROFILE}`');
+  console.log(' - 启动程序时加上环境变量 `PROFILE=local`');
   process.exit(1);
 }
 
-const { PROFILE, PROFILE_ID } = process.env;
-const profileId = PROFILE_ID || PROFILE;
+const { PROFILE } = process.env;
 
 console.log('\nload profile files:');
-loadEnv(profileId);
+loadEnv(PROFILE);
 loadEnv('default');
 
 console.log('\nload easynode config file:');

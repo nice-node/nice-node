@@ -1,6 +1,6 @@
 {
   "name": "nice-node",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.5",
   "description": "",
   "main": "dist/index.js",
   "bin": {
@@ -19,7 +19,14 @@
     "start": "nodemon",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\"",
     "lint:fix": "npm run lint -- --fix",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "release": "standard-version && npm publish",
+    "release:major": "standard-version --release-as major && npm publish",
+    "release:minor": "standard-version --release-as minor && npm publish",
+    "release:patch": "standard-version --release-as patch && npm publish",
+    "release:alpha": "standard-version --prerelease alpha && npm publish --tag=next",
+    "dist-tag": "npm dist-tag add nice-node@1.6.0 latest && npm dist-tag add nice-node@2.0.0-alpha.4 next",
+    "release:major:alpha": "standard-version --release-as major --prerelease alpha && npm publish"
   },
   "engines": {
     "node": ">= 12.14"
