@@ -39,15 +39,15 @@ const loadEnv = (profileId: string) => {
 // 加载工程根目录下的 `.env` 文件
 dotenv.config();
 
+const { PROFILE } = process.env;
+
 // 不存在 PROFILE 时强制退出程序
-if (!('PROFILE' in process.env)) {
+if (!PROFILE) {
   console.log('[启动失败]未找到必要的环境变量 `PROFILE` ，请尝试以下方法：');
   console.log(' - 运行 `echo \"PROFILE=local\">.env` 创建 .env 文件');
   console.log(' - 启动程序时加上环境变量 `PROFILE=local`');
   process.exit(1);
 }
-
-const { PROFILE } = process.env;
 
 console.log('\nload profile files:');
 loadEnv(PROFILE);
