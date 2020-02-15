@@ -7,6 +7,7 @@ import checkUrls from './middlewares/check-urls';
 import healthCheck from './middlewares/health-check';
 import accessLog from './middlewares/access-log';
 import logger from './middlewares/logger';
+import requireAllRoutes from './utils/require-all-routes';
 
 interface EasyNodeOptions {
   static?: any,
@@ -32,17 +33,19 @@ export default class EasyNode {
   createServer(): void {
     const {
       STATIC_ENABLE,
+      STATIC_ROOR,
       GRAPHQL_ENABLE,
       PUG_ENABLE,
       PUG_BASEDIR,
-      PUG_VIEWPATH
+      PUG_VIEWPATH,
+      REQUIRE_ALL_ROUTES_ENABLE
     } = process.env;
 
     this.server = new Koa();
 
     if (STATIC_ENABLE === 'true') {
       // eslint-disable-next-line global-require,import/no-unresolved
-      this.server.use(require('koa-static')(this.options.static));
+      this.server.use(require('koa-static')(STATIC_ROOR, this.options.static));
     }
 
     this.server
@@ -67,6 +70,10 @@ export default class EasyNode {
         viewPath: resolve(PUG_VIEWPATH)
       });
       pug.use(this.server);
+    }
+
+    if (REQUIRE_ALL_ROUTES_ENABLE === 'true') {
+      requireAllRoutes(this.server);
     }
   }
 }
