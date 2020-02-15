@@ -29,7 +29,6 @@ export default (server: Koa, options = {}) => {
     filter: new RegExp(REQUIRE_ALL_ROUTES_PATTERN),
     ...options
   });
-  console.log(actions);
 
   requireAllRoutes(actions, server);
 };
