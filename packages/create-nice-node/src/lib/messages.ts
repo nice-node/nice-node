@@ -58,7 +58,8 @@ export const start = (projectName: string) => {
     install: installCmd === 'npm' ? 'npm install' : 'yarn',
     build: installCmd === 'npm' ? 'npm run build' : 'yarn build',
     start: installCmd === 'npm' ? 'npm run start:prod' : 'yarn start:prod',
-    dev: installCmd === 'npm' ? 'npm start' : 'yarn start'
+    dev: installCmd === 'npm' ? 'npm start' : 'yarn start',
+    lint: installCmd === 'npm' ? 'npm lint' : 'yarn lint'
   };
 
   return `
@@ -73,8 +74,11 @@ export const start = (projectName: string) => {
   To build a version for production:
     ${cmd(commands.build)}
 
-  To run the server in production:
+  To run compiled project code:
     ${cmd(commands.start)}
+    
+  To run code lint:
+    ${cmd(commands.lint)}
     
   Questions? Feedback? Please let me know!
   ${chalk.green('https://github.com/zhongzhi107/nice-node/issues')}

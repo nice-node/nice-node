@@ -15,12 +15,10 @@ function help(command?: string) {
   if (command) {
     switch (command) {
       case 'build':
-        console.log(`
-nice-node build (with no args)
-`);
-      break;
+        console.log('\nnice-node build (with no args)\n');
+        break;
       default:
-        console.log(`nice-node: \'${command}\' is not a nice-node command. See 'nice-node --help'.`);
+        console.log(`nice-node: '${command}' is not a nice-node command. See 'nice-node --help'.`);
     }
   } else {
     console.log(`
@@ -36,11 +34,16 @@ nice-node <command> -h  quick help on <command>
 
 function createDotenv() {
   const dotenvPath = resolve('.env');
-  const { profile, PROFILE, deploy_type, NODE_ENV } = process.env;
+  const {
+    profile,
+    PROFILE,
+    deploy_type: deployType,
+    NODE_ENV
+  } = process.env;
   const profileId = profile || PROFILE;
 
   if (!profileId) {
-    log(`Missing environment variable \`PROFILE\`, build failed.`);
+    log('Missing environment variable `PROFILE`, build failed.');
     process.exit(1);
   }
 
@@ -48,13 +51,14 @@ function createDotenv() {
   // （备用）通常习惯使用 NODE_ENV 来判断环境类型
   let nodeEnv = NODE_ENV; // 优先使用环境变量中的 NODE_ENV
   if (!nodeEnv) {
-    switch (deploy_type) {
+    switch (deployType) {
       case 'prepare': // 灰度环境也是线上环境
       case 'prod':
         nodeEnv = 'production';
         break;
       case 'dev':
         nodeEnv = 'development';
+        break;
       default:
         nodeEnv = 'local'; // 默认当作本地环境
     }
@@ -75,7 +79,7 @@ function createDotenv() {
 
 function build() {
   createDotenv();
-  require('typescript/lib/tsc.js');
+  require('typescript/lib/tsc.js'); // eslint-disable-line global-require
 }
 
 const args = process.argv.splice(2);
@@ -93,4 +97,3 @@ if (commandArgs === '-h') {
       help();
   }
 }
-

@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import Koa from 'koa';
-import requireAll from 'require-all';
 
 const {
   REQUIRE_ALL_ROUTES_ROOR,
@@ -24,7 +23,7 @@ function requireAllRoutes(actions: { default?: Function | Object }, server: Koa)
 }
 
 export default (server: Koa, options = {}) => {
-  const actions = requireAll({
+  const actions = require('require-all')({ // eslint-disable-line global-require
     dirname: resolve(REQUIRE_ALL_ROUTES_ROOR),
     filter: new RegExp(REQUIRE_ALL_ROUTES_PATTERN),
     ...options

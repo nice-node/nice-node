@@ -39,3 +39,5 @@ sleep $SECOND
 
 # echo $before
 find ${LOG_ROOT} -mtime +${before} -name ${PATTERN} | xargs sudo /bin/rm -rf
+
+echo "delete logs completed."
