@@ -1,6 +1,6 @@
 /**
  * 请求代理
- * @param {string} metric 打点名称
+ * @param {object} options
  */
 
 import proxy from 'koa-proxies';

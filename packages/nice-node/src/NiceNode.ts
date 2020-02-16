@@ -10,20 +10,22 @@ import accessLog from './middlewares/access-log';
 import logger from './middlewares/logger';
 import requireAllRoutes from './utils/require-all-routes';
 
-interface EasyNodeOptions {
+interface NiceNodeOptions {
   static?: any,
-  bodyParser?: any
+  bodyParser?: any,
+  proxy?: any
 }
 
-export default class EasyNode {
+export default class NiceNode {
   server: Koa;
 
-  options: EasyNodeOptions;
+  options: NiceNodeOptions;
 
-  constructor(options: EasyNodeOptions = {}) {
+  constructor(options: NiceNodeOptions = {}) {
     this.options = {
       static: {},
       bodyParser: {},
+      proxy: {},
       ...options
     };
 
@@ -81,7 +83,7 @@ export default class EasyNode {
     if (PROXY_ENABLE === 'true') {
       // eslint-disable-next-line global-require
       const proxy = require('./middlewares/proxy').default;
-      this.server.use(proxy());
+      this.server.use(proxy(this.options.proxy));
     }
   }
 }
