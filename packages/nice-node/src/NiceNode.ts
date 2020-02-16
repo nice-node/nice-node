@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import Koa from 'koa';
+import './utils/version';
 import './utils/load-env';
 import './utils/set-node-path';
 import bodyParser from 'koa-bodyparser';
@@ -38,7 +39,8 @@ export default class EasyNode {
       PUG_ENABLE,
       PUG_BASEDIR,
       PUG_VIEWPATH,
-      REQUIRE_ALL_ROUTES_ENABLE
+      REQUIRE_ALL_ROUTES_ENABLE,
+      PROXY_ENABLE
     } = process.env;
 
     this.server = new Koa();
@@ -74,6 +76,12 @@ export default class EasyNode {
 
     if (REQUIRE_ALL_ROUTES_ENABLE === 'true') {
       requireAllRoutes(this.server);
+    }
+
+    if (PROXY_ENABLE === 'true') {
+      // eslint-disable-next-line global-require
+      const proxy = require('./middlewares/proxy').default;
+      this.server.use(proxy());
     }
   }
 }
