@@ -3,8 +3,9 @@
 /**
  * 该文件可能在 portal 编译机上执行，也可能在本地运行。
  */
-const { writeFileSync } = require('fs');
-const { resolve } = require('path');
+import { writeFileSync } from 'fs';
+import { resolve } from 'path';
+import rimraf from 'rimraf';
 
 function log(...args: any) {
   args.unshift('[nice-node]');
@@ -77,8 +78,14 @@ function createDotenv() {
   log(`${dotenvPath} was created.`);
 }
 
+function cleanDist() {
+  rimraf.sync('dist');
+  console.log('clean directiory:\n - dist');
+}
+
 function build() {
   createDotenv();
+  cleanDist();
   require('typescript/lib/tsc.js'); // eslint-disable-line global-require
 }
 
