@@ -9,7 +9,7 @@ import { resolve } from 'path';
 import dotenv from 'dotenv';
 import glob from 'glob';
 
-const easyNodeEnvPath = resolve(__dirname, '../../nicenode.env');
+const niceNodeEnvPath = resolve(__dirname, '../../nicenode.env');
 
 /**
  * 获取 `profiles` 目录下的对应的 `env` 文件绝对路径
@@ -53,8 +53,8 @@ console.log('\nload profile files:');
 loadEnv(PROFILE);
 loadEnv('default');
 
-console.log('\nload easynode config file:');
-console.log(` - ${easyNodeEnvPath.replace(process.cwd(), '')}`);
+console.log('\nload nice-node config file:');
+console.log(` - ${niceNodeEnvPath.replace(process.cwd(), '')}`);
 dotenv.config({
-  path: easyNodeEnvPath
+  path: niceNodeEnvPath
 });

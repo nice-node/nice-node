@@ -1,10 +1,8 @@
-import EasyNode from 'nice-node';
-import homeRouter from './routes/home';
+import NiceNode from 'nice-node';
 
 const { PORT } = process.env;
 
-const app = new EasyNode();
-app.server.use(homeRouter);
+const app = new NiceNode();
 app.server.listen(PORT, () => {
   console.log(`\n🚀 http://localhost:${PORT}`);
 });

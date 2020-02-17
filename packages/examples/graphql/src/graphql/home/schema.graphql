@@ -1,10 +1,10 @@
 type TodoDetail {
-    id: Int,
-    name: String
+  id: Int,
+  name: String
 }
 
 type Query {
-    todoDetail(id: ID): TodoDetail
+  todoDetail(id: ID): TodoDetail
 }
 
 type Mutation {

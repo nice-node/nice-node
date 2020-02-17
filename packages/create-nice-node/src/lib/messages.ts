@@ -59,7 +59,7 @@ export const start = (projectName: string) => {
     build: installCmd === 'npm' ? 'npm run build' : 'yarn build',
     start: installCmd === 'npm' ? 'npm run start:prod' : 'yarn start:prod',
     dev: installCmd === 'npm' ? 'npm start' : 'yarn start',
-    lint: installCmd === 'npm' ? 'npm lint' : 'yarn lint'
+    lint: installCmd === 'npm' ? 'npm run lint' : 'yarn lint'
   };
 
   return `

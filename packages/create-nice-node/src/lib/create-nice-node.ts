@@ -1,10 +1,30 @@
 import inquirer from 'inquirer';
 import path from 'path';
 import fs from 'fs';
+import rimraf from 'rimraf';
 import copyDir from './copy-dir';
 import install from './install';
 import loadExample from './load-example';
 import { missingProjectName, alreadyExists, start } from './messages';
+
+function deleteUnusedFiles(opts: any) {
+  const {
+    projectPath, graphql, pug
+  } = opts;
+
+  setTimeout(() => {
+    if (!graphql) {
+      rimraf.sync(path.join(projectPath, 'src/graphql'));
+    }
+
+    if (!pug) {
+      rimraf.sync(path.join(projectPath, 'src/pom.xml'));
+      rimraf.sync(path.join(projectPath, 'templates'));
+    }
+  }, 5000);
+
+  return () => Promise.resolve(opts);
+}
 
 function installWithMessageFactory(opts: any) {
   const {
@@ -20,29 +40,32 @@ function installWithMessageFactory(opts: any) {
       'koa-graphql-fix',
       'merge-graphql-schemas'
     );
+  } else {
+    rimraf.sync(path.join(projectPath, 'src/graphql'));
   }
 
   if (pug) {
     packages.push('koa-pug');
+  } else {
+    rimraf.sync(path.join(projectPath, 'src/pom.xml'));
+    rimraf.sync(path.join(projectPath, 'templates'));
   }
 
   if (qconfig) {
     packages.push('@qnpm/qconfig-client-plus');
   }
 
-  return function installWithMessage() {
-    return install({
-      projectName,
-      projectPath,
-      packages
+  return () => install({
+    projectName,
+    projectPath,
+    packages
+  })
+    .then(() => {
+      console.log(start(projectName));
     })
-      .then(() => {
-        console.log(start(projectName));
-      })
-      .catch((err) => {
-        throw err;
-      });
-  };
+    .catch((err) => {
+      throw err;
+    });
 }
 
 function create(opts: any) {
@@ -84,8 +107,9 @@ function create(opts: any) {
         'deploy_scripts/<%=appCode%>_stop'
       ]
     })
+      .then(deleteUnusedFiles(opts))
       .then(installWithMessageFactory(opts))
-      .catch((err) => {
+      .catch((err: any) => {
         throw err;
       });
   }

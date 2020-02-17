@@ -1,7 +1,7 @@
 {
   "name": "create-nice-node",
   "version": "1.0.0-beta.1",
-  "description": "Create EasyNode apps with no build configuration.",
+  "description": "Create nice node apps with no build configuration.",
   "engines": {
     "node": ">=8"
   },
@@ -24,7 +24,6 @@
   "dependencies": {
     "ansi-escapes": "^4.3.0",
     "chalk": "^3.0.0",
-    "cross-spawn": "^7.0.1",
     "ejs": "^3.0.1",
     "execa": "^4.0.0",
     "fs-extra": "^8.1.0",
@@ -32,7 +31,6 @@
     "isbinaryfile": "^4.0.4",
     "mkdirp-then": "^1.2.0",
     "ms": "^2.1.2",
-    "mz": "^2.7.0",
     "ora": "^4.0.3",
     "promise": "^8.0.3"
   },
@@ -45,12 +43,12 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^13.5.0",
     "@types/ora": "^3.2.0",
+    "@types/rimraf": "^2.0.3",
     "eslint": "^6.8.0",
     "eslint-config-qunar-typescript-node": "^1.1.8",
     "husky": "^4.2.1",
     "lint-staged": "^10.0.3",
     "rimraf": "^3.0.1",
-    "ts-optchain": "^0.1.8",
     "typescript": "^3.7.5"
   },
   "husky": {

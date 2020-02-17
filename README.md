@@ -1,4 +1,4 @@
-# Easy node
+# Nice node
 
 这是一个 `koa2` + `typescript` 的 node 迷你框架。
 
@@ -18,11 +18,11 @@
 - [x] 支持 pug 模版（可选）
 - [x] 自动加载路由功能（可选）
 - [x] 支持 GraphQL（可选）
+- [x] 可配置的代理转发（可选）
 - [x] 继承了 portal 发布
   - deploy_scripts
   - 定时任务同步机制
-- [] 可配置的代理转发
-- [] qconfig
+- [ ] qconfig
 
 ## todo
 - [ ] deploy_scripts 和 crontab 使用文件软连接
@@ -379,8 +379,9 @@ source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/start.sh"
 - 编译参数
   - 分支策略(branch_strategy) `分支发布`
   - 编译方法(compile_method) `node`
-  - node_version: `12.x`
+  - node_version `12.x`
   - 编译自定义命令(compile_command) `npm run build`
+  - 编译后自定义命令(post_compile_command) `rm -rf src`
 - 部署参数
   - 部署源路径(target_dir) `./`
   - 部署目标路径(deploy_dst) `/home/q/www/${appcode}/webapps`
@@ -393,7 +394,6 @@ source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/start.sh"
     ```  
     .vscode
     logs
-    src
     .editconfig
     .eslintignore
     .eslintrc

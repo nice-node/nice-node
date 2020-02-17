@@ -1,6 +1,6 @@
 {
   "name": "nice-node",
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0-beta.12",
   "description": "",
   "main": "dist/index.js",
   "bin": {
@@ -13,6 +13,7 @@
     "*.js",
     "tsconfig.json"
   ],
+  "repository": "zhongzhi107/nice-node",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
@@ -72,5 +73,7 @@
     "typescript": "3.7.5",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
+  },
+  "devDependencies": {
   }
 }

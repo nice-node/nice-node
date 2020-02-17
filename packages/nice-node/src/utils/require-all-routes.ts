@@ -1,9 +1,11 @@
 import { resolve } from 'path';
 import Koa from 'koa';
+import isNodeRuntime from '../utils/is-node-runtime';
 
 const {
   REQUIRE_ALL_ROUTES_ROOR,
-  REQUIRE_ALL_ROUTES_PATTERN
+  REQUIRE_ALL_ROUTES_PATTERN,
+  DIST
 } = process.env;
 
 function requireAllRoutes(actions: { default?: Function | Object }, server: Koa) {
@@ -23,9 +25,13 @@ function requireAllRoutes(actions: { default?: Function | Object }, server: Koa)
 }
 
 export default (server: Koa, options = {}) => {
+  const src = isNodeRuntime ? DIST : 'src';
+  const ext = isNodeRuntime ? 'js' : 'ts';
+  const dirname = resolve(REQUIRE_ALL_ROUTES_ROOR.replace('${src}', src)); 
+  const filter = new RegExp(REQUIRE_ALL_ROUTES_PATTERN.replace('${ext}', ext));
   const actions = require('require-all')({ // eslint-disable-line global-require
-    dirname: resolve(REQUIRE_ALL_ROUTES_ROOR),
-    filter: new RegExp(REQUIRE_ALL_ROUTES_PATTERN),
+    dirname,
+    filter,
     ...options
   });
 

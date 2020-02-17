@@ -3,8 +3,5 @@
   "private": false,
   "scripts": {
     "release": "lerna publish"
-  },
-  "devDependencies": {
-    "lerna": "^3.16.4"
   }
 }

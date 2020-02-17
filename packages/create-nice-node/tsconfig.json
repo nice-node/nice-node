@@ -10,10 +10,7 @@
     "target": "es2017",
     "sourceMap": false,
     "outDir": "./dist",
-    "allowSyntheticDefaultImports": true,
-    "plugins": [
-      { "transform": "ts-optchain/transform" },
-    ]
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
