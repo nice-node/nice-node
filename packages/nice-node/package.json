@@ -1,6 +1,6 @@
 {
   "name": "nice-node",
-  "version": "1.0.0-beta.12",
+  "version": "1.0.0-beta.14",
   "description": "",
   "main": "dist/index.js",
   "bin": {
@@ -9,6 +9,7 @@
   "files": [
     "dist",
     "scripts",
+    ".syncignore",
     "nicenode.env",
     "*.js",
     "tsconfig.json"
