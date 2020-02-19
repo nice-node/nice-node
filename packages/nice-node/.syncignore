@@ -1,0 +1,15 @@
+.vscode
+.editconfig
+.eslintignore
+.eslintrc
+.gitignore
+nodemon.json
+package-lock.json
+pom.xml
+tsconfig.json
+
+# 日志目录
+logs
+
+# 源代码目录
+src

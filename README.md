@@ -23,6 +23,9 @@
   - deploy_scripts
   - 定时任务同步机制
 - [ ] qconfig
+- nicenode.env 参数检查
+- deploy_scripts crontab 进一步封装
+- .syncignore
 
 ## todo
 - [ ] deploy_scripts 和 crontab 使用文件软连接
@@ -104,20 +107,14 @@ import NiceNode from 'nice-node';
 // 这之后的 process.env 上才能取到配置参数
 ```
 
-### 配置类型
-
-工程根目录（注意不是 `src` 目录）的 `profiles` 目录是存放配置文件的目录，在 `profiles` 目录下分别为不同环境建立 profile 文件，配置文件分为两类：
-
-1. `${PROFILE}/*.env`：区分环境的配置文件, ${PROFILE} 会先从环境变量 `PROFILE` 中取值，取不到会再从 `NODE_ENV` 中取，如果也取不到，则会抛出异常。
-1. `default/*.env`：所有环境通用的配置文件。
+工程根目录（注意不是 `src` 目录）的 `profiles` 目录是存放配置文件的目录，在 `profiles` 目录下分别为不同环境建立 profile 文件，`${PROFILE}/*.env` 为区分环境的配置文件, ${PROFILE} 会先从环境变量 `PROFILE` 中取值，取不到会再从 `NODE_ENV` 中取，如果也取不到，则会抛出异常。
 
 ### 配置加载规则
 工程的启动过程会加载多个配置文件，配置文件加载顺序是：
 
 1. 命令行中传入的环境变量。
 2. profiles 下对应 profile 目录下的配置文件。
-3. profiles 下 default 目录下的配置文件。
-4. node_modules/nice-node/nicenode.env 配置文件。
+3. node_modules/nice-node/nicenode.env 配置文件。
 
 当配置中存在重复的 key 时，以先加载的 key 为准。
 
@@ -373,6 +370,32 @@ source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/start.sh"
 ### 前后端关联
 如需关联前端工程，需要检查 `pom.xml` 设置，确保包含 <%=appname%> 的参数都配置正确。
 
+### .syncignore
+项目编译成功后，编译系统默认会将编译目录下所有文件和目录都同步到目标服务器上，有些文件（如*.ts）在程序运行时不需要，没有必要把这些文件部署到目标服务器，减少部署的文件数量能减少发布时间。Portal 上有个 `部署时需排除文件(excludes) ` 参数，目的就是排除不需要部署的文件，但这个功能有bug，比如配置了 `src` ，那么所有路径中包含 src 关键字的文件都会被忽略，包括 `node_module/debug/src/index.js` 这种文件，这和我们期望的不一致。因此 nice-node 将这个功能集成在编译命令 `nice-node build` ，编译成功后，nice-node 会根据项目根目录下的 `.syncignore` 删除相关的文件。如果项目根目录下没有 `.syncignore` ，则会使用 nice-node 默认的 `.syncignore` ，默认的 `.syncignore` 内容如下：
+
+```
+.vscode
+.editconfig
+.eslintignore
+.eslintrc
+.gitignore
+nodemon.json
+package-lock.json
+pom.xml
+tsconfig.json
+
+# 日志目录
+logs
+
+# 源代码目录
+src
+```
+
+#### .syncignore 格式
+- 每行一个文件或目录
+- 忽略空行
+- # 开头的行是注释
+
 ### 发布参数设置
 - 基础信息
   - 应用类型：`node`
@@ -390,16 +413,3 @@ source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/start.sh"
   - 服务启动检测地址(check_urls) `/check_urls`
   - 启服务脚本(start_websrv_scripts) `${appcode}_start`
   - 停服务脚本(stop_websrv_scripts) `${appcode}_stop`
-  - 部署时需排除文件(excludes) 
-    ```  
-    .vscode
-    logs
-    .editconfig
-    .eslintignore
-    .eslintrc
-    .gitignore
-    nodemon.json
-    package-lock.json
-    pom.xml
-    tsconfig.json
-    ```

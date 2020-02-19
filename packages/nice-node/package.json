@@ -51,10 +51,12 @@
     "@typescript-eslint/eslint-plugin": "2.19.2",
     "@typescript-eslint/parser": "2.19.2",
     "axios": "^0.19.2",
+    "cli-table-fix": "^0.3.1",
     "date-fns": "^2.9.0",
     "dotenv": "^8.2.0",
     "eslint": "6.8.0",
     "eslint-config-qunar-typescript-node": "1.1.13",
+    "file-ignore-parser": "^1.0.0",
     "file-stream-rotator": "^0.5.7",
     "glob": "^7.1.6",
     "husky": "^4.2.3",
@@ -74,6 +76,5 @@
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

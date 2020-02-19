@@ -3,9 +3,13 @@
 /**
  * 该文件可能在 portal 编译机上执行，也可能在本地运行。
  */
-import { writeFileSync } from 'fs';
+import { existsSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
+import { hostname } from 'os';
 import rimraf from 'rimraf';
+import parser from 'file-ignore-parser';
+import { execSync } from 'child_process';
+import { parse } from 'date-fns';
 
 function log(...args: any) {
   args.unshift('[nice-node]');
@@ -83,10 +87,62 @@ function cleanDist() {
   console.log('clean directiory:\n - dist');
 }
 
-function build() {
+async function deleteSourceFiles() {
+  let syncignore = '.syncignore';
+  if (!existsSync(syncignore)) {
+    syncignore = `node_modules/nice-node/${syncignore}`;
+  }
+
+  const patterns = await parser(syncignore);
+  patterns.forEach((pattern: string) => {
+    log(` - ${pattern}`);
+    // 处理首尾的空格
+    pattern = pattern.trim();
+    // 兼容 / 开头的配置
+    if (pattern.startsWith('/')) {
+      pattern = pattern.substring(1, pattern.length);
+    }
+    rimraf.sync(pattern);
+  });
+
+  return 'source files deleted.';
+}
+
+function prebuild() {
   createDotenv();
   cleanDist();
-  require('typescript/lib/tsc.js'); // eslint-disable-line global-require
+}
+
+function postbuild() {
+  // 只在编译机上删除源代码
+  // l-compile5.cm.cn2
+  const isComplie = /\.cm\.cn/.test(hostname());
+  if (isComplie) {
+    deleteSourceFiles().then((message) => {
+      log(message);
+    }).catch(console.error);
+  } else {
+    log('local machine, deleteSourceFiles() skipped.')
+  }
+}
+
+function build() {
+  prebuild();
+
+  log('tsc build starting...');
+  const now = Date.now();
+  try {
+    execSync('node_modules/.bin/tsc');
+  } catch (err) {
+    log('tsc build failed.');
+    process.exit(1);
+  }
+
+  const usedTime = Math.floor((Date.now() - now) / 1000);
+
+  log(`tsc build succeeded, it took ${String(usedTime)} seconds.`);
+
+  postbuild();
 }
 
 const args = process.argv.splice(2);

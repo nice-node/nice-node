@@ -8,8 +8,9 @@
 import { resolve } from 'path';
 import dotenv from 'dotenv';
 import glob from 'glob';
+import dotenvDiff from './dotenv-diff';
 
-const niceNodeEnvPath = resolve(__dirname, '../../nicenode.env');
+let appEnv = {};
 
 /**
  * 获取 `profiles` 目录下的对应的 `env` 文件绝对路径
@@ -29,10 +30,21 @@ const getEnvAbsolutePath: (profileId: string) => string[] = (profileId: string) 
 const loadEnv = (profileId: string) => {
   const dotenvFiles = getEnvAbsolutePath(profileId);
   dotenvFiles.forEach((dotenvFile) => {
-    console.log(` - ${dotenvFile.replace(process.cwd(), '')}`);
-    dotenv.config({
+    const relativePath = dotenvFile.replace(process.cwd(), '');
+    const config = dotenv.config({
       path: dotenvFile
-    });
+    }).parsed;
+    const invalidKeys = Object.keys(config).filter((key) => !/^[0-9A-Z_]*$/.test(key))
+    if (invalidKeys.length === 0) {
+      console.log(` - ${relativePath}`);
+      if (relativePath === `/profiles/${profileId}/nicenode.env`) {
+        appEnv = config;
+      }  
+    } else {
+      console.log(`\n\n[error] Invalid key name in ${relativePath}: "${invalidKeys}"`);
+      console.log('The key name must consist of numbers, uppercase letters, and underscores');
+      process.exit(1);
+    }
   });
 };
 
@@ -51,10 +63,21 @@ if (!PROFILE) {
 
 console.log('\nload profile files:');
 loadEnv(PROFILE);
-loadEnv('default');
 
+const niceNodeEnvPath = resolve(__dirname, '../../nicenode.env');
 console.log('\nload nice-node config file:');
 console.log(` - ${niceNodeEnvPath.replace(process.cwd(), '')}`);
-dotenv.config({
+const niceNodeEnv = dotenv.config({
   path: niceNodeEnvPath
-});
+}).parsed;
+
+// 检查 nicenode.env 的 key 是否合法
+const invalidKeys = Object.keys(appEnv).filter((key) => !(key in niceNodeEnv));
+if (invalidKeys.length > 0) {
+  console.log(`\n\n[error] Invalid key in /profiles/${PROFILE}/nicenode.env: "${invalidKeys.join(', ')}"`);
+  console.log('The key is not the default configuration key for nice-node');
+  process.exit(1);
+}
+
+const diffTable = dotenvDiff();
+console.log(`\nprofiles diff result:\n${diffTable}`);
