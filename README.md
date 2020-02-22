@@ -8,7 +8,7 @@
 - [x] 内置 eslint
 - [x] 内置 husky
 - [x] 使用统一的 eslint 规则
-- [x] 搭建新工程的手脚架工具，能一键创建项目
+- [x] 搭建新项目的手脚架工具，能一键创建项目
 - [x] 提供基础的 tsconfig.json
 - [x] 支持记录访问日志
 - [x] 内置日志函数
@@ -16,16 +16,20 @@
 - [x] 结合 PM2 ，提供基础的 ecosystem.config.js
 - [x] 支持静态文件服务（可选）
 - [x] 支持 pug 模版（可选）
+- [ ] ssr
 - [x] 自动加载路由功能（可选）
 - [x] 支持 GraphQL（可选）
 - [x] 可配置的代理转发（可选）
-- [x] 继承了 portal 发布
+- [x] 集成 portal 发布
   - deploy_scripts
   - 定时任务同步机制
+  - 代码覆盖率
 - [ ] qconfig
+- [ ] 兼容 windows 系统
 - nicenode.env 参数检查
 - deploy_scripts crontab 进一步封装
 - .syncignore
+- 找 cm 将发布参数设置打包成nice-node类型，内置到portal系统
 
 ## todo
 - [ ] deploy_scripts 和 crontab 使用文件软连接
@@ -38,20 +42,20 @@
 
 >最好在安装前申请好 appcode ，因为 appcode 会写入到某些文件中，后续手动修改可能会出现遗漏，可能影响发布。
 
-使用 `npx` 启动创建新工程的手脚架工具：
+使用 `npx` 启动创建新项目的手脚架工具：
 
 ```
 npx create-nice-node
 ```
 
-工具会先下载依赖包，然后会出现创建新工程的问答界面，根据实际情况输入或选择答案后，工具会自动完成：
-1. 创建新工程代码。
+工具会先下载依赖包，然后会出现创建新项目的问答界面，根据实际情况输入或选择答案后，工具会自动完成：
+1. 创建新项目代码。
 2. 自动运行 `npm install` 安装依赖文件。
 
-此时，进入刚创建的工程目录，运行 `npm start` 就可以将工程运行起来。
+此时，进入刚创建的项目目录，运行 `npm start` 就可以将项目运行起来。
 
-## 新工程目录结构
-进入刚创建的工程目录，我们一起看看目录结构：
+## 新项目目录结构
+进入刚创建的项目目录，我们一起看看目录结构：
 
 ```
 .
@@ -64,10 +68,9 @@ npx create-nice-node
 │   ├── /${appCode}_start   # 启服务脚本
 │   └── /${appCode}_stop    # 停服务脚本
 ├── /profiles/            # 不同环境的配置文件
-│   ├── /default            # 各环境通用配置
+│   ├── /local              # 本地环境
 │   │   ├── /nicenode.env     # nicenode框架配置（覆盖默认配置）
 │   │   └── /request.env      # 请求地址配置（可自定义）
-│   ├── /local              # 本地环境
 │   ├── /beta               # 测试环境
 │   └── /prod               # 线上环境
 ├── /src/                 # 源代码
@@ -82,7 +85,7 @@ npx create-nice-node
 ├── ecosystem.config.js   # PM2配置文件
 ├── nodemon-debug.json    # nodemon-debug配置文件
 ├── nodemon.json          # nodemon配置文件
-├── pom.xml               # maven配置文件，用作前后端工程关联（选择pug后会生成）
+├── pom.xml               # maven配置文件，用作前后端项目关联（选择pug后会生成）
 └── tsconfig.json         # typescript配置文件
 ```
 
@@ -100,17 +103,26 @@ npx create-nice-node
     查看 lint 结果并尝试修复
 
 ## 配置文件
-nice-node 使用 [dotenv](https://www.npmjs.com/package/dotenv) 进行配置管理，所有配置都会挂到 `process.env` 上，由于 `process` 是全局的，所以，在所有代码中都能很方便的获取到配置参数。需要注意的是，由于配置挂载到 `process.env` 这个动作是在 nice-node 内部完成的，所以项目中务必在加载 nice-node 后再使用配置。
+nice-node 使用 [dotenv](https://www.npmjs.com/package/dotenv) 进行配置管理。
+
+- 井号(#)开头的行被视为注释
+- 忽略空行
+- 格式： `key=value`
+- key命名规范：大写字母 + 下划线(_)
+- 空值会转换为空字符串: `EMPTY=` => `{EMPTY: ''}`
+- 值前后空格会去掉，不希望被去掉的话，对值前后加引号
+
+所有配置都会挂到 `process.env` 上，由于 `process` 是全局的，所以，在所有代码中都能很方便的获取到配置参数。需要注意的是，由于配置挂载到 `process.env` 这个动作是在 nice-node 内部完成的，所以项目中务必在加载 nice-node 后再使用配置。
 
 ```js
 import NiceNode from 'nice-node';
 // 这之后的 process.env 上才能取到配置参数
 ```
 
-工程根目录（注意不是 `src` 目录）的 `profiles` 目录是存放配置文件的目录，在 `profiles` 目录下分别为不同环境建立 profile 文件，`${PROFILE}/*.env` 为区分环境的配置文件, ${PROFILE} 会先从环境变量 `PROFILE` 中取值，取不到会再从 `NODE_ENV` 中取，如果也取不到，则会抛出异常。
+项目根目录（注意不是 `src` 目录）的 `profiles` 目录是存放配置文件的目录，在 `profiles` 目录下分别为不同环境建立 profile 文件，`${PROFILE}/*.env` 为区分环境的配置文件, ${PROFILE} 会先从环境变量 `PROFILE` 中取值，取不到会再从 `NODE_ENV` 中取，如果也取不到，则会抛出异常。
 
 ### 配置加载规则
-工程的启动过程会加载多个配置文件，配置文件加载顺序是：
+项目的启动过程会加载多个配置文件，配置文件加载顺序是：
 
 1. 命令行中传入的环境变量。
 2. profiles 下对应 profile 目录下的配置文件。
@@ -127,6 +139,20 @@ const { WATCHER_ENABLE } = process.env;
 // 这里一定要用字符串比较
 if (WATCHER_ENABLE === 'true') {}
 ```
+
+### 配置文件的选择
+- nicenode.env
+  新建的 nice-node 项目默认包含 `profiles/${profile}/nicenode.env` ，该文件中的参数只能是 nice-node 框架[内置的配置参数](https://github.com/zhongzhi107/nice-node/blob/master/packages/nice-node/nicenode.env)，多余的参数会导致启动程序出错。
+
+- 其他 .env 文件
+  `profiles/${profile}/**/*.env` 都会加载到环境变量中，因此在目录下可以根据实际需要随意创建 .env 文件和目录。推荐：
+    - app.env 和业务相关的配置
+    - request.env 和外部请求接口相关的配置
+    - ...
+
+- src/config.js
+  业务相关的配置，和 .env 不一样的是，`src/config.js` 里的配置参数是无环境差异的，如果参数在不同环境需要不同的值，那么这个参数需要提取到 .env 中。
+
 
 ## eslint
 nice-node 内置了 eslint，使用的规则是 `eslint-config-qunar-typescript-node` 。
@@ -179,7 +205,7 @@ nice-node 内置了一份 tsconfig.json
 }
 ```
 
-建议工程中的 tsconfig.json 从 nice-node 内置的文件中继承，由于配置中的路径都是相对于原始 json 文件的，所以继承后需要重新覆盖所有和路径相关的参数，其他参数也可以根据实际情况覆盖或者新增。
+建议项目中的 tsconfig.json 从 nice-node 内置的文件中继承，由于配置中的路径都是相对于原始 json 文件的，所以继承后需要重新覆盖所有和路径相关的参数，其他参数也可以根据实际情况覆盖或者新增。
 
 ```json
 // 使用继承和覆盖的 tsconfig.json
@@ -335,7 +361,7 @@ CHECK_URLS_ENDPOINT=/check_urls
 ### health check
 Nginx 会根据访问目标机器上的 `/healthcheck.html` 的返回结果来判断目前机器是否对外提供服务。
 
-发布系统在发布过程会对机器做下线和上线操作，所谓的下线其实就是把工程根目录下的 `healthcheck.html` 删除，反之，上线就是在工程目录下创建 `healthcheck.html` 。
+发布系统在发布过程会对机器做下线和上线操作，所谓的下线其实就是把项目根目录下的 `healthcheck.html` 删除，反之，上线就是在项目目录下创建 `healthcheck.html` 。
 
 nice-node 提供了将 `healthcheck.html` 转换成外网访问域名 `/healthcheck.html` 的功能。
 
@@ -368,7 +394,7 @@ source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/start.sh"
 ```
 
 ### 前后端关联
-如需关联前端工程，需要检查 `pom.xml` 设置，确保包含 <%=appname%> 的参数都配置正确。
+如需关联前端项目，需要检查 `pom.xml` 设置，确保包含 <%=appname%> 的参数都配置正确。
 
 ### .syncignore
 项目编译成功后，编译系统默认会将编译目录下所有文件和目录都同步到目标服务器上，有些文件（如*.ts）在程序运行时不需要，没有必要把这些文件部署到目标服务器，减少部署的文件数量能减少发布时间。Portal 上有个 `部署时需排除文件(excludes) ` 参数，目的就是排除不需要部署的文件，但这个功能有bug，比如配置了 `src` ，那么所有路径中包含 src 关键字的文件都会被忽略，包括 `node_module/debug/src/index.js` 这种文件，这和我们期望的不一致。因此 nice-node 将这个功能集成在编译命令 `nice-node build` ，编译成功后，nice-node 会根据项目根目录下的 `.syncignore` 删除相关的文件。如果项目根目录下没有 `.syncignore` ，则会使用 nice-node 默认的 `.syncignore` ，默认的 `.syncignore` 内容如下：
@@ -394,11 +420,13 @@ src
 #### .syncignore 格式
 - 每行一个文件或目录
 - 使用相对 `process.cwd()` 的相对路径
+- 井号(#)开头的行被视为注释
 - 忽略空行
-- # 开头的行是注释
-- 不支持通配符
+- （暂时）不支持通配符
 
 ### 发布参数设置
+以下是在新建发布任务时需要配置的参数，没有提到的参数不用修复，使用默认值即可。
+
 - 基础信息
   - 应用类型：`node`
 - 编译参数
@@ -406,7 +434,6 @@ src
   - 编译方法(compile_method) `node`
   - node_version `12.x`
   - 编译自定义命令(compile_command) `npm run build`
-  - 编译后自定义命令(post_compile_command) `rm -rf src`
 - 部署参数
   - 部署源路径(target_dir) `./`
   - 部署目标路径(deploy_dst) `/home/q/www/${appcode}/webapps`

@@ -127,11 +127,10 @@ const prompts = [
     message: 'What is the app code?',
     default: (answers: any) => answers.projectName,
     validate: (input: string) => {
-      console.log(input);
       if (/^[\w_]*$/.test(input)) {
         return true;
       }
-      return 'Invalid appCode. Please enter letters, numbers and underscores.';
+      return 'Invalid app code. App code can only be numbers, letters, and underscores. Please try again.';
     }
   },
   // {

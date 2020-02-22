@@ -60,7 +60,7 @@ export default (opts: dirOptions) => {
       })
       .then(() => {
         stopCopySpinner();
-        success(`Created files for "${cmd(features.projectName)}`);
+        success(`Created files for ${cmd(features.projectName)}`);
         return this;
       })
       .then(resolve)

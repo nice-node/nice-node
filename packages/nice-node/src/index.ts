@@ -1,3 +1,3 @@
-import NiceNode from './NiceNode';
+import NiceNode from './server';
 
 export default NiceNode;
