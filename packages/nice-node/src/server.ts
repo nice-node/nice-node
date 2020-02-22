@@ -4,10 +4,7 @@ import './utils/version';
 import './utils/load-env';
 import './utils/set-node-path';
 import bodyParser from 'koa-bodyparser';
-import checkUrls from './middlewares/check-urls';
-import healthCheck from './middlewares/health-check';
-import accessLog from './middlewares/access-log';
-import logger from './middlewares/logger';
+import { mwCheckUrls, mwHealthCheck, mwAccessLog, mwLogger } from '.';
 import requireAllRoutes from './utils/require-all-routes';
 
 interface NiceNodeOptions {
@@ -54,10 +51,10 @@ export default class NiceNode {
 
     this.server
       // 记录访问日志
-      .use(accessLog())
-      .use(logger)
-      .use(checkUrls)
-      .use(healthCheck)
+      .use(mwAccessLog())
+      .use(mwLogger)
+      .use(mwCheckUrls)
+      .use(mwHealthCheck)
       .use(bodyParser(this.options.bodyParser));
 
     if (GRAPHQL_ENABLE === 'true') {
