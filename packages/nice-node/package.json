@@ -1,6 +1,6 @@
 {
   "name": "nice-node",
-  "version": "1.0.0-beta.16",
+  "version": "1.0.0-beta.17",
   "description": "",
   "main": "dist/index.js",
   "bin": {
@@ -29,7 +29,7 @@
     "release:major:alpha": "standard-version --release-as major --prerelease alpha && npm publish"
   },
   "engines": {
-    "node": ">= 10"
+    "node": ">= 8"
   },
   "husky": {
     "hooks": {
@@ -47,17 +47,17 @@
     "@types/koa-morgan": "^1.0.4",
     "@types/koa-router": "^7.4.0",
     "@types/lodash": "^4.14.149",
-    "@types/node": "^13.7.1",
+    "@types/node": "^13.7.4",
     "@types/statsd-client": "^0.4.0",
-    "@typescript-eslint/eslint-plugin": "2.19.2",
-    "@typescript-eslint/parser": "2.19.2",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
     "axios": "^0.19.2",
     "cli-table-fix": "^0.3.1",
     "date-fns": "^2.9.0",
     "dotenv": "^8.2.0",
-    "eslint": "6.8.0",
-    "eslint-config-qunar-typescript-node": "1.1.13",
-    "file-ignore-parser": "^1.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-qunar-typescript-node": "^1.1.14",
+    "file-ignore-parser": "^2.0.0",
     "file-stream-rotator": "^0.5.7",
     "glob": "^7.1.6",
     "husky": "^4.2.3",
@@ -68,13 +68,13 @@
     "koa-proxies": "^0.11.0",
     "koa-router": "^8.0.8",
     "lint-staged": "10.0.7",
-    "nodemon": "2.0.2",
+    "nodemon": "^2.0.2",
     "require-all": "^3.0.0",
-    "rimraf": "3.0.2",
+    "rimraf": "^3.0.2",
     "statsd-client": "^0.4.4",
-    "ts-node": "8.6.2",
-    "tsconfig-paths": "3.9.0",
-    "typescript": "3.7.5",
+    "ts-node": "^8.6.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.8.2",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
   },
