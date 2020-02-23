@@ -4,7 +4,7 @@ import './utils/version';
 import './utils/load-env';
 import './utils/set-node-path';
 import bodyParser from 'koa-bodyparser';
-import { mwCheckUrls, mwHealthCheck, mwAccessLog, mwLogger } from '.';
+import { mwCatchError, mwCheckUrls, mwHealthCheck, mwAccessLog, mwLogger } from '.';
 import requireAllRoutes from './utils/require-all-routes';
 
 interface NiceNodeOptions {
@@ -50,6 +50,7 @@ export default class NiceNode {
     }
 
     this.server
+      .use(mwCatchError)
       // 记录访问日志
       .use(mwAccessLog())
       .use(mwLogger)

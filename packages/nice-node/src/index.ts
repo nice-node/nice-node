@@ -6,6 +6,8 @@ export { default as watcher } from './utils/watcher';
 export { default as logger } from './utils/logger';
 export { default as ecosystemConfig } from './utils/ecosystem-config';
 
+export { default as mwCatchError } from './middlewares/catch-error';
+export { default as mwValidate } from './middlewares/validate';
 export { default as mwAccessLog } from './middlewares/access-log';
 export { default as mwCheckUrls } from './middlewares/check-urls';
 export { default as mwGraphql } from './middlewares/graphql';
