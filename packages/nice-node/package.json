@@ -1,6 +1,6 @@
 {
   "name": "nice-node",
-  "version": "1.0.0-beta.17",
+  "version": "1.0.0-beta.18",
   "description": "",
   "main": "dist/index.js",
   "bin": {
@@ -54,6 +54,7 @@
     "axios": "^0.19.2",
     "cli-table-fix": "^0.3.1",
     "date-fns": "^2.9.0",
+    "deepmerge": "^4.2.2",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-qunar-typescript-node": "^1.1.14",
@@ -64,9 +65,11 @@
     "joi": "^14.3.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
+    "koa-compose": "^4.1.0",
     "koa-morgan": "^1.0.1",
     "koa-proxies": "^0.11.0",
     "koa-router": "^8.0.8",
+    "koa-static": "^5.0.0",
     "lint-staged": "10.0.7",
     "nodemon": "^2.0.2",
     "require-all": "^3.0.0",

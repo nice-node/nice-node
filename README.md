@@ -30,6 +30,9 @@
 - deploy_scripts crontab 进一步封装
 - .syncignore
 - 找 cm 将发布参数设置打包成nice-node类型，内置到portal系统
+- koa-static 封装成中间件有问题
+- requireAllRoutes 封装成中间件
+- [ ] unit test
 
 ## todo
 - [ ] deploy_scripts 和 crontab 使用文件软连接

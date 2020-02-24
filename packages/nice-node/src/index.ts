@@ -2,7 +2,7 @@ import NiceNode from './server';
 
 export default NiceNode;
 export { default as request } from './utils/request';
-export { default as watcher } from './utils/watcher';
+export { timing, increment } from './utils/watcher';
 export { default as logger } from './utils/logger';
 export { default as ecosystemConfig } from './utils/ecosystem-config';
 

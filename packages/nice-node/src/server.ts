@@ -3,85 +3,71 @@ import Koa from 'koa';
 import './utils/version';
 import './utils/load-env';
 import './utils/set-node-path';
-import bodyParser from 'koa-bodyparser';
-import { mwCatchError, mwCheckUrls, mwHealthCheck, mwAccessLog, mwLogger } from '.';
-import requireAllRoutes from './utils/require-all-routes';
+import requireAllRoutes, { RequireAllRoutesOptions } from './utils/require-all-routes';
+import parsePugTemplate, { PugOptions } from './utils/parse-pug-template';
+import staticMiddleware, { StaticMiddlewareOptions } from './middlewares/static';
+import checkUrlsMiddleware, { CheckUrlMiddlewareOptions } from './middlewares/check-urls';
+import healthCheckMiddleware, { HealthCheckMiddlewareOptions } from './middlewares/health-check';
+import bodyParserMiddleware, { BodyParserMiddlewareOptions } from './middlewares/body-parser';
+import accessLogMiddleware, { AccessLogMiddlewareOptions } from './middlewares/access-log';
+import loggerMiddleware, { LoggerMiddlewareOptions } from './middlewares/logger';
+import catchErrorMiddleware, { CatchErrorMiddlewareOptions } from './middlewares/catch-error';
+import proxyMiddleware, { ProxyMiddlewareOptions } from './middlewares/proxy';
+import graphqlMiddleware, { GraphqlMiddlewareOptions } from './middlewares/graphql';
 
 interface NiceNodeOptions {
-  static?: any,
-  bodyParser?: any,
-  proxy?: any
+  static?: StaticMiddlewareOptions,
+  checkUrl?: CheckUrlMiddlewareOptions,
+  healthCheck?: HealthCheckMiddlewareOptions,
+  bodyParser?: BodyParserMiddlewareOptions,
+  accessLog?: AccessLogMiddlewareOptions,
+  logger?: LoggerMiddlewareOptions,
+  catchError?: CatchErrorMiddlewareOptions,
+  proxy?: ProxyMiddlewareOptions,
+  pug?: PugOptions,
+  router?: RequireAllRoutesOptions,
+  graphql?: GraphqlMiddlewareOptions
 }
 
 export default class NiceNode {
-  server: Koa;
+  public server: Koa;
 
-  options: NiceNodeOptions;
+  private options: NiceNodeOptions;
 
   constructor(options: NiceNodeOptions = {}) {
-    this.options = {
-      static: {},
-      bodyParser: {},
-      proxy: {},
-      ...options
-    };
-
+    this.options = options;
     this.createServer();
   }
 
   // 可以重写该方法来满足自定义需求
   createServer(): void {
     const {
-      STATIC_ENABLE,
-      STATIC_ROOR,
-      GRAPHQL_ENABLE,
-      PUG_ENABLE,
-      PUG_BASEDIR,
-      PUG_VIEWPATH,
-      REQUIRE_ALL_ROUTES_ENABLE,
-      PROXY_ENABLE
-    } = process.env;
+      static: staticOptions,
+      checkUrl: checkUrlOptions,
+      healthCheck: healthCheckOptions,
+      bodyParser: bodyParserOptions,
+      accessLog: accessLogOptions,
+      logger: loggerOptions,
+      catchError: catchErrorOptions,
+      proxy: proxyOptions,
+      pug: pugOptions,
+      router: routerOptions,
+      graphql: graphqlOptions
+    } = this.options;
 
     this.server = new Koa();
-
-    if (STATIC_ENABLE === 'true') {
-      // eslint-disable-next-line global-require,import/no-unresolved
-      this.server.use(require('koa-static')(STATIC_ROOR, this.options.static));
-    }
-
     this.server
-      .use(mwCatchError)
-      // 记录访问日志
-      .use(mwAccessLog())
-      .use(mwLogger)
-      .use(mwCheckUrls)
-      .use(mwHealthCheck)
-      .use(bodyParser(this.options.bodyParser));
+      .use(staticMiddleware(staticOptions))
+      .use(catchErrorMiddleware(catchErrorOptions))
+      .use(accessLogMiddleware(accessLogOptions))
+      .use(loggerMiddleware(loggerOptions))
+      .use(checkUrlsMiddleware(checkUrlOptions))
+      .use(healthCheckMiddleware(healthCheckOptions))
+      .use(bodyParserMiddleware(bodyParserOptions))
+      .use(proxyMiddleware(proxyOptions))
+      .use(graphqlMiddleware(graphqlOptions));
 
-    if (GRAPHQL_ENABLE === 'true') {
-      // eslint-disable-next-line global-require
-      const graphql = require('./middlewares/graphql');
-      this.server.use(graphql());
-    }
-
-    if (PUG_ENABLE === 'true') {
-      // eslint-disable-next-line global-require,import/no-unresolved
-      const Pug = require('koa-pug');
-      const pug = new Pug({
-        basedir: resolve(PUG_BASEDIR),
-        viewPath: resolve(PUG_VIEWPATH)
-      });
-      pug.use(this.server);
-    }
-
-    if (REQUIRE_ALL_ROUTES_ENABLE === 'true') {
-      requireAllRoutes(this.server);
-    }
-
-    if (PROXY_ENABLE === 'true') {
-      // eslint-disable-next-line global-require
-      const proxy = require('./middlewares/proxy').default;
-      this.server.use(proxy(this.options.proxy));
-    }
+    parsePugTemplate(this.server, pugOptions);
+    requireAllRoutes(this.server, routerOptions);
   }
 }

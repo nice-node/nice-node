@@ -3,17 +3,39 @@
  * @param {object} options
  */
 
-import proxy from 'koa-proxies';
+import proxy, { IKoaProxiesOptions } from 'koa-proxies';
+import Koa from 'koa';
+import deepmerge from 'deepmerge';
 
-export default (options: any = {}) => {
-  const { PROXY_PATTERN, PROXY_TARGET } = process.env;
+interface Options extends IKoaProxiesOptions {
+  pattern?: string;
+}
 
-  const proxyOptions = {
-    target: PROXY_TARGET,
-    changeOrigin: true,
-    // rewrite: (path) => path.replace(/^\/octocat(\/|\/\w+)?$/, '/vagusx'),
-    logs: true,
-    ...options
+export interface ProxyMiddlewareOptions {
+  enable?: boolean;
+  options?: Options;
+}
+
+export default (opts: ProxyMiddlewareOptions = {}) => {
+  const { PROXY_ENABLE, PROXY_PATTERN, PROXY_TARGET } = process.env;
+  const defaultOptions: ProxyMiddlewareOptions = {
+    enable: PROXY_ENABLE === 'true',
+    options: {
+      pattern: PROXY_PATTERN,
+      target: PROXY_TARGET,
+      changeOrigin: true,
+      // rewrite: (path) => path.replace(/^\/octocat(\/|\/\w+)?$/, '/vagusx'),
+      logs: true
+    }
   };
-  return proxy(PROXY_PATTERN, proxyOptions);
+
+  const { enable, options: { pattern, ...rest } } = deepmerge(defaultOptions, opts);
+
+  if (enable) {
+    return proxy(pattern, rest);
+  }
+  
+  return async (ctx: Koa.Context, next: Koa.Next) => {
+    await next();
+  };
 };

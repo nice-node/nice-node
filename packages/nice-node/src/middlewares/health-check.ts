@@ -7,13 +7,35 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import Koa from 'koa';
 import Router from 'koa-router';
+import deepmerge from 'deepmerge';
 
-const router = new Router();
+export interface HealthCheckMiddlewareOptions {
+  enable?: boolean,
+  options?: {
+    endpoint?: string
+  }
+}
 
-const { HEALTH_CHECK_ENDPOINT } = process.env;
-router.get(HEALTH_CHECK_ENDPOINT, async (ctx: Koa.Context) => {
-  const file = resolve(HEALTH_CHECK_ENDPOINT.substr(1, HEALTH_CHECK_ENDPOINT.length));
-  ctx.status = existsSync(file) ? 200 : 404;
-});
+export default (opts: HealthCheckMiddlewareOptions = {}) => {
+  const { HEALTH_CHECK_ENABLE, HEALTH_CHECK_ENDPOINT } = process.env;
 
-export default router.routes();
+  const defaultOptions = {
+    enable: HEALTH_CHECK_ENABLE === 'true',
+    options: {
+      endpoint: HEALTH_CHECK_ENDPOINT
+    }
+  };
+
+  const { enable, options: { endpoint } } = deepmerge(defaultOptions, opts);
+
+  const router = new Router();
+
+  if (enable) {
+    router.get(endpoint, async (ctx: Koa.Context) => {
+      const file = resolve(endpoint.substr(1, endpoint.length));
+      ctx.status = existsSync(file) ? 200 : 404;
+    });
+  }
+
+  return router.routes();
+}

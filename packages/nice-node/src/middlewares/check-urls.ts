@@ -5,23 +5,37 @@
 
 import Koa from 'koa';
 import Router from 'koa-router';
+import deepmerge from 'deepmerge';
 
-const { CHECK_URLS_ENDPOINT } = process.env;
+export interface CheckUrlMiddlewareOptions {
+  enable?: boolean,
+  options?: {
+    endpoint?: string
+  }
+}
 
-const router = new Router();
+export default (opts: CheckUrlMiddlewareOptions = {}) => {
+  const { CHECK_URLS_ENABLE, CHECK_URLS_ENDPOINT } = process.env;
 
-// router.get('/', async (ctx: Koa.Context) => {
-//   // noah和ops使用 /
-//   // 只是标识服务启动正常，不需要判断ready状态
-//   ctx.status = 200;
-//   ctx.body = 'ok';
-// });
+  const defaultOptions = {
+    enable: CHECK_URLS_ENABLE === 'true',
+    options: {
+      endpoint: CHECK_URLS_ENDPOINT
+    }
+  };
 
-router.get(CHECK_URLS_ENDPOINT, async (ctx: Koa.Context) => {
-  // portal使用 /check_urls
-  // 并且需要等待所有的依赖完成后调用checkurlReady改变状态
-  ctx.status = 200;
-  ctx.body = 'ok';
-});
+  const { enable, options: { endpoint } } = deepmerge(defaultOptions, opts);
 
-export default router.routes();
+  const router = new Router();
+
+  if (enable) {
+    router.get(endpoint, async (ctx: Koa.Context) => {
+      // portal使用 /check_urls
+      // 并且需要等待所有的依赖完成后调用checkurlReady改变状态
+      ctx.status = 200;
+      ctx.body = 'ok';
+    });
+  }
+
+  return router.routes();
+}

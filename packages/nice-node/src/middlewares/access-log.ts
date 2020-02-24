@@ -40,7 +40,7 @@ import { format as dateFnsFormat } from 'date-fns';
  * @see https://www.npmjs.com/package/file-stream-rotator
  */
 
-interface AccessLogOptions {
+export interface AccessLogMiddlewareOptions {
   format?: string,
   root?: string,
   dateFormat?: string,
@@ -50,7 +50,7 @@ interface AccessLogOptions {
   verbose?: boolean
 }
 
-export default (options: AccessLogOptions = {}) => {
+export default (options: AccessLogMiddlewareOptions = {}) => {
   const {
     ACCESS_LOG_FORMAT,
     ACCESS_LOG_FILENAME,
