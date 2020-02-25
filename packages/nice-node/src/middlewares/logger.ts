@@ -12,7 +12,11 @@ export interface LoggerMiddlewareOptions {
 
 export default (opts: LoggerMiddlewareOptions = {}) => async (ctx: Koa.Context, next: Koa.Next) => {
   const { LOGGER_ENABLE } = process.env;
-  if (opts.enable || LOGGER_ENABLE) {
+  const { enable } = {
+    enable: LOGGER_ENABLE,
+    ...opts
+  };
+  if (enable) {
     ctx.logger = logger;
   }
   await next();

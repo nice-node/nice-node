@@ -445,3 +445,6 @@ src
   - 服务启动检测地址(check_urls) `/check_urls`
   - 启服务脚本(start_websrv_scripts) `${appcode}_start`
   - 停服务脚本(stop_websrv_scripts) `${appcode}_stop`
+
+## 对已有中间件进行二次封装
+参考 [middlewares/body-parser](https://github.com/zhongzhi107/nice-node/blob/master/packages/nice-node/src/middlewares/body-parser.ts)

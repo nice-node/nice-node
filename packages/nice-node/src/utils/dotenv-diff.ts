@@ -55,6 +55,6 @@ export default () => {
   //   { 'Left Header 1': ['Value Row 1 Col 1', 'Value Row 1 Col 2'] },
   //   { 'Left Header 2': ['Value Row 2 Col 1', 'Value Row 2 Col 2'] }
   // );
-  
+
   return table.toString();
 };

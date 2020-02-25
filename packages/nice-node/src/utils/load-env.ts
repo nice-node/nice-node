@@ -9,6 +9,7 @@ import { resolve } from 'path';
 import dotenv from 'dotenv';
 import glob from 'glob';
 import dotenvDiff from './dotenv-diff';
+import log from './log';
 
 let appEnv = {};
 
@@ -36,13 +37,13 @@ const loadEnv = (profileId: string) => {
     }).parsed;
     const invalidKeys = Object.keys(config).filter((key) => !/^[0-9A-Z_]*$/.test(key))
     if (invalidKeys.length === 0) {
-      console.log(` - ${relativePath}`);
+      log(` - ${relativePath}`);
       if (relativePath === `/profiles/${profileId}/nicenode.env`) {
         appEnv = config;
-      }  
+      }
     } else {
-      console.log(`\n\n[error] Invalid key name in ${relativePath}: "${invalidKeys}"`);
-      console.log('The key name must consist of numbers, uppercase letters, and underscores');
+      log(`\n\n[error] Invalid key name in ${relativePath}: "${invalidKeys}"`);
+      log('The key name must consist of numbers, uppercase letters, and underscores');
       process.exit(1);
     }
   });
@@ -55,18 +56,18 @@ const { PROFILE } = process.env;
 
 // 不存在 PROFILE 时强制退出程序
 if (!PROFILE) {
-  console.log('[启动失败]未找到必要的环境变量 `PROFILE` ，请尝试以下方法：');
-  console.log(' - 运行 `echo "PROFILE=local">.env` 创建 .env 文件');
-  console.log(' - 启动程序时加上环境变量 `PROFILE=local`');
+  log('[启动失败]未找到必要的环境变量 `PROFILE` ，请尝试以下方法：');
+  log(' - 运行 `echo "PROFILE=local">.env` 创建 .env 文件');
+  log(' - 启动程序时加上环境变量 `PROFILE=local`');
   process.exit(1);
 }
 
-console.log('\nload profile files:');
+log('\nload profile files:');
 loadEnv(PROFILE);
 
 const niceNodeEnvPath = resolve(__dirname, '../../nicenode.env');
-console.log('\nload nice-node config file:');
-console.log(` - ${niceNodeEnvPath.replace(process.cwd(), '')}`);
+log('\nload nice-node config file:');
+log(` - ${niceNodeEnvPath.replace(process.cwd(), '')}`);
 const niceNodeEnv = dotenv.config({
   path: niceNodeEnvPath
 }).parsed;
@@ -74,10 +75,10 @@ const niceNodeEnv = dotenv.config({
 // 检查 nicenode.env 的 key 是否合法
 const invalidKeys = Object.keys(appEnv).filter((key) => !(key in niceNodeEnv));
 if (invalidKeys.length > 0) {
-  console.log(`\n\n[error] Invalid key in /profiles/${PROFILE}/nicenode.env: "${invalidKeys.join(', ')}"`);
-  console.log('The key is not the default configuration key for nice-node');
+  log(`\n\n[error] Invalid key in /profiles/${PROFILE}/nicenode.env: "${invalidKeys.join(', ')}"`);
+  log('The key is not the default configuration key for nice-node');
   process.exit(1);
 }
 
 const diffTable = dotenvDiff();
-console.log(`\nprofiles diff result:\n${diffTable}`);
+log(`\nprofiles diff result:\n${diffTable}`);

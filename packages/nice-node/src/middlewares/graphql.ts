@@ -72,11 +72,11 @@ export default (opts: GraphqlMiddlewareOptions = {}) => {
     const ext = isNodeRuntime ? 'js' : 'ts';
     const src = isNodeRuntime ? DIST : 'src';
     const cwd = process.cwd();
-    const typeDefsPattern = typedefsPattern.replace('${src}', src); /* eslint-disable-line no-template-curly-in-string */
+    const typeDefsPattern = typedefsPattern.replace('{src}', src); /* eslint-disable-line no-template-curly-in-string */
 
     const replacedResolversPattern = resolversPattern
-      .replace('${src}', src) /* eslint-disable-line no-template-curly-in-string */
-      .replace('${ext}', ext); /* eslint-disable-line no-template-curly-in-string */
+      .replace('{src}', src) /* eslint-disable-line no-template-curly-in-string */
+      .replace('{ext}', ext); /* eslint-disable-line no-template-curly-in-string */
     const typesArray = fileLoader(join(cwd, typeDefsPattern));
     const typeDefs = mergeTypes(typesArray, { all: true });
     const resolversArray = fileLoader(join(cwd, replacedResolversPattern));

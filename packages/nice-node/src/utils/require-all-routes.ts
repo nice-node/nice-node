@@ -1,7 +1,9 @@
+import { existsSync } from 'fs';
 import { resolve } from 'path';
 import Koa from 'koa';
 import deepmerge from 'deepmerge';
-import isNodeRuntime from '../utils/is-node-runtime';
+import isNodeRuntime from './is-node-runtime';
+import log from './log';
 
 export interface RequireAllRoutesOptions {
   enable?: boolean,
@@ -19,7 +21,7 @@ function requireAllRoutes(actions: { default?: Function | Object }, server: Koa)
         requireAllRoutes(action, server);
         break;
       default:
-        console.log(`invalid router file: ${key}`);
+        log(`invalid router file: ${key}`);
     }
   });
 }
@@ -31,7 +33,7 @@ export default (server: Koa, opts: RequireAllRoutesOptions = {}) => {
     REQUIRE_ALL_ROUTES_PATTERN,
     DIST
   } = process.env;
-  
+
   const defaultOptions: RequireAllRoutesOptions = {
     enable: REQUIRE_ALL_ROUTES_ENABLE === 'true'
   };
@@ -40,14 +42,18 @@ export default (server: Koa, opts: RequireAllRoutesOptions = {}) => {
   if (enable) {
     const src = isNodeRuntime ? DIST : 'src';
     const ext = isNodeRuntime ? 'js' : 'ts';
-    const dirname = resolve(REQUIRE_ALL_ROUTES_ROOR.replace('${src}', src)); 
-    const filter = new RegExp(REQUIRE_ALL_ROUTES_PATTERN.replace('${ext}', ext));
-    const actions = require('require-all')({ // eslint-disable-line global-require
-      dirname,
-      filter,
-      ...opts
-    });
+    const dirname = resolve(REQUIRE_ALL_ROUTES_ROOR.replace('{src}', src));
+    if (existsSync(dirname)) {
+      const filter = new RegExp(REQUIRE_ALL_ROUTES_PATTERN.replace('{ext}', ext));
+      const actions = require('require-all')({ // eslint-disable-line global-require
+        dirname,
+        filter,
+        ...opts
+      });
 
-    requireAllRoutes(actions, server);
+      requireAllRoutes(actions, server);
+    } else {
+      log(`\nno such directory, scandir '${dirname}'`);
+    }
   }
 };

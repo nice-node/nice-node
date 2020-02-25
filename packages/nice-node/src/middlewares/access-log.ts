@@ -20,9 +20,11 @@
 
 import fs from 'fs';
 import path from 'path';
+import Koa from 'koa';
 import morgan from 'koa-morgan';
 import FileStreamRotator from 'file-stream-rotator';
 import { format as dateFnsFormat } from 'date-fns';
+import deepmerge from 'deepmerge';
 
 /**
  * @param {object} options
@@ -41,17 +43,22 @@ import { format as dateFnsFormat } from 'date-fns';
  */
 
 export interface AccessLogMiddlewareOptions {
-  format?: string,
-  root?: string,
-  dateFormat?: string,
-  skip?: any,
-  filename?: string,
-  frequency?: string,
-  verbose?: boolean
+  enable?: boolean;
+  options?: {
+    format?: string;
+    root?: string;
+    dateFormat?: string;
+    skip?: any;
+    filename?: string;
+    frequency?: string;
+    verbose?: boolean;
+    [key: string]: any;
+  }
 }
 
-export default (options: AccessLogMiddlewareOptions = {}) => {
+export default (opts: AccessLogMiddlewareOptions = {}) => {
   const {
+    ACCESS_ENABLE,
     ACCESS_LOG_FORMAT,
     ACCESS_LOG_FILENAME,
     ACCESS_LOG_FILENAME_DATEFORMAT,
@@ -60,34 +67,57 @@ export default (options: AccessLogMiddlewareOptions = {}) => {
     ACCESS_LOG_DATEFORMAT,
     LOG_ROOT
   } = process.env;
-  const {
-    format = ACCESS_LOG_FORMAT,
-    root = path.resolve(LOG_ROOT),
-    filename = ACCESS_LOG_FILENAME,
-    dateFormat = ACCESS_LOG_FILENAME_DATEFORMAT,
-    frequency = ACCESS_LOG_FREQUENCY,
-    skip = (req: any) => ACCESS_LOG_SKIP_ENDPOINTS.split(',').includes(req.baseUrl),
-    verbose = false
-  } = options;
 
-  if (!fs.existsSync(root)) {
-    fs.mkdirSync(root);
+  const defaultOptions: AccessLogMiddlewareOptions = {
+    enable: ACCESS_ENABLE === 'true',
+    options: {
+      format: ACCESS_LOG_FORMAT,
+      root: path.resolve(LOG_ROOT),
+      dateFormat: ACCESS_LOG_FILENAME_DATEFORMAT,
+      skip: (req: any) => ACCESS_LOG_SKIP_ENDPOINTS.split(',').includes(req.baseUrl),
+      filename: ACCESS_LOG_FILENAME,
+      frequency: ACCESS_LOG_FREQUENCY,
+      verbose: false
+    }
+  };
+
+  const {
+    enable,
+    options: {
+      format,
+      root,
+      filename,
+      dateFormat,
+      frequency,
+      skip,
+      verbose
+    }
+  } = deepmerge(defaultOptions, opts);
+
+  if (enable) {
+    if (!fs.existsSync(root)) {
+      fs.mkdirSync(root);
+    }
+
+    // create a rotating write stream
+    const stream = FileStreamRotator.getStream({
+      date_format: dateFormat,
+      filename: path.resolve(root, filename),
+      frequency,
+      verbose
+    });
+
+    morgan.token('remote-addr', (req) => {
+      const [ip] = ((req.headers['x-forwarded-for'] || '') as string).split(',');
+      return ip || req.socket.remoteAddress || undefined;
+    });
+
+    morgan.token('date', () => dateFnsFormat(new Date(), ACCESS_LOG_DATEFORMAT));
+
+    return morgan(format, { stream, skip });
   }
 
-  // create a rotating write stream
-  const stream = FileStreamRotator.getStream({
-    date_format: dateFormat,
-    filename: path.resolve(root, filename),
-    frequency,
-    verbose
-  });
-
-  morgan.token('remote-addr', (req) => {
-    const [ip] = ((req.headers['x-forwarded-for'] || '') as string).split(',');
-    return ip || req.socket.remoteAddress || undefined;
-  });
-
-  morgan.token('date', () => dateFnsFormat(new Date(), ACCESS_LOG_DATEFORMAT));
-
-  return morgan(format, { stream, skip });
+  return async (ctx: Koa.Context, next: Koa.Next) => {
+    await next();
+  };
 };

@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import Koa from 'koa';
 import './utils/version';
 import './utils/load-env';
@@ -11,7 +10,7 @@ import healthCheckMiddleware, { HealthCheckMiddlewareOptions } from './middlewar
 import bodyParserMiddleware, { BodyParserMiddlewareOptions } from './middlewares/body-parser';
 import accessLogMiddleware, { AccessLogMiddlewareOptions } from './middlewares/access-log';
 import loggerMiddleware, { LoggerMiddlewareOptions } from './middlewares/logger';
-import catchErrorMiddleware, { CatchErrorMiddlewareOptions } from './middlewares/catch-error';
+import catchThrowMiddleware, { CatchThrowMiddlewareOptions } from './middlewares/catch-throw';
 import proxyMiddleware, { ProxyMiddlewareOptions } from './middlewares/proxy';
 import graphqlMiddleware, { GraphqlMiddlewareOptions } from './middlewares/graphql';
 
@@ -22,7 +21,7 @@ interface NiceNodeOptions {
   bodyParser?: BodyParserMiddlewareOptions,
   accessLog?: AccessLogMiddlewareOptions,
   logger?: LoggerMiddlewareOptions,
-  catchError?: CatchErrorMiddlewareOptions,
+  catchThrow?: CatchThrowMiddlewareOptions,
   proxy?: ProxyMiddlewareOptions,
   pug?: PugOptions,
   router?: RequireAllRoutesOptions,
@@ -48,7 +47,7 @@ export default class NiceNode {
       bodyParser: bodyParserOptions,
       accessLog: accessLogOptions,
       logger: loggerOptions,
-      catchError: catchErrorOptions,
+      catchThrow: catchThrowOptions,
       proxy: proxyOptions,
       pug: pugOptions,
       router: routerOptions,
@@ -58,7 +57,7 @@ export default class NiceNode {
     this.server = new Koa();
     this.server
       .use(staticMiddleware(staticOptions))
-      .use(catchErrorMiddleware(catchErrorOptions))
+      .use(catchThrowMiddleware(catchThrowOptions))
       .use(accessLogMiddleware(accessLogOptions))
       .use(loggerMiddleware(loggerOptions))
       .use(checkUrlsMiddleware(checkUrlOptions))

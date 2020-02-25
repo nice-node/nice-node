@@ -31,15 +31,5 @@ npm i && npm start
     npm test
     ```
 
-## features
-- [x] check urls
-- [x] health check
-- [x] watcher
-- [x] access log
-- [x] request log
-- [x] crontab
-- [x] import resolver
-- [ ] remove debug-filename
-- [ ] graphql
-- [ ] qconfig
-- [ ] redis
+## todo
+- [ ] mocha 删不掉目录

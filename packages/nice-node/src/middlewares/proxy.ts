@@ -34,7 +34,7 @@ export default (opts: ProxyMiddlewareOptions = {}) => {
   if (enable) {
     return proxy(pattern, rest);
   }
-  
+
   return async (ctx: Koa.Context, next: Koa.Next) => {
     await next();
   };

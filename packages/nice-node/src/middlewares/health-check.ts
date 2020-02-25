@@ -38,4 +38,4 @@ export default (opts: HealthCheckMiddlewareOptions = {}) => {
   }
 
   return router.routes();
-}
+};

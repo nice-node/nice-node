@@ -39,7 +39,7 @@ interface ValidateObj {
  * @param {Object} validationObj.body The request body schema
  * @returns A validation middleware function.
  */
-export default ({ headers, params, query, body}: ValidateObj) => {
+export default ({ headers, params, query, body }: ValidateObj) => {
   // Return a Koa middleware function
   return (ctx: Koa.Context, next: Koa.Next) => {
     try {
@@ -57,6 +57,5 @@ export default ({ headers, params, query, body}: ValidateObj) => {
       // If any of the objects fails validation, send an HTTP 400 response.
       ctx.throw(400, err.message);
     }
-  }
-}
-
+  };
+};

@@ -22,5 +22,5 @@ export default (opts: BodyParserMiddlewareOptions = {}) => {
 
   return async (ctx: Koa.Context, next: Koa.Next) => {
     await next();
-  }
+  };
 };

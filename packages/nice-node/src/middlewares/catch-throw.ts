@@ -5,13 +5,14 @@
 
 import Koa from 'koa';
 
-export interface CatchErrorMiddlewareOptions {
+export interface CatchThrowMiddlewareOptions {
   enable?: boolean
 }
 
-export default (opts: CatchErrorMiddlewareOptions = {}) => async (ctx: Koa.Context, next: Koa.Next) => {
-  const { CATCH_ERROR_ENABLE } = process.env;
-  const { enable = CATCH_ERROR_ENABLE } = opts;
+// eslint-disable-next-line max-len
+export default (opts: CatchThrowMiddlewareOptions = {}) => async (ctx: Koa.Context, next: Koa.Next) => {
+  const { CATCH_THROW_ENABLE } = process.env;
+  const { enable = CATCH_THROW_ENABLE } = opts;
   if (enable) {
     try {
       await next();

@@ -15,6 +15,9 @@
   ],
   "repository": "zhongzhi107/nice-node",
   "scripts": {
+    "test": "NODE_ENV=test mocha",
+    "cover": "nyc npm test",
+    "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "start": "nodemon",
@@ -81,5 +84,24 @@
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/mocha": "^7.0.1",
+    "@types/should": "^13.0.0",
+    "@types/supertest": "^2.0.8",
+    "mocha": "^7.0.1",
+    "nyc": "^15.0.0",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
+  },
+  "nyc": {
+    "include": [
+      "src"
+    ],
+    "reporter": [
+      "lcov",
+      "html",
+      "text"
+    ],
+    "report-dir": "./coverage"
+  }
 }
