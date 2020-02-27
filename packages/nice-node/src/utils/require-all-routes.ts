@@ -2,12 +2,16 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import Koa from 'koa';
 import deepmerge from 'deepmerge';
+import requireAll from 'require-all';
 import isNodeRuntime from './is-node-runtime';
 import log from './log';
 
 export interface RequireAllRoutesOptions {
-  enable?: boolean,
-  options?: object
+  enable?: boolean;
+  options?: {
+    root?: string;
+    pattern?: string;
+  }
 }
 
 function requireAllRoutes(actions: { default?: Function | Object }, server: Koa) {
@@ -35,17 +39,28 @@ export default (server: Koa, opts: RequireAllRoutesOptions = {}) => {
   } = process.env;
 
   const defaultOptions: RequireAllRoutesOptions = {
-    enable: REQUIRE_ALL_ROUTES_ENABLE === 'true'
+    enable: REQUIRE_ALL_ROUTES_ENABLE === 'true',
+    options: {
+      root: REQUIRE_ALL_ROUTES_ROOR,
+      pattern: REQUIRE_ALL_ROUTES_PATTERN
+    }
   };
-  const { enable } = deepmerge(defaultOptions, opts);
+  const {
+    enable,
+    options: {
+      root, pattern
+    }
+  } = deepmerge(defaultOptions, opts);
 
   if (enable) {
+    /* istanbul ignore next */
     const src = isNodeRuntime ? DIST : 'src';
+    /* istanbul ignore next */
     const ext = isNodeRuntime ? 'js' : 'ts';
-    const dirname = resolve(REQUIRE_ALL_ROUTES_ROOR.replace('{src}', src));
+    const dirname = resolve(root.replace('{src}', src));
     if (existsSync(dirname)) {
-      const filter = new RegExp(REQUIRE_ALL_ROUTES_PATTERN.replace('{ext}', ext));
-      const actions = require('require-all')({ // eslint-disable-line global-require
+      const filter = new RegExp(pattern.replace('{ext}', ext));
+      const actions = requireAll({
         dirname,
         filter,
         ...opts

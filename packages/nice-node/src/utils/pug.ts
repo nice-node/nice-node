@@ -1,19 +1,17 @@
 import Koa from 'koa';
+import { PugOptions as KoaPugOptions } from 'koa-pug';
 import { resolve } from 'path';
 import deepmerge from 'deepmerge';
 
 export interface PugOptions {
-  enable?: boolean,
-  options?: {
-    basedir?: string,
-    viewPath?: string
-  }
+  enable?: boolean;
+  options?: KoaPugOptions
 }
 
 export default (server: Koa, opts: PugOptions = {}) => {
   const {
-    PUG_ENABLE, 
-    PUG_BASEDIR, 
+    PUG_ENABLE,
+    PUG_BASEDIR,
     PUG_VIEWPATH
   } = process.env;
 
@@ -40,4 +38,4 @@ export default (server: Koa, opts: PugOptions = {}) => {
     });
     pug.use(server);
   }
-}
+};

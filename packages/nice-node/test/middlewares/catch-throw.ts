@@ -1,4 +1,3 @@
-// import should from 'should';
 import request from 'supertest';
 import Koa from 'koa';
 import NiceNode from '../../src/server';
@@ -20,11 +19,11 @@ describe('middlewares:catch-throw', () => {
       });
 
       it('should return 200 when acceptType is application/json', async () => {
-        const { body } = await request(app.server.listen())
+        const res = await request(app.server.listen())
           .get('/')
           .accept('application/json')
           .expect(200);
-        body.should.have.property('message', message);
+        res.body.message.should.equal(message);
       });
     });
   });

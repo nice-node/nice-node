@@ -35,7 +35,7 @@ const loadEnv = (profileId: string) => {
     const config = dotenv.config({
       path: dotenvFile
     }).parsed;
-    const invalidKeys = Object.keys(config).filter((key) => !/^[0-9A-Z_]*$/.test(key))
+    const invalidKeys = Object.keys(config).filter((key) => !/^[0-9A-Z_]*$/.test(key));
     if (invalidKeys.length === 0) {
       log(` - ${relativePath}`);
       if (relativePath === `/profiles/${profileId}/nicenode.env`) {

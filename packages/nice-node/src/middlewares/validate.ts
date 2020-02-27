@@ -1,6 +1,13 @@
 import Koa from 'koa';
 import joi from 'joi';
 
+interface ValidateObj {
+  headers?: object,
+  params?: object,
+  query?: object,
+  body?: object
+}
+
 /**
  * Helper function to validate an object against the provided schema,
  * and to throw a custom error if object is not valid.
@@ -9,7 +16,7 @@ import joi from 'joi';
  * @param {String} label The label to use in the error message.
  * @param {JoiSchema} schema The Joi schema to validate the object against.
  */
-function validateObject (object: any = {}, label: string, schema: any, options: any = {}) {
+function validateObject(object: any = {}, label: string, schema: any, options: any = {}) {
   // Skip validation if no schema is provided
   if (schema) {
     // Validate the object against the provided schema
@@ -19,13 +26,6 @@ function validateObject (object: any = {}, label: string, schema: any, options: 
       throw new Error(`Invalid ${label} - ${error.message}`);
     }
   }
-}
-
-interface ValidateObj {
-  headers?: object,
-  params?: object,
-  query?: object,
-  body?: object
 }
 
 /**
@@ -39,23 +39,22 @@ interface ValidateObj {
  * @param {Object} validationObj.body The request body schema
  * @returns A validation middleware function.
  */
-export default ({ headers, params, query, body }: ValidateObj) => {
-  // Return a Koa middleware function
-  return (ctx: Koa.Context, next: Koa.Next) => {
-    try {
-      // Validate each request data object in the Koa context object
-      validateObject(ctx.headers, 'Headers', headers, { allowUnknown: true });
-      validateObject(ctx.params, 'URL Parameters', params);
-      validateObject(ctx.query, 'URL Query', query);
+export default ({
+  headers, params, query, body
+}: ValidateObj) => async (ctx: Koa.Context, next: Koa.Next) => {
+  try {
+    // Validate each request data object in the Koa context object
+    validateObject(ctx.headers, 'Headers', headers, { allowUnknown: true });
+    validateObject(ctx.params, 'URL Parameters', params);
+    validateObject(ctx.query, 'URL Query', query);
 
-      if (ctx.body) {
-        validateObject(ctx.body, 'Request Body', body);
-      }
-
-      return next();
-    } catch (err) {
-      // If any of the objects fails validation, send an HTTP 400 response.
-      ctx.throw(400, err.message);
+    if (ctx.body) {
+      validateObject(ctx.body, 'Request Body', body);
     }
-  };
+
+    await next();
+  } catch (err) {
+    // If any of the objects fails validation, send an HTTP 400 response.
+    ctx.throw(400, err.message);
+  }
 };

@@ -9,7 +9,6 @@ import { hostname } from 'os';
 import rimraf from 'rimraf';
 import parser from 'file-ignore-parser';
 import { execSync } from 'child_process';
-import { parse } from 'date-fns';
 
 function log(...args: any) {
   args.unshift('[nice-node]');
@@ -122,7 +121,7 @@ function postbuild() {
       log(message);
     }).catch(console.error);
   } else {
-    log('local machine, deleteSourceFiles() skipped.')
+    log('local machine, deleteSourceFiles() skipped.');
   }
 }
 

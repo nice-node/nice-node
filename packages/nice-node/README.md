@@ -1,5 +1,14 @@
 # Nice Node
 
+## Status
+
+[![npm version](https://badge.fury.io/js/nice-node.svg)](https://badge.fury.io/js/nice-node)
+[![Build Status](https://travis-ci.com/zhongzhi107/nice-node.svg?branch=master)](https://travis-ci.com/zhongzhi107/nice-node)
+[![Coverage Status](https://coveralls.io/repos/github/qails/qails/badge.svg?branch=master)](https://coveralls.io/github/qails/qails?branch=master)
+[![Dependency Status](https://david-dm.org/zhongzhi107/nice-node.svg)](https://david-dm.org/zhongzhi107/nice-node)
+
+
+
 ## 安装
 ```sh
 npm i && npm start

@@ -38,4 +38,4 @@ export default (opts: CheckUrlMiddlewareOptions = {}) => {
   }
 
   return router.routes();
-}
+};

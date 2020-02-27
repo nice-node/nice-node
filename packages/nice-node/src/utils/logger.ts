@@ -59,6 +59,7 @@ const errorTransport = new DailyRotateFile({
 });
 
 const formatter = printf(({ level, message, timestamp: time }) => {
+  /* istanbul ignore next */
   if (isObject(message)) {
     message = JSON.stringify(message);
   }
@@ -73,6 +74,7 @@ const logger: any = createLogger({
   transports: [combinedTransport, errorTransport]
 });
 
+/* istanbul ignore next */
 if (isLocal) {
   // 本地开发时在控制台输出日志
   logger.add(new transports.Console());

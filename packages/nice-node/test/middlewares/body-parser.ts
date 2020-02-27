@@ -1,4 +1,3 @@
-// import should from 'should';
 import request from 'supertest';
 import Koa from 'koa';
 import NiceNode from '../../src/server';

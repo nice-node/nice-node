@@ -23,7 +23,7 @@ export default () => {
   });
 
   const colWidths = [20, 20, 20, 20];
-  const style = { 'padding-left' : 1, head : ['cyan', 'bold'], compact : true };
+  const style = { 'padding-left': 1, head: ['cyan', 'bold'], compact: true };
   const table = new Table({ head, colWidths, style });
   const rows = {};
   Object.keys(allConfig).forEach((profile, index) => {
@@ -36,7 +36,7 @@ export default () => {
   });
 
   Object.keys(rows).forEach((key) => {
-    let row: string[] = rows[key];
+    const row: string[] = rows[key];
     const rowCopy = [...row];
     for (let i = 0; i < rowCopy.length; i++) {
       const diffCells = rowCopy.filter((cell) => cell !== rowCopy[i]);

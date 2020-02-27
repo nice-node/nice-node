@@ -15,8 +15,8 @@
 
 import { join } from 'path';
 import Router from 'koa-router';
-import isNodeRuntime from '../utils/is-node-runtime';
 import deepmerge from 'deepmerge';
+import isNodeRuntime from '../utils/is-node-runtime';
 
 export interface GraphqlMiddlewareOptions {
   enable?: boolean,
@@ -29,12 +29,12 @@ export interface GraphqlMiddlewareOptions {
 }
 
 export default (opts: GraphqlMiddlewareOptions = {}) => {
-  const { 
-    GRAPHQL_ENABLE, 
-    GRAPHQL_ENDPOINT, 
+  const {
+    GRAPHQL_ENABLE,
+    GRAPHQL_ENDPOINT,
     GRAPHQL_TYPEDEFS_PATTERN,
     GRAPHQL_RESOLVERS_PATTERN,
-    PROFILE, 
+    PROFILE,
     DIST
   } = process.env;
 
@@ -46,9 +46,9 @@ export default (opts: GraphqlMiddlewareOptions = {}) => {
       resolversPattern: GRAPHQL_RESOLVERS_PATTERN,
       options: {}
     }
-};
+  };
 
-  const { 
+  const {
     enable,
     options: {
       endpoint,
@@ -69,7 +69,9 @@ export default (opts: GraphqlMiddlewareOptions = {}) => {
     // eslint-disable-next-line global-require,import/no-unresolved
     const { GraphQLJSON } = require('graphql-type-json');
 
+    /* istanbul ignore next */
     const ext = isNodeRuntime ? 'js' : 'ts';
+    /* istanbul ignore next */
     const src = isNodeRuntime ? DIST : 'src';
     const cwd = process.cwd();
     const typeDefsPattern = typedefsPattern.replace('{src}', src); /* eslint-disable-line no-template-curly-in-string */

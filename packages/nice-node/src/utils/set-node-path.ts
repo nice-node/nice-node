@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import path from 'path';
 import isNodeRuntime from './is-node-runtime';
 import log from './log';

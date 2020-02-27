@@ -63,7 +63,7 @@ export default (opts: AccessLogMiddlewareOptions = {}) => {
     ACCESS_LOG_FILENAME,
     ACCESS_LOG_FILENAME_DATEFORMAT,
     ACCESS_LOG_FREQUENCY,
-    ACCESS_LOG_SKIP_ENDPOINTS = '',
+    ACCESS_LOG_SKIP_ENDPOINTS,
     ACCESS_LOG_DATEFORMAT,
     LOG_ROOT
   } = process.env;
@@ -109,6 +109,7 @@ export default (opts: AccessLogMiddlewareOptions = {}) => {
 
     morgan.token('remote-addr', (req) => {
       const [ip] = ((req.headers['x-forwarded-for'] || '') as string).split(',');
+      /* istanbul ignore next */
       return ip || req.socket.remoteAddress || undefined;
     });
 

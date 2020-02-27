@@ -3,8 +3,8 @@ import './utils/version';
 import './utils/load-env';
 import './utils/set-node-path';
 import requireAllRoutes, { RequireAllRoutesOptions } from './utils/require-all-routes';
-import parsePugTemplate, { PugOptions } from './utils/parse-pug-template';
-import staticMiddleware, { StaticMiddlewareOptions } from './middlewares/static';
+import pug, { PugOptions } from './utils/pug';
+import staticFileMiddleware, { StaticFileMiddlewareOptions } from './middlewares/static-file';
 import checkUrlsMiddleware, { CheckUrlMiddlewareOptions } from './middlewares/check-urls';
 import healthCheckMiddleware, { HealthCheckMiddlewareOptions } from './middlewares/health-check';
 import bodyParserMiddleware, { BodyParserMiddlewareOptions } from './middlewares/body-parser';
@@ -15,7 +15,7 @@ import proxyMiddleware, { ProxyMiddlewareOptions } from './middlewares/proxy';
 import graphqlMiddleware, { GraphqlMiddlewareOptions } from './middlewares/graphql';
 
 interface NiceNodeOptions {
-  static?: StaticMiddlewareOptions,
+  staticFile?: StaticFileMiddlewareOptions,
   checkUrl?: CheckUrlMiddlewareOptions,
   healthCheck?: HealthCheckMiddlewareOptions,
   bodyParser?: BodyParserMiddlewareOptions,
@@ -24,7 +24,7 @@ interface NiceNodeOptions {
   catchThrow?: CatchThrowMiddlewareOptions,
   proxy?: ProxyMiddlewareOptions,
   pug?: PugOptions,
-  router?: RequireAllRoutesOptions,
+  requireAllRoutes?: RequireAllRoutesOptions,
   graphql?: GraphqlMiddlewareOptions
 }
 
@@ -41,7 +41,7 @@ export default class NiceNode {
   // 可以重写该方法来满足自定义需求
   createServer(): void {
     const {
-      static: staticOptions,
+      staticFile: staticFileOptions,
       checkUrl: checkUrlOptions,
       healthCheck: healthCheckOptions,
       bodyParser: bodyParserOptions,
@@ -50,13 +50,13 @@ export default class NiceNode {
       catchThrow: catchThrowOptions,
       proxy: proxyOptions,
       pug: pugOptions,
-      router: routerOptions,
+      requireAllRoutes: requireAllRoutesOptions,
       graphql: graphqlOptions
     } = this.options;
 
     this.server = new Koa();
     this.server
-      .use(staticMiddleware(staticOptions))
+      .use(staticFileMiddleware(staticFileOptions))
       .use(catchThrowMiddleware(catchThrowOptions))
       .use(accessLogMiddleware(accessLogOptions))
       .use(loggerMiddleware(loggerOptions))
@@ -66,7 +66,7 @@ export default class NiceNode {
       .use(proxyMiddleware(proxyOptions))
       .use(graphqlMiddleware(graphqlOptions));
 
-    parsePugTemplate(this.server, pugOptions);
-    requireAllRoutes(this.server, routerOptions);
+    pug(this.server, pugOptions);
+    requireAllRoutes(this.server, requireAllRoutesOptions);
   }
 }

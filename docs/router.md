@@ -26,3 +26,5 @@ REQUIRE_ALL_ROUTES_ROOR=${src}/routes
 # 路由文件匹配(正则)规则，${ext}会替换成js或ts
 REQUIRE_ALL_ROUTES_PATTERN=^([^.].*).${ext}(x)?$
 ```
+
+>如果只是将请求代理到第三方服务、不需要对数据做任何加工处理的话，请使用 [proxy 中间件](./proxy.md)

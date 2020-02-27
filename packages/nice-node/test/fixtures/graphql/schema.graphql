@@ -1,0 +1,11 @@
+type Test {
+  name: String
+}
+
+type Query {
+  test: Test
+}
+
+type Mutation {
+  postPhoto(name:String! description: String): Boolean
+}
