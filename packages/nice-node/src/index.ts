@@ -13,5 +13,5 @@ export { default as mwCheckUrls } from './middlewares/check-urls';
 export { default as mwGraphql } from './middlewares/graphql';
 export { default as mwHealthCheck } from './middlewares/health-check';
 export { default as mwLogger } from './middlewares/logger';
-export { default as mwProxy } from './middlewares/proxy';
+export { default as mwHttpProxy } from './middlewares/http-proxy';
 export { default as mwWatcher } from './middlewares/watcher';

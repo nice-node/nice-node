@@ -137,7 +137,7 @@ function build() {
     process.exit(1);
   }
 
-  const usedTime = Math.floor((Date.now() - now) / 1000);
+  const usedTime = (Date.now() - now) / 1000;
 
   log(`tsc build succeeded, it took ${String(usedTime)} seconds.`);
 

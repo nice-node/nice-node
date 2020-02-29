@@ -11,7 +11,7 @@ import bodyParserMiddleware, { BodyParserMiddlewareOptions } from './middlewares
 import accessLogMiddleware, { AccessLogMiddlewareOptions } from './middlewares/access-log';
 import loggerMiddleware, { LoggerMiddlewareOptions } from './middlewares/logger';
 import catchThrowMiddleware, { CatchThrowMiddlewareOptions } from './middlewares/catch-throw';
-import proxyMiddleware, { ProxyMiddlewareOptions } from './middlewares/proxy';
+import httpProxyMiddleware, { HttpProxyMiddlewareOptions } from './middlewares/http-proxy';
 import graphqlMiddleware, { GraphqlMiddlewareOptions } from './middlewares/graphql';
 
 interface NiceNodeOptions {
@@ -22,7 +22,7 @@ interface NiceNodeOptions {
   accessLog?: AccessLogMiddlewareOptions,
   logger?: LoggerMiddlewareOptions,
   catchThrow?: CatchThrowMiddlewareOptions,
-  proxy?: ProxyMiddlewareOptions,
+  httpProxy?: HttpProxyMiddlewareOptions,
   pug?: PugOptions,
   requireAllRoutes?: RequireAllRoutesOptions,
   graphql?: GraphqlMiddlewareOptions
@@ -48,7 +48,7 @@ export default class NiceNode {
       accessLog: accessLogOptions,
       logger: loggerOptions,
       catchThrow: catchThrowOptions,
-      proxy: proxyOptions,
+      httpProxy: httpProxyOptions,
       pug: pugOptions,
       requireAllRoutes: requireAllRoutesOptions,
       graphql: graphqlOptions
@@ -63,8 +63,8 @@ export default class NiceNode {
       .use(checkUrlsMiddleware(checkUrlOptions))
       .use(healthCheckMiddleware(healthCheckOptions))
       .use(bodyParserMiddleware(bodyParserOptions))
-      .use(proxyMiddleware(proxyOptions))
-      .use(graphqlMiddleware(graphqlOptions));
+      .use(graphqlMiddleware(graphqlOptions))
+      .use(httpProxyMiddleware(httpProxyOptions));
 
     pug(this.server, pugOptions);
     requireAllRoutes(this.server, requireAllRoutesOptions);

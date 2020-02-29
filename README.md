@@ -33,6 +33,7 @@
 - koa-static 封装成中间件有问题
 - requireAllRoutes 封装成中间件
 - [ ] unit test
+- [ ] proxy post 有问题
 
 ## todo
 - [ ] deploy_scripts 和 crontab 使用文件软连接

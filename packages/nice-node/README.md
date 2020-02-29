@@ -40,5 +40,10 @@ npm i && npm start
     npm test
     ```
 
+- 查看代码覆盖率
+    ```sh
+    npm run cover
+    ```
+
 ## todo
 - [ ] mocha 删不掉目录

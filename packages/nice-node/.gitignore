@@ -77,3 +77,4 @@ typings/
 
 /dist
 /coverage/
+/test/fixtures/logs
