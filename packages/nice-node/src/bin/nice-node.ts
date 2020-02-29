@@ -87,22 +87,27 @@ function cleanDist() {
 }
 
 async function deleteSourceFiles() {
+  // 若关联了前端工程，则 pom.xml 不能删除，否则不会执行 maven 关联
+  const protectedFiles: string[] = ['pom.xml'];
+
   let syncignore = '.syncignore';
   if (!existsSync(syncignore)) {
     syncignore = `node_modules/nice-node/${syncignore}`;
   }
 
   const patterns = await parser(syncignore);
-  patterns.forEach((pattern: string) => {
-    log(` - ${pattern}`);
-    // 处理首尾的空格
-    pattern = pattern.trim();
-    // 兼容 / 开头的配置
-    if (pattern.startsWith('/')) {
-      pattern = pattern.substring(1, pattern.length);
-    }
-    rimraf.sync(pattern);
-  });
+  patterns
+    .filter((pattern: string) => !protectedFiles.includes(pattern))
+    .forEach((pattern: string) => {
+      // 处理首尾的空格
+      pattern = pattern.trim();
+      // 兼容 / 开头的配置
+      if (pattern.startsWith('/')) {
+        pattern = pattern.substring(1, pattern.length);
+      }
+      log(` - ${pattern}`);
+      rimraf.sync(pattern);
+    });
 
   return 'source files deleted.';
 }

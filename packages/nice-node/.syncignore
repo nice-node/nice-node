@@ -1,15 +1,15 @@
+# 以下文件和目录将在编译执行成功后删除，避免同步到目标服务器
 .vscode
-.editconfig
+.editorconfig
 .eslintignore
 .eslintrc
 .gitignore
+.nvmrc
+.syncignore
 nodemon.json
 package-lock.json
-pom.xml
 tsconfig.json
-
 # 日志目录
 logs
-
 # 源代码目录
 src
