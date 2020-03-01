@@ -6,7 +6,9 @@ import chalk from 'chalk';
 
 export default () => {
   const globOptions = { absolute: true };
-  const profiles = ['local', 'beta', 'prod'];
+  const profiles = glob.sync('*', { cwd: 'profiles', mark: true })
+    .filter((file) => file.endsWith('/'))
+    .map((folder) => folder.substring(0, folder.length - 1));
   const head = ['', ...profiles];
   const allConfig = {};
   profiles.forEach((profile) => {
@@ -22,7 +24,7 @@ export default () => {
     });
   });
 
-  const colWidths = [20, 20, 20, 20];
+  const colWidths = new Array(Object.keys(allConfig).length + 1).fill(20);
   const style = { 'padding-left': 1, head: ['cyan', 'bold'], compact: true };
   const table = new Table({ head, colWidths, style });
   const rows = {};

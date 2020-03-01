@@ -15,7 +15,7 @@
   ],
   "repository": "zhongzhi107/nice-node",
   "scripts": {
-    "test": "NODE_ENV=test mocha",
+    "test": "PROFILE=local NODE_ENV=test mocha",
     "test2": "ts-node -r tsconfig-paths/register test/middlewares/test.ts",
     "cover": "nyc npm test",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",

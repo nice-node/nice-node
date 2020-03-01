@@ -1,8 +1,18 @@
-/* istanbul ignore file */
-export default (...args: any[]) => {
-  const { NODE_ENV } = process.env;
+import npmlog, { log, LogLevels } from 'npmlog';
 
-  if (NODE_ENV !== 'test') {
-    console.log.apply(null, args);
+export default (level: LogLevels | string, message: string, ...args: any[]) => {
+  const { PROFILE, NODE_ENV } = process.env;
+  const prefix: string = 'nice-node';
+
+  /* istanbul ignore if */
+  if (PROFILE !== 'local') {
+    npmlog.disableColor();
   }
+
+  /* istanbul ignore next */
+  if (NODE_ENV === 'test') {
+    npmlog.level = 'silent';
+  }
+
+  log(level, prefix, message, ...args);
 };

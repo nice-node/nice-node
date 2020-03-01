@@ -25,7 +25,7 @@ function requireAllRoutes(actions: { default?: Function | Object }, server: Koa)
         requireAllRoutes(action, server);
         break;
       default:
-        log(`invalid router file: ${key}`);
+        log('warn', `invalid router file: ${key}`);
     }
   });
 }
@@ -68,7 +68,7 @@ export default (server: Koa, opts: RequireAllRoutesOptions = {}) => {
 
       requireAllRoutes(actions, server);
     } else {
-      log(`\nno such directory, scandir '${dirname}'`);
+      log('warn', `\nno such directory, scandir '${dirname}'`);
     }
   }
 };

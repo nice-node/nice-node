@@ -15,7 +15,7 @@ function assertExitCode(exitingProcess, expectedExitCode) {
   });
 }
 
-describe('bin/nice-node.ts', () => {
+describe.skip('bin/nice-node.ts', () => {
   const forkedProcesses = new Set();
 
   function runNiceNode(args = [], options = {}) {
