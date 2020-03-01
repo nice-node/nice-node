@@ -95,8 +95,8 @@ async function deleteSourceFiles() {
     syncignore = `node_modules/nice-node/${syncignore}`;
   }
 
-  const patterns = await parser(syncignore);
-  patterns
+  const patterns: Set<string> = await parser(syncignore);
+  [...patterns]
     .filter((pattern: string) => !protectedFiles.includes(pattern))
     .forEach((pattern: string) => {
       // 处理首尾的空格
@@ -122,6 +122,7 @@ function postbuild() {
   // l-compile5.cm.cn2
   const isComplie = /\.cm\.cn/.test(hostname());
   if (isComplie) {
+    log('deleting source files...');
     deleteSourceFiles().then((message) => {
       log(message);
     }).catch(console.error);
@@ -133,7 +134,7 @@ function postbuild() {
 function build() {
   prebuild();
 
-  log('tsc build starting...');
+  log('tsc building...');
   const now = Date.now();
   try {
     execSync('node_modules/.bin/tsc');
