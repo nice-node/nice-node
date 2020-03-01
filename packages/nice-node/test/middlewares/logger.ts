@@ -2,7 +2,7 @@ import request from 'supertest';
 import Koa from 'koa';
 import NiceNode from '../../src/server';
 
-describe('middlewares:logger', () => {
+describe('middlewares/logger.ts', () => {
   describe('is enable', () => {
     it('should find ctx.logger', async () => {
       const app = new NiceNode();

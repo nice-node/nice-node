@@ -4,7 +4,7 @@ import should from 'should';
 import { format as dateFormat } from 'date-fns';
 import logger from '../../src/utils/logger';
 
-describe('utils:logger', () => {
+describe('utils/logger.ts', () => {
   const { LOG_ROOT, LOG_FILE_DATE_PATTERN } = process.env;
   const pattern = LOG_FILE_DATE_PATTERN
     .replace('YYYY', 'yyyy')

@@ -15,7 +15,7 @@ function deleteFile() {
   unlinkSync(resolve(endpoint));
 }
 
-describe('middlewares:health-check', () => {
+describe('middlewares/health-check.ts', () => {
   describe('is enable', () => {
     describe('and with healthcheck.html', () => {
       before(() => {
@@ -83,5 +83,4 @@ describe('middlewares:health-check', () => {
       });
     });
   });
-
 });

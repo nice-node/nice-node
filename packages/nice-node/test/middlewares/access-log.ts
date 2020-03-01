@@ -15,7 +15,7 @@ function deleteAccessLog() {
   rimraf.sync(LOG_ROOT);
 }
 
-describe('middlewares:access-log', () => {
+describe('middlewares/access-log.ts', () => {
   beforeEach(() => {
     deleteAccessLog();
   });

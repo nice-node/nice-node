@@ -45,5 +45,3 @@ npm i && npm start
     npm run cover
     ```
 
-## todo
-- [ ] mocha 删不掉目录

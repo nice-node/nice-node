@@ -2,7 +2,7 @@ import request from 'supertest';
 import Koa from 'koa';
 import NiceNode from '../../src/server';
 
-describe('middlewares:body-parser', () => {
+describe('middlewares/body-parser.ts', () => {
   describe('is enable', () => {
     it('should get post data', async () => {
       const app = new NiceNode();

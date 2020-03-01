@@ -1,7 +1,7 @@
 import request from 'supertest';
 import NiceNode from '../../src/server';
 
-describe('utils:require-all-routes', () => {
+describe('utils/require-all-routes.ts', () => {
   describe('is enable', () => {
     it('should require all routes', async () => {
       const app = new NiceNode({

@@ -2,7 +2,7 @@ import request from 'supertest';
 import Koa from 'koa';
 import NiceNode from '../../src/server';
 
-describe('utils:pug', () => {
+describe('utils/pug.ts', () => {
   describe('is enable', () => {
     it('should parse pug template', async () => {
       const app = new NiceNode({

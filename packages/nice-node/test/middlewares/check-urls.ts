@@ -1,7 +1,7 @@
 import request from 'supertest';
 import NiceNode from '../../src/server';
 
-describe('middlewares:check-urls', () => {
+describe('middlewares/check-urls.ts', () => {
   describe('is enable', () => {
     it('should return 200', async () => {
       const { CHECK_URLS_ENDPOINT } = process.env;

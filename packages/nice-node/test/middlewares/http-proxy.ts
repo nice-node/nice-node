@@ -1,7 +1,7 @@
 import request from 'supertest';
 import NiceNode from '../../src/server';
 
-describe('middlewares:http-proxy', () => {
+describe('middlewares/http-proxy.ts', () => {
   describe('is enable', () => {
     it('should proxy get request', async () => {
       const app = new NiceNode({

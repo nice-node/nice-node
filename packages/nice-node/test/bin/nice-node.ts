@@ -15,7 +15,7 @@ function assertExitCode(exitingProcess, expectedExitCode) {
   });
 }
 
-describe('bin/nice-node.js', () => {
+describe('bin/nice-node.ts', () => {
   const forkedProcesses = new Set();
 
   function runNiceNode(args = [], options = {}) {
@@ -34,5 +34,5 @@ describe('bin/nice-node.js', () => {
     // Clean up all the processes after every test.
     forkedProcesses.forEach((child: ChildProcess) => (child).kill());
     forkedProcesses.clear();
-});
+  });
 });

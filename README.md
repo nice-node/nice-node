@@ -16,24 +16,26 @@
 - [x] 结合 PM2 ，提供基础的 ecosystem.config.js
 - [x] 支持静态文件服务（可选）
 - [x] 支持 pug 模版（可选）
-- [ ] ssr
 - [x] 自动加载路由功能（可选）
 - [x] 支持 GraphQL（可选）
 - [x] 可配置的代理转发（可选）
+- [x] .syncignore
+- [x] koa-static 封装成中间件有问题
+- [x] proxy post 有问题
 - [x] 集成 portal 发布
   - deploy_scripts
   - 定时任务同步机制
   - 代码覆盖率
 - [ ] qconfig
+- [ ] ssr
 - [ ] 兼容 windows 系统
 - nicenode.env 参数检查
 - deploy_scripts crontab 进一步封装
-- .syncignore
 - 找 cm 将发布参数设置打包成nice-node类型，内置到portal系统
-- koa-static 封装成中间件有问题
 - requireAllRoutes 封装成中间件
 - [ ] unit test
-- [ ] proxy post 有问题
+  - [ ] bin
+  - [ ] http-proxy 对 post 的模拟没写用例
 
 ## todo
 - [ ] deploy_scripts 和 crontab 使用文件软连接

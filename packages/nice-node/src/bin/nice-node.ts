@@ -8,12 +8,8 @@ import { resolve } from 'path';
 import { hostname } from 'os';
 import rimraf from 'rimraf';
 import parser from 'file-ignore-parser';
+import log from 'npmlog';
 import { execSync } from 'child_process';
-
-function log(...args: any) {
-  args.unshift('[nice-node]');
-  console.log.apply(null, args);
-}
 
 function help(command?: string) {
   if (command) {
@@ -46,8 +42,10 @@ function createDotenv() {
   } = process.env;
   const profileId = profile || PROFILE;
 
+  log.info('nice-node', `process.env=${process.env}`);
+
   if (!profileId) {
-    log('Missing environment variable `PROFILE`, build failed.');
+    log.error('nice-node', 'Missing environment variable `PROFILE`, build failed.');
     process.exit(1);
   }
 
@@ -60,6 +58,9 @@ function createDotenv() {
       case 'prod':
         nodeEnv = 'production';
         break;
+      case 'beta':
+        nodeEnv = 'beta';
+        break;
       case 'dev':
         nodeEnv = 'development';
         break;
@@ -69,35 +70,35 @@ function createDotenv() {
   }
 
   const content = `PROFILE=${profileId}\nNODE_ENV=${nodeEnv}`;
-  log(content);
+  log.info('nice-node', content);
 
+  log.info('nice-node', 'creating dotenv...');
   try {
     writeFileSync(dotenvPath, content);
+    log.info('nice-node', `${dotenvPath} was created.`);
   } catch (error) {
-    log(`Failed to create ${dotenvPath}.\n${error}`);
+    log.error('nice-node', `Failed to create ${dotenvPath}.\n${error}`);
     process.exit(1);
   }
-
-  log(`${dotenvPath} was created.`);
 }
 
 function cleanDist() {
+  log.info('nice-node', 'deleting dist...');
   rimraf.sync('dist');
-  console.log('clean directiory:\n - dist');
+  log.info('nice-node', 'deleted dist');
 }
 
 async function deleteSourceFiles() {
   // 若关联了前端工程，则 pom.xml 不能删除，否则不会执行 maven 关联
   const protectedFiles: string[] = ['pom.xml'];
 
-  let syncignore = '.syncignore';
+  let syncignore: string = '.syncignore';
   if (!existsSync(syncignore)) {
     syncignore = `node_modules/nice-node/${syncignore}`;
   }
 
   const patterns: Set<string> = await parser(syncignore);
-  [...patterns]
-    .filter((pattern: string) => !protectedFiles.includes(pattern))
+  patterns
     .forEach((pattern: string) => {
       // 处理首尾的空格
       pattern = pattern.trim();
@@ -105,8 +106,12 @@ async function deleteSourceFiles() {
       if (pattern.startsWith('/')) {
         pattern = pattern.substring(1, pattern.length);
       }
-      log(` - ${pattern}`);
-      rimraf.sync(pattern);
+      if (!protectedFiles.includes(pattern)) {
+        log.info('nice-node', ` - ${pattern}`);
+        rimraf.sync(pattern);
+      } else {
+        log.warn('nice-node', ` - ${pattern}(skipped)`);
+      }
     });
 
   return 'source files deleted.';
@@ -119,33 +124,33 @@ function prebuild() {
 
 function postbuild() {
   // 只在编译机上删除源代码
-  // l-compile5.cm.cn2
-  const isComplie = /\.cm\.cn/.test(hostname());
+  // 编译机的 hostname 如 l-compile5.cm.cn2
+  const isComplie: boolean = /\.cm\.cn/.test(hostname());
   if (isComplie) {
-    log('deleting source files...');
-    deleteSourceFiles().then((message) => {
-      log(message);
+    log.info('nice-node', 'deleting source files...');
+    deleteSourceFiles().then((message: string) => {
+      log.info('nice-node', message);
     }).catch(console.error);
   } else {
-    log('local machine, deleteSourceFiles() skipped.');
+    log.warn('nice-node', 'local machine, deleteSourceFiles() skipped.');
   }
 }
 
 function build() {
   prebuild();
 
-  log('tsc building...');
+  log.info('nice-node', 'tsc building...');
   const now = Date.now();
   try {
     execSync('node_modules/.bin/tsc');
   } catch (err) {
-    log('tsc build failed.');
+    log.error('nice-node', 'tsc build failed.');
     process.exit(1);
   }
 
-  const usedTime = (Date.now() - now) / 1000;
+  const usedTime: number = (Date.now() - now) / 1000;
 
-  log(`tsc build succeeded, it took ${String(usedTime)} seconds.`);
+  log.info('nice-node', `tsc build succeeded, it took ${String(usedTime)} seconds.`);
 
   postbuild();
 }
@@ -153,6 +158,10 @@ function build() {
 const args = process.argv.splice(2);
 // 默认执行 build 命令
 const [command = 'build', commandArgs] = args;
+
+if (process.env.PROFILE !== 'local') {
+  log.disableColor();
+}
 
 if (commandArgs === '-h') {
   help(command);

@@ -1,7 +1,7 @@
 import request from 'supertest';
 import NiceNode from '../../src/server';
 
-describe('middlewares:static', () => {
+describe('middlewares/static.ts', () => {
   describe('is enable', () => {
     describe('when root is a directory', () => {
       it('should serve static files', async () => {

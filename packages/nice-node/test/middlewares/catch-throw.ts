@@ -2,7 +2,7 @@ import request from 'supertest';
 import Koa from 'koa';
 import NiceNode from '../../src/server';
 
-describe('middlewares:catch-throw', () => {
+describe('middlewares/catch-throw.ts', () => {
   describe('is enable', () => {
     describe('when acceptType is text/html', () => {
       const message = 'TestError';
