@@ -18,6 +18,8 @@ describe('utils/logger.ts', () => {
 
   logger[loggerType](message);
 
+  logger.info(new Error('error'));
+
   it('should create log file', async () => {
     existsSync(filepath).should.be.true();
   });
@@ -25,5 +27,10 @@ describe('utils/logger.ts', () => {
   it('should write log message', async () => {
     const content = readFileSync(filepath, 'utf-8');
     new RegExp(`${loggerType}: ${message}\n`, 'g').test(content).should.be.true();
+  });
+
+  it('should write error stack', async () => {
+    const content = readFileSync(filepath, 'utf-8');
+    new RegExp('StackTrace: Error: error', 'g').test(content).should.be.true();
   });
 });

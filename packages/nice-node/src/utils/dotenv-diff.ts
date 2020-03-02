@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { parse } from 'dotenv';

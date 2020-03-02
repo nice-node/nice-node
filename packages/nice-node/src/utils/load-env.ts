@@ -4,7 +4,7 @@
  * 1. 该文件不能引用 debug ，否则会导致 process.env.DEBUG 设置无效
  * 2. 该文件不能引用 utils(或者引用 debug 的第三方包)
  */
-// import { readFileSync } from 'fs';
+/* istanbul ignore file */
 import { resolve } from 'path';
 import dotenv from 'dotenv';
 import glob from 'glob';

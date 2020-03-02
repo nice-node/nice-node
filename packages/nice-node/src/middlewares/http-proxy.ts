@@ -25,8 +25,14 @@ export default (opts: HttpProxyMiddlewareOptions = {}) => {
 
       let data = ctx.request.body;
 
-      if (ctx.get('content-type') === 'application/x-www-form-urlencoded') {
-        data = qs.stringify(data);
+      /**
+       * axios.post 要求发送的 data 参数是用 & 连接的字符串
+       * 很多开发者会习惯性的写成 json 对象形式的参数
+       * 虽然 node webserver 的 body-parser 中间件会兼容处理 string 和 json 类型参数
+       * 但还是在这里统一对 data 参数做兼容性处理
+       */
+      if (ctx.method === 'POST') {
+        data = qs.stringify(data); // 如 a=a&b=b
       }
       const options: AxiosRequestConfig = {
         url,
@@ -41,10 +47,39 @@ export default (opts: HttpProxyMiddlewareOptions = {}) => {
         if (logs) {
           logger(ctx, target);
         }
-        /* istanbul ignore next */
-        ctx.body = res?.data;
+
+        ctx.body = res.data;
       } catch (error) {
-        ctx.logger.error(error);
+        const {
+          request,
+          response,
+          message,
+          config
+        } = error;
+
+        if (response) {
+          // 请求正常发出去且收到了服务器返回，但状态码不是 2xx
+          // 把错误信息透传给调用方
+          const { status, statusText } = response;
+          ctx.status = status;
+          ctx.body = statusText;
+          ctx.logger.error(response);
+        } /* istanbul ignore next */ else if (request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          ctx.status = 500;
+          ctx.body = request;
+          ctx.logger.error(request);
+        } /* istanbul ignore next */ else {
+          // Something happened in setting up the request that triggered an Error
+          ctx.status = 500;
+          ctx.body = message;
+          ctx.logger.error(message);
+        }
+
+        /* istanbul ignore next */
+        ctx.logger.error(config);
       }
     });
   });

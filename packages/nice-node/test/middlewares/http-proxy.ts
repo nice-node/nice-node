@@ -1,53 +1,105 @@
+import { Server } from 'http';
 import request from 'supertest';
+import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
 import NiceNode from '../../src/server';
+import { startServer, sleep } from '../util';
 
 describe('middlewares/http-proxy.ts', () => {
+  let app: NiceNode;
+  let targetServer: Server;
+  const targetPort: number = 1234;
+
+  before(() => {
+    app = new NiceNode({
+      httpProxy: {
+        '/:status': {
+          target: `http://localhost:${targetPort}`
+        }
+      }
+    });
+
+    // eslint-disable-next-line max-len
+    targetServer = startServer(targetPort, bodyParser(), async (ctx: Koa.Context, next: Koa.Next) => {
+      switch (ctx.path) {
+        case '/200':
+          ctx.body = { data: 'foo' };
+          break;
+        case '/204':
+          ctx.set('x-special-header', 'you see');
+          ctx.body = null;
+          break;
+        case '/500':
+          ctx.status = 500;
+          break;
+        case '/timeout':
+          await sleep(2000);
+          ctx.body = { data: 'timeout' };
+          break;
+        case '/post':
+          ctx.body = ctx.request.body;
+          break;
+        default:
+          return next();
+      }
+      return null;
+    });
+  });
+
+  after(() => {
+    targetServer && targetServer.close();
+  });
+
   describe('is enable', () => {
     it('should proxy get request', async () => {
-      const app = new NiceNode({
-        httpProxy: {
-          '/todos/:id': {
-            target: 'http://jsonplaceholder.typicode.com'
-          }
-        }
-      });
       await request(app.server.listen())
-        .get('/todos/1')
+        .get('/200')
         .expect(200);
     });
 
     it('should proxy post request', async () => {
-      const app = new NiceNode({
+      const data = { title: 'foo' };
+      await request(app.server.listen())
+        .post('/post')
+        .send(data)
+        // .send('title=foo')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .expect(200)
+        .expect(JSON.stringify(data));
+    });
+
+    it('should return 500 when target url not exists', async () => {
+      await request(app.server.listen())
+        .get('/abc')
+        .expect(500);
+    });
+
+    it('should write proxy log', async () => {
+      const noLogApp = new NiceNode({
         httpProxy: {
-          '/posts': {
-            target: 'http://jsonplaceholder.typicode.com',
+          '/:status': {
+            target: `http://localhost:${targetPort}`,
             logs: true
           }
         }
       });
-      await request(app.server.listen())
-        .post('/posts')
-        .send({
-          title: 'foo',
-          body: 'bar',
-          userId: 1
-        })
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .expect(200)
-        .expect('{"title":"foo","body":"bar","userId":"1","id":101}');
+      await request(noLogApp.server.listen())
+        .get('/200')
+        .expect(200);
     });
 
-    it('should return 404 when proxy to an error url', async () => {
-      const app = new NiceNode({
+    it('should return 500 when target server is unknown', async () => {
+      const unknownApp = new NiceNode({
         httpProxy: {
-          '/error': {
-            target: 'http://www.error.com'
+          '/:status': {
+            target: 'http://www.3iduwddxx.com'
           }
         }
       });
-      await request(app.server.listen())
-        .get('/error')
-        .expect(404);
+
+      await request(unknownApp.server.listen())
+        .get('/unknown')
+        .expect(500);
     });
   });
 });

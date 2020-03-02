@@ -23,14 +23,13 @@
 - [x] koa-static 封装成中间件有问题
 - [x] proxy post 有问题
 - [x] 集成 portal 发布
-  - deploy_scripts
-  - 定时任务同步机制
+  - [x] deploy_scripts
+  - [x] 定时任务同步机制
   - 代码覆盖率
 - [ ] qconfig
 - [ ] ssr
 - [ ] 兼容 windows 系统
-- nicenode.env 参数检查
-- deploy_scripts crontab 进一步封装
+- [x] nicenode.env 参数检查
 - 找 cm 将发布参数设置打包成nice-node类型，内置到portal系统
 - requireAllRoutes 封装成中间件
 - [ ] unit test

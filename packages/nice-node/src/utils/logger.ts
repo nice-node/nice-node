@@ -27,11 +27,13 @@ import { isObject } from 'util';
 const {
   combine,
   timestamp,
-  printf
+  printf,
+  errors
 } = format;
 
 const {
   PROFILE,
+  NODE_ENV,
   LOG_LEVEL,
   LOG_ROOT,
   LOG_FILE_DATE_PATTERN,
@@ -39,7 +41,7 @@ const {
   LOG_DATEFORMAT
 } = process.env;
 
-const isLocal = PROFILE === 'local';
+const isDisplayInConsole = PROFILE === 'local' && NODE_ENV !== 'test';
 
 const rotateOptions = {
   dirname: LOG_ROOT,
@@ -58,16 +60,26 @@ const errorTransport = new DailyRotateFile({
   ...rotateOptions
 });
 
-const formatter = printf(({ level, message, timestamp: time }) => {
+const formatter = printf(({
+  level, message, timestamp: time, stack
+}) => {
   /* istanbul ignore next */
   if (isObject(message)) {
     message = JSON.stringify(message);
   }
   const localeDateString = dateFormat(new Date(time), LOG_DATEFORMAT);
-  return `${localeDateString} ${level}: ${message}`;
+  let log: string = `${localeDateString} ${level}: ${message}`;
+  if (stack) {
+    log = `${log} - StackTrace: ${stack}`;
+  }
+  return log;
 });
 
-const features: Format[] = [timestamp(), formatter];
+const features: Format[] = [
+  timestamp(),
+  errors({ stack: true }),
+  formatter
+];
 const logger: any = createLogger({
   level: LOG_LEVEL,
   format: combine(...features),
@@ -75,7 +87,7 @@ const logger: any = createLogger({
 });
 
 /* istanbul ignore next */
-if (isLocal) {
+if (isDisplayInConsole) {
   // 本地开发时在控制台输出日志
   logger.add(new transports.Console());
 }
