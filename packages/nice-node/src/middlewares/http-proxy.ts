@@ -7,6 +7,7 @@ export interface HttpProxyMiddlewareOptions {
   [key: string]: {
     target: string;
     logs?: boolean;
+    rewrite?: (path: string) => string;
   }
 }
 
@@ -17,9 +18,9 @@ function logger(ctx: Koa.Context, target: string) {
 export default (opts: HttpProxyMiddlewareOptions = {}) => {
   const router = new Router();
   Object.keys(opts).forEach((key: string) => {
-    const { target, logs } = opts[key];
+    const { target, logs, rewrite } = opts[key];
     router.all(key, async (ctx: Koa.Context) => {
-      const url = target + ctx.url;
+      const url = target + (rewrite ? rewrite(ctx.url) : ctx.url);
       const safeHeaders = { ...ctx.headers };
       delete safeHeaders.host; // 透传 host 会导致某些请求失败
 

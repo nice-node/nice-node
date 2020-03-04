@@ -15,6 +15,10 @@ describe('middlewares/http-proxy.ts', () => {
       httpProxy: {
         '/:status': {
           target: `http://localhost:${targetPort}`
+        },
+        '/api/:action': {
+          target: `http://localhost:${targetPort}`,
+          rewrite: (path) => path.replace('/api', '')
         }
       }
     });
@@ -38,6 +42,9 @@ describe('middlewares/http-proxy.ts', () => {
           break;
         case '/post':
           ctx.body = ctx.request.body;
+          break;
+        case '/rewrite':
+          ctx.body = 'rewrite';
           break;
         default:
           return next();
@@ -66,6 +73,13 @@ describe('middlewares/http-proxy.ts', () => {
         .set('content-type', 'application/x-www-form-urlencoded')
         .expect(200)
         .expect(JSON.stringify(data));
+    });
+
+    it('should rewrite proxy url', async () => {
+      await request(app.server.listen())
+        .get('/api/rewrite')
+        .expect(200)
+        .expect('rewrite');
     });
 
     it('should return 500 when target url not exists', async () => {

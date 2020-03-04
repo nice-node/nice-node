@@ -42,19 +42,19 @@ Creating my_project...
 > Success! Installed dependencies for my_project
 
   Awesome! You're now ready to start coding.
-  
+
   I already ran npm install for you, so your next steps are:
     cd my_project
-  
+
   To start a local server for development:
     npm start
-  
+
   To build a version for production:
     npm run build
 
   To run the server in production:
     npm run start:prod
-    
+
   Questions? Feedback? Please let me know!
   https://github.com/zhongzhi107/nice-node/issues
   ```
@@ -68,14 +68,15 @@ npm start
 
 如果启动成功的话，你会看到 `🚀 http://localhost:3000` 。在浏览器中访问 `http://localhost:3000`，就能看到 Hello world 页面了。
 
+## 目录结构
+
 现在回过头来看看刚创建项目的目录结构：
 ```
 .
 ├── /.vscode/             # vscode配置
 │   └── /settings.json
 ├── /crontab/             # crontab相关文件存放目录
-│   ├── /crontab.txt        # crontab配置
-│   └── /deleteLogs.sh      # 日志清理脚本
+│   └── /crontab.txt        # crontab配置
 ├── /deploy_scripts/      # portal发布过程需要的脚本
 │   ├── /${appCode}_start   # 启服务脚本
 │   └── /${appCode}_stop    # 停服务脚本
@@ -100,4 +101,18 @@ npm start
 ├── pom.xml               # maven配置文件，用作前后端项目关联（选择pug后会生成）
 └── tsconfig.json         # typescript配置文件
 ```
-目录和文件真不少，在后续的文章中我们会逐一给大家介绍，这次我们只关注 [src/routes/index.ts](https://github.com/zhongzhi107/nice-node/blob/master/packages/create-nice-node/template/src/routes/index.ts) ，这个文件就是刚看到的 Hello world 对应的页面，可以修改 Hello world ，保存文件后，服务会自动重启，我们只需要刷新浏览器就能看到修改后的内容。
+目录和文件不少，在后续的文章中我们会逐一给大家介绍，这次我们只关注 [src/routes/index.ts](https://github.com/zhongzhi107/nice-node/blob/master/packages/create-nice-node/template/src/routes/index.ts) ，这个文件就是刚看到的 Hello world 对应的页面，可以修改 Hello world ，保存文件后，服务会自动重启，我们只需要刷新浏览器就能看到修改后的内容。
+
+## 脚本
+初始化项目包含一下几个命令，可以用 `npm run` 运行。
+
+- **start**
+  启动开发环境，启动端口默认为 `3000`。
+- **build**
+  编译项目，将 `src` 目录下所有 ts 编译成 js 输出到 `dist` 目录。
+- **start:prod**
+  预览编译后的项目。
+- **lint**
+  代码检查。
+- **lint:fix**
+  代码检查并自动修复问题代码。
