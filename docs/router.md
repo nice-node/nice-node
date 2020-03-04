@@ -6,34 +6,33 @@ title: 路由
 网站由许多网页组成，网页之间通过 url 跳转来联系，也就是常说的路由。Nice-node 用的是 [koa-router](https://www.npmjs.com/package/koa-router) ，下面我们为网站增加一个新的路由：
 
 1. 新建路由文件 `src/routes/list.ts` 。
-  ```js
-  // src/routes/list.ts
-  import Koa from 'koa';
-  import Router from 'koa-router';
+    ```js
+    // src/routes/list.ts
+    import Koa from 'koa';
+    import Router from 'koa-router';
 
-  const router = new Router();
-  router.get('/list', async (ctx: Koa.Context) => {
-    ctx.body = 'list';
-  });
+    const router = new Router();
+    router.get('/list', async (ctx: Koa.Context) => {
+      ctx.body = 'list';
+    });
 
-  export default router.routes();
-  ```
-
+    export default router.routes();
+    ```
 1. 将路由中间件配置到 nice-node 中。
-  ```js
-  // index.ts
-  import NiceNode from 'nice-node';
-  import listRouter from './routes/list';
+    ```js
+    // index.ts
+    import NiceNode from 'nice-node';
+    import listRouter from './routes/list';
 
-  const { PORT } = process.env;
-  const app = new NiceNode();
+    const { PORT } = process.env;
+    const app = new NiceNode();
 
-  app.server.use(listRouter);
+    app.server.use(listRouter);
 
-  app.server.listen(PORT, () => {
-    console.log(`\n🚀 http://localhost:${PORT}`);
-  });
-  ```
+    app.server.listen(PORT, () => {
+      console.log(`\n🚀 http://localhost:${PORT}`);
+    });
+    ```
 
 1. 重启服务后，访问 `http://localhost:3000/list` 就能看到新的网页了。
 
@@ -41,29 +40,29 @@ nice-node 内置了路由自动注册功能，默认该功能是关闭的。开�
 
 可以使用下面两种方式来启用路由自动注册功能：
 - 设置环境变量 `REQUIRE_ALL_ROUTES_ENABLE=true` ，相关的环境变量配置参数和默认值如下：
-```
-################################
-# REQUIRE_ALL_ROUTES
-################################
-# 是否启用路由文件自动加载功能
-REQUIRE_ALL_ROUTES_ENABLE=false
-# 路由文件存放目录，{src}会替换成src或dist
-REQUIRE_ALL_ROUTES_ROOR={src}/routes
-# 路由文件匹配(正则)规则，{ext}会替换成js或ts
-REQUIRE_ALL_ROUTES_PATTERN=^([^.].*).{ext}(x)?$
-```
-[如何修改环境变量?](./profiles.md)
+    ```
+    ################################
+    # REQUIRE_ALL_ROUTES
+    ################################
+    # 是否启用路由文件自动加载功能
+    REQUIRE_ALL_ROUTES_ENABLE=false
+    # 路由文件存放目录，{src}会替换成src或dist
+    REQUIRE_ALL_ROUTES_ROOR={src}/routes
+    # 路由文件匹配(正则)规则，{ext}会替换成js或ts
+    REQUIRE_ALL_ROUTES_PATTERN=^([^.].*).{ext}(x)?$
+    ```
+    [如何修改环境变量?](./profiles.md)
 
 - 实例化 nice-node 时传入 `requireAllRoutes.enable: true` 参数，相关的 js 参数如下：
-```js
-export interface RequireAllRoutesOptions {
-  enable?: boolean;
-  options?: {
-    root?: string;
-    pattern?: string;
-  }
-}
-```
+    ```js
+    export interface RequireAllRoutesOptions {
+      enable?: boolean;
+      options?: {
+        root?: string;
+        pattern?: string;
+      }
+    }
+    ```
 
 我们启用路由自动注册功能，将刚才第二步的代码改一下：
 ```js

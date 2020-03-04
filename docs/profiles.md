@@ -10,63 +10,63 @@ title: profiles
 下面我们动手来创建一个 profile 变量。
 
 1. 在 `profiles/local` 新建文件 `app.env` ，并写入下面的内容：
-  ```
-  # 是否打开调试开关
-  DEBUG=true
+    ```
+    # 是否打开调试开关
+    DEBUG=true
 
-  # 请求网址
-  URL=http://localhost
-  ```
+    # 请求网址
+    URL=http://localhost
+    ```
 1. 在 `profiles/prod` 新建文件 `app.env` ，并写入下面的内容：
-  ```
-  # 是否打开调试开关
-  DEBUG=false
+    ```
+    # 是否打开调试开关
+    DEBUG=false
 
-  # 请求网址
-  URL=http://www.baidu.com
-  ```
+    # 请求网址
+    URL=http://www.baidu.com
+    ```
 1. 创建 `src/routes/profile.ts` 路由文件：
-  ```js
-  // src/routes/profile.ts
-  import Koa from 'koa';
-  import Router from 'koa-router';
+    ```js
+    // src/routes/profile.ts
+    import Koa from 'koa';
+    import Router from 'koa-router';
 
-  const router = new Router();
-  router.get('/profile', async (ctx: Koa.Context) => {
-    const { DEBUG, URL } = process.env;
+    const router = new Router();
+    router.get('/profile', async (ctx: Koa.Context) => {
+      const { DEBUG, URL } = process.env;
 
-    if (DEBUG === 'true') {
-      console.log('This is a debug log.');
-    }
-    ctx.body = URL;
-  });
+      if (DEBUG === 'true') {
+        console.log('This is a debug log.');
+      }
+      ctx.body = URL;
+    });
 
-  export default router.routes();
-  ```
+    export default router.routes();
+    ```
 1. 修改 `src/index.ts`。
-  ```js
-  // src/index.ts
-  import Koa from 'koa';
-  import NiceNode from 'nice-node';
+    ```js
+    // src/index.ts
+    import Koa from 'koa';
+    import NiceNode from 'nice-node';
 
-  const { PORT } = process.env;
+    const { PORT } = process.env;
 
-  const app = new NiceNode({
-    requireAllRoutes: {
-      enable: true
-    }
-  });
-  app.server.listen(PORT, () => {
-    console.log(`\n🚀 http://localhost:${PORT}`);
-  });
-  ```
+    const app = new NiceNode({
+      requireAllRoutes: {
+        enable: true
+      }
+    });
+    app.server.listen(PORT, () => {
+      console.log(`\n🚀 http://localhost:${PORT}`);
+    });
+    ```
 
 1. 使用 `PROFILE=local npm start` 启动服务，启动成功后访问 `http://localhost:3000/profile` ，能看到
-  - 网页内容为 `http://localhost`
-  - 控制台上有日志输出 `This is a debug log.`
+    - 网页内容为 `http://localhost`
+    - 控制台上有日志输出 `This is a debug log.`
 1. 使用 `PROFILE=prod npm start` 启动服务，启动成功后访问 `http://localhost:3000/profile` ，能看到
-  - 网页内容为 `http://www.baidu.com`
-  - 控制台上无日志输出
+    - 网页内容为 `http://www.baidu.com`
+    - 控制台上无日志输出
 
 本实例通过指定 `PROFILE=local` 和 `PROFILE=prod` 使用了不同的配置文件，下面，让我们来了解更多关于 profiles 的知识。
 
