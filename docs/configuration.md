@@ -15,13 +15,13 @@ const app = new NiceNode({
 
 内置的功能还可以通过环境变量来控制，下面的方式也能启用自动注册路由功能：
 1. 创建应用时不加参数
-  ```js
-  const app = new NiceNode();
-  ```
+    ```js
+    const app = new NiceNode();
+    ```
 1. 启动服务时加环境变量
-  ```
-  REQUIRE_ALL_ROUTES_ENABLE=true npm start
-  ```
+    ```
+    REQUIRE_ALL_ROUTES_ENABLE=true npm start
+    ```
 
 这种方式虽然灵活多变，但容易出错，在大部分的开发过程中，我们会选择使用 [dotenv](https://www.npmjs.com/package/dotenv) 来辅助完成环境变量的传递。
 
