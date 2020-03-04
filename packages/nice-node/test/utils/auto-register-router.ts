@@ -1,11 +1,11 @@
 import request from 'supertest';
 import NiceNode from '../../src/server';
 
-describe('utils/require-all-routes.ts', () => {
+describe('utils/auto-register-router.ts', () => {
   describe('is enable', () => {
     it('should require all routes', async () => {
       const app = new NiceNode({
-        requireAllRoutes: {
+        autoRegisterRouter: {
           enable: true,
           options: {
             root: 'test/fixtures/routes'
@@ -24,7 +24,7 @@ describe('utils/require-all-routes.ts', () => {
   describe('is disable', () => {
     it('should not require any route', async () => {
       const app = new NiceNode({
-        requireAllRoutes: {
+        autoRegisterRouter: {
           enable: false,
           options: {
             root: 'test/fixtures/routes'

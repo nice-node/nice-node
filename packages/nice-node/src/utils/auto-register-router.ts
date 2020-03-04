@@ -6,7 +6,7 @@ import requireAll from 'require-all';
 import isNodeRuntime from './is-node-runtime';
 import log from './log';
 
-export interface RequireAllRoutesOptions {
+export interface AutoRegisterRouterOptions {
   enable?: boolean;
   options?: {
     root?: string;
@@ -14,7 +14,7 @@ export interface RequireAllRoutesOptions {
   }
 }
 
-function requireAllRoutes(actions: { default?: Function | Object }, server: Koa) {
+function autoRegisterRouter(actions: { default?: Function | Object }, server: Koa) {
   Object.keys(actions).forEach((key) => {
     const action = actions[key].default || actions[key];
     switch (typeof action) {
@@ -22,7 +22,7 @@ function requireAllRoutes(actions: { default?: Function | Object }, server: Koa)
         server.use(action);
         break;
       case 'object':
-        requireAllRoutes(action, server);
+        autoRegisterRouter(action, server);
         break;
       default:
         log('warn', `invalid router file: ${key}`);
@@ -30,19 +30,19 @@ function requireAllRoutes(actions: { default?: Function | Object }, server: Koa)
   });
 }
 
-export default (server: Koa, opts: RequireAllRoutesOptions = {}) => {
+export default (server: Koa, opts: AutoRegisterRouterOptions = {}) => {
   const {
-    REQUIRE_ALL_ROUTES_ENABLE,
-    REQUIRE_ALL_ROUTES_ROOR,
-    REQUIRE_ALL_ROUTES_PATTERN,
+    AUTO_REGISTER_ROUTER_ENABLE,
+    AUTO_REGISTER_ROUTER_ROOR,
+    AUTO_REGISTER_ROUTER_PATTERN,
     DIST
   } = process.env;
 
-  const defaultOptions: RequireAllRoutesOptions = {
-    enable: REQUIRE_ALL_ROUTES_ENABLE === 'true',
+  const defaultOptions: AutoRegisterRouterOptions = {
+    enable: AUTO_REGISTER_ROUTER_ENABLE === 'true',
     options: {
-      root: REQUIRE_ALL_ROUTES_ROOR,
-      pattern: REQUIRE_ALL_ROUTES_PATTERN
+      root: AUTO_REGISTER_ROUTER_ROOR,
+      pattern: AUTO_REGISTER_ROUTER_PATTERN
     }
   };
   const {
@@ -66,7 +66,7 @@ export default (server: Koa, opts: RequireAllRoutesOptions = {}) => {
         ...opts
       });
 
-      requireAllRoutes(actions, server);
+      autoRegisterRouter(actions, server);
     } else {
       log('warn', `\nno such directory, scandir '${dirname}'`);
     }

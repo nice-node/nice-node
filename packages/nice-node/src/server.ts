@@ -2,7 +2,7 @@ import Koa from 'koa';
 import './utils/version';
 import './utils/load-env';
 import './utils/set-node-path';
-import requireAllRoutes, { RequireAllRoutesOptions } from './utils/require-all-routes';
+import autoRegisterRouter, { AutoRegisterRouterOptions } from './utils/auto-register-router';
 import pug, { PugOptions } from './utils/pug';
 import staticFileMiddleware, { StaticFileMiddlewareOptions } from './middlewares/static-file';
 import checkUrlsMiddleware, { CheckUrlMiddlewareOptions } from './middlewares/check-urls';
@@ -24,7 +24,7 @@ interface NiceNodeOptions {
   catchThrow?: CatchThrowMiddlewareOptions,
   httpProxy?: HttpProxyMiddlewareOptions,
   pug?: PugOptions,
-  requireAllRoutes?: RequireAllRoutesOptions,
+  autoRegisterRouter?: AutoRegisterRouterOptions,
   graphql?: GraphqlMiddlewareOptions
 }
 
@@ -50,7 +50,7 @@ export default class NiceNode {
       catchThrow: catchThrowOptions,
       httpProxy: httpProxyOptions,
       pug: pugOptions,
-      requireAllRoutes: requireAllRoutesOptions,
+      autoRegisterRouter: autoRegisterRouterOptions,
       graphql: graphqlOptions
     } = this.options;
 
@@ -67,6 +67,6 @@ export default class NiceNode {
       .use(httpProxyMiddleware(httpProxyOptions));
 
     pug(this.server, pugOptions);
-    requireAllRoutes(this.server, requireAllRoutesOptions);
+    autoRegisterRouter(this.server, autoRegisterRouterOptions);
   }
 }
