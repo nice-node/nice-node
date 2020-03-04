@@ -28,7 +28,7 @@ describe('utils/pug.ts', () => {
   describe('is disable', () => {
     it('should not require any route', async () => {
       const app = new NiceNode({
-        requireAllRoutes: {
+        autoRegisterRouter: {
           enable: false,
           options: {
             root: 'test/fixtures/routes'

@@ -4,7 +4,7 @@ import Koa from 'koa';
 
 export interface BodyParserMiddlewareOptions {
   enable?: boolean,
-  options?: object
+  options?: bodyParser.Options
 }
 
 export default (opts: BodyParserMiddlewareOptions = {}) => {

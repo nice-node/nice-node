@@ -1,6 +1,6 @@
 /**
- * 发布过程中的 /check_url
- * /check_url 返回 200 表示服务启动正常
+ * 发布过程中的 /check_urls
+ * /check_urls 返回 200 表示服务启动正常
  */
 
 import Koa from 'koa';

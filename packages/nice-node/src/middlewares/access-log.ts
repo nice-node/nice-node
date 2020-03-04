@@ -42,15 +42,24 @@ import deepmerge from 'deepmerge';
  * @see https://www.npmjs.com/package/file-stream-rotator
  */
 
+/** 访问日志中间件选项参数 */
 export interface AccessLogMiddlewareOptions {
+  /** 是否启用 */
   enable?: boolean;
   options?: {
+    /** 访问日志格式 */
     format?: string;
+    /** 访问日志文件存放目录 */
     root?: string;
+    /** 访问日志文件名称中日期格式 */
     dateFormat?: string;
+    /** 不记录访问日志的请求地址 */
     skip?: any;
+    /** 访问日志文件名称 */
     filename?: string;
+    /** 访问日志文件切分频率 */
     frequency?: string;
+    /** If set, it will log to STDOUT when it rotates files and name of log file. */
     verbose?: boolean;
     [key: string]: any;
   }
