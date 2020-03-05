@@ -14,21 +14,63 @@
  */
 
 import { join } from 'path';
+import { Middleware } from 'koa';
 import Router from 'koa-router';
 import deepmerge from 'deepmerge';
 import isNodeRuntime from '../utils/is-node-runtime';
 
 export interface GraphqlMiddlewareOptions {
+  /** 是否启用中间件 */
   enable?: boolean,
   options?: {
+    /** Graphql 地址 */
     endpoint?: string,
+    /** Scheme 文件匹配格式 */
     typedefsPattern?: string,
+    /** Resolver 文件匹配格式 */
     resolversPattern?: string,
-    options?: object
+    koaGraphql?: {
+      /**
+       * 传递到本中间件上下文的值
+       */
+      context?: any;
+
+      /**
+       * 是否美化输出 `JSON`
+       */
+      pretty?: boolean;
+
+      /**
+       * 错误信息格式化函数
+       */
+      formatError?: (error: any, context?: any) => any;
+
+      /**
+       * 额外增加的请求验证规则
+       */
+      validationRules?: Array<(arg0: any) => any>;
+
+      /**
+       * 在返回结果中增加 `extensions` 字段的函数
+       */
+      extensions?: (info: any) => { [key: string]: any };
+
+      /**
+       * 是否使用 `GraphiQL`
+       */
+      graphiql?: boolean;
+
+      /**
+       * A resolver function to use when one is not provided by the schema.
+       * If not provided, the default field resolver is used (which looks for a
+       * value or method on the source value with the field's name).
+       */
+      fieldResolver?: any;
+    }
   }
 }
 
-export default (opts: GraphqlMiddlewareOptions = {}) => {
+export default (opts: GraphqlMiddlewareOptions = {}): Middleware => {
   const {
     GRAPHQL_ENABLE,
     GRAPHQL_ENDPOINT,
@@ -44,7 +86,7 @@ export default (opts: GraphqlMiddlewareOptions = {}) => {
       endpoint: GRAPHQL_ENDPOINT,
       typedefsPattern: GRAPHQL_TYPEDEFS_PATTERN,
       resolversPattern: GRAPHQL_RESOLVERS_PATTERN,
-      options: {}
+      koaGraphql: {}
     }
   };
 
@@ -54,7 +96,7 @@ export default (opts: GraphqlMiddlewareOptions = {}) => {
       endpoint,
       typedefsPattern,
       resolversPattern,
-      options
+      koaGraphql
     }
   } = deepmerge(defaultOptions, opts);
 
@@ -74,11 +116,11 @@ export default (opts: GraphqlMiddlewareOptions = {}) => {
     /* istanbul ignore next */
     const src = isNodeRuntime ? DIST : 'src';
     const cwd = process.cwd();
-    const typeDefsPattern = typedefsPattern.replace('{src}', src); /* eslint-disable-line no-template-curly-in-string */
+    const typeDefsPattern = typedefsPattern.replace('{src}', src);
 
     const replacedResolversPattern = resolversPattern
-      .replace('{src}', src) /* eslint-disable-line no-template-curly-in-string */
-      .replace('{ext}', ext); /* eslint-disable-line no-template-curly-in-string */
+      .replace('{src}', src)
+      .replace('{ext}', ext);
     const typesArray = fileLoader(join(cwd, typeDefsPattern));
     const typeDefs = mergeTypes(typesArray, { all: true });
     const resolversArray = fileLoader(join(cwd, replacedResolversPattern));
@@ -89,10 +131,10 @@ export default (opts: GraphqlMiddlewareOptions = {}) => {
     const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
 
     router.all(endpoint, graphqlHTTP({
-      schema: executableSchema,
-      rootValue: { ...resolvers.Query, ...resolvers.Mutation },
       graphiql: PROFILE !== 'prod',
-      ...options
+      ...koaGraphql,
+      schema: executableSchema,
+      rootValue: { ...resolvers.Query, ...resolvers.Mutation }
     }));
   }
   return router.routes();

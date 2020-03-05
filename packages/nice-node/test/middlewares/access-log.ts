@@ -1,4 +1,4 @@
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import rimraf from 'rimraf';
 import should from 'should';
@@ -26,38 +26,40 @@ describe('middlewares/access-log.ts', () => {
 
   describe('is enable', () => {
     it('should create log directory', async () => {
-      const root = resolve(LOG_ROOT);
-      rimraf.sync(LOG_ROOT);
+      rimraf.sync(resolve(LOG_ROOT));
       new NiceNode({ // eslint-disable-line no-new
         accessLog: {
           enable: true,
           options: {
-            root
+            root: LOG_ROOT
           }
         }
       });
-      existsSync(root).should.be.true();
+      existsSync(resolve(LOG_ROOT)).should.be.true();
     });
 
-    it('should create log', async () => {
-      const root = resolve(LOG_ROOT);
+    it('should create log file', async () => {
       const app = new NiceNode({
         accessLog: {
           enable: true,
           options: {
-            root
+            root: LOG_ROOT
           }
         }
       });
       await request(app.server.listen())
         .get('/')
         .expect(404);
-      existsSync(filename).should.be.true();
+      existsSync(resolve(filename)).should.be.true();
+
+      const pattern = /\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "GET \/ HTTP\/1\.1" 404 9 - \d{1,2}.\d{3} ms "-" "node-superagent\/3\.8\.3"/
+      const content = readFileSync(resolve(filename), 'utf-8');
+      pattern.test(content).should.be.true();
     });
   });
 
   describe('is disable', () => {
-    it('should not create log', async () => {
+    it('should not create log file', async () => {
       const app = new NiceNode({
         accessLog: {
           enable: false

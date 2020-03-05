@@ -92,6 +92,7 @@
   },
   "devDependencies": {
     "@types/graphql-type-json": "^0.3.2",
+    "@types/koa-graphql": "^0.8.3",
     "@types/mocha": "^7.0.1",
     "@types/npmlog": "^4.1.2",
     "@types/should": "^13.0.0",

@@ -20,31 +20,31 @@ const app = new NiceNode({
 ## 参数
 
 ### enable
-设置是否启用中间件，默认是 `true`。
+是否启用中间件，默认是 `true`。
 
 ### options
 `options` 是一个可选的对象参数，它可能包含下面其中一个参数：
 
 #### enableTypes
-设置允许使用 body-parser 的请求类型。默认值为 `['json', 'form']`。
+允许使用 body-parser 的请求类型。默认值为 `['json', 'form']`。
 
 #### encoding
-设置请求的编码。默认值为 `utf-8` 。
+请求的编码。默认值为 `utf-8` 。
 
 #### formLimit
-设置 `urlencoded` 类型消息体最大长度。超过最大长度时会返回 413 的错误状态码。默认值为 `56kb` 。
+ `urlencoded` 类型消息体最大长度。超过最大长度时会返回 413 的错误状态码。默认值为 `56kb` 。
 
 #### jsonLimit
-设置 `json` 类型消息体最大长度。默认值为 `1mb` 。
+ `json` 类型消息体最大长度。默认值为 `1mb` 。
 
 #### textLimit
-设置 `text` 类型消息体最大长度。默认值为 `1mb` 。
+ `text` 类型消息体最大长度。默认值为 `1mb` 。
 
 #### strict
-设置为 `true` 时， JSON parser 只能接收数组和对象类型。默认值为 `true` 。
+为 `true` 时， JSON parser 只能接收数组和对象类型。默认值为 `true` 。
 
 #### detectJSON
-设置判断请求是否为 `json` 的函数。默认值为 `null` 。
+判断请求是否为 `json` 的函数。默认值为 `null` 。
 ```js
 new NiceNode({
   bodyParser: {
@@ -59,7 +59,7 @@ new NiceNode({
 ```
 
 #### extendTypes
-设置支持的展开类型。
+支持的展开类型。
 ```js
 new NiceNode({
   bodyParser: {
@@ -74,7 +74,7 @@ new NiceNode({
 ```
 
 #### onerror
-设置 body-parser 出错时的处理函数。
+ body-parser 出错时的处理函数。
 ```js
 new NiceNode({
   bodyParser: {

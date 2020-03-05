@@ -42,79 +42,98 @@ import deepmerge from 'deepmerge';
  * @see https://www.npmjs.com/package/file-stream-rotator
  */
 
+interface MorganOption extends morgan.Options {
+  /** 访问日志格式 */
+  format?: string;
+  /** 日志文件保存的相对目录 */
+  root?: string;
+  /** 记录中的时间格式 */
+  timeStampFormat?: string;
+  streamOptions?: {
+    /** 日志文件名称 */
+    filename?: string;
+    /** 日志文件分割频率 */
+    frequency?: string;
+    /** 当切割文件或重命名文件时，日志是否输出在标准输出上 */
+    verbose?: boolean;
+    /** 日志文件名称中的日期格式 */
+    date_format?: string; // eslint-disable-line camelcase
+    size?: string;
+    max_logs?: number; // eslint-disable-line camelcase
+    audit_file?: string; // eslint-disable-line camelcase
+    end_stream?: boolean; // eslint-disable-line camelcase
+    file_options?: object; // eslint-disable-line camelcase
+    utc?: boolean;
+    extension?: string;
+    watch_log?: boolean; // eslint-disable-line camelcase
+    create_symlink?: boolean; // eslint-disable-line camelcase
+    symlink_name?: string; // eslint-disable-line camelcase
+  }
+}
+
 /** 访问日志中间件选项参数 */
 export interface AccessLogMiddlewareOptions {
   /** 是否启用 */
   enable?: boolean;
-  options?: {
-    /** 访问日志格式 */
-    format?: string;
-    /** 访问日志文件存放目录 */
-    root?: string;
-    /** 访问日志文件名称中日期格式 */
-    dateFormat?: string;
-    /** 不记录访问日志的请求地址 */
-    skip?: any;
-    /** 访问日志文件名称 */
-    filename?: string;
-    /** 访问日志文件切分频率 */
-    frequency?: string;
-    /** If set, it will log to STDOUT when it rotates files and name of log file. */
-    verbose?: boolean;
-    [key: string]: any;
-  }
+  options?: MorganOption;
 }
 
 export default (opts: AccessLogMiddlewareOptions = {}) => {
   const {
-    ACCESS_ENABLE,
+    ACCESS_LOG_ENABLE,
     ACCESS_LOG_FORMAT,
+    ACCESS_LOG_BUFFER,
+    ACCESS_LOG_IMMEDIATE,
+    ACCESS_LOG_SKIP_ENDPOINTS,
+    ACCESS_LOG_TIME_STAMP_FORMAT,
     ACCESS_LOG_FILENAME,
     ACCESS_LOG_FILENAME_DATEFORMAT,
     ACCESS_LOG_FREQUENCY,
-    ACCESS_LOG_SKIP_ENDPOINTS,
-    ACCESS_LOG_DATEFORMAT,
+    ACCESS_LOG_VERBOSE,
     LOG_ROOT
   } = process.env;
 
   const defaultOptions: AccessLogMiddlewareOptions = {
-    enable: ACCESS_ENABLE === 'true',
+    enable: ACCESS_LOG_ENABLE === 'true',
     options: {
+      root: LOG_ROOT,
       format: ACCESS_LOG_FORMAT,
-      root: path.resolve(LOG_ROOT),
-      dateFormat: ACCESS_LOG_FILENAME_DATEFORMAT,
+      buffer: ACCESS_LOG_BUFFER === 'true',
+      immediate: ACCESS_LOG_IMMEDIATE === 'true',
       skip: (req: any) => ACCESS_LOG_SKIP_ENDPOINTS.split(',').includes(req.baseUrl),
-      filename: ACCESS_LOG_FILENAME,
-      frequency: ACCESS_LOG_FREQUENCY,
-      verbose: false
+      timeStampFormat: ACCESS_LOG_TIME_STAMP_FORMAT,
+      streamOptions: {
+        filename: ACCESS_LOG_FILENAME,
+        frequency: ACCESS_LOG_FREQUENCY,
+        date_format: ACCESS_LOG_FILENAME_DATEFORMAT,
+        verbose: ACCESS_LOG_VERBOSE === 'true'
+      }
     }
   };
 
   const {
     enable,
     options: {
-      format,
       root,
-      filename,
-      dateFormat,
-      frequency,
+      format,
+      buffer,
+      immediate,
       skip,
-      verbose
+      timeStampFormat,
+      streamOptions
     }
   } = deepmerge(defaultOptions, opts);
 
   if (enable) {
-    if (!fs.existsSync(root)) {
-      fs.mkdirSync(root);
+    const rootFullPath = path.resolve(root);
+    if (!fs.existsSync(rootFullPath)) {
+      fs.mkdirSync(rootFullPath);
     }
 
+    // 修订 filename 为绝对路径
+    streamOptions.filename = path.resolve(root, streamOptions.filename);
     // create a rotating write stream
-    const stream = FileStreamRotator.getStream({
-      date_format: dateFormat,
-      filename: path.resolve(root, filename),
-      frequency,
-      verbose
-    });
+    const stream = FileStreamRotator.getStream(streamOptions);
 
     morgan.token('remote-addr', (req) => {
       const [ip] = ((req.headers['x-forwarded-for'] || '') as string).split(',');
@@ -122,9 +141,14 @@ export default (opts: AccessLogMiddlewareOptions = {}) => {
       return ip || req.socket.remoteAddress || undefined;
     });
 
-    morgan.token('date', () => dateFnsFormat(new Date(), ACCESS_LOG_DATEFORMAT));
+    morgan.token('date', () => dateFnsFormat(new Date(), timeStampFormat));
 
-    return morgan(format, { stream, skip });
+    return morgan(format, {
+      buffer,
+      immediate,
+      skip,
+      stream
+    });
   }
 
   return async (ctx: Koa.Context, next: Koa.Next) => {

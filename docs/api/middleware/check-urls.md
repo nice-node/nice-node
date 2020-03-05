@@ -15,13 +15,13 @@ const app = new NiceNode({
 ## 参数
 
 ### enable
-设置是否启用中间件，默认是 `true`。
+是否启用中间件，默认是 `true`。
 
 ### options
 `options` 是一个可选的对象参数，它可能包含下面其中一个参数：
 
 #### endpoint
-设置 check urls 的访问地址。请保证该地址和发布系统中配置 check-urls 的地址一致，默认值为 `/check_urls`。
+ check urls 访问的地址。请保证该地址和发布系统中配置 check-urls 的地址一致，默认值为 `/check_urls`。
 
 ## 相关的环境变量
 ```

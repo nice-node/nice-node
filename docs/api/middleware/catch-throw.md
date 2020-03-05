@@ -19,7 +19,7 @@ const app = new NiceNode({
 ## 参数
 
 ### enable
-设置是否启用中间件，默认是 `true`。
+是否启用中间件，默认是 `true`。
 
 ## 相关的环境变量
 ```

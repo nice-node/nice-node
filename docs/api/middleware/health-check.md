@@ -11,20 +11,20 @@ Nginx 怎么工作的？Nginx 会定时轮训访问 `/healthcheck.html` ，根�
 ## 用法
 ```js
 const app = new NiceNode({
-  checkUrl: { enable: true }
+  healthCheck: { enable: true }
 });
 ```
 
 ## 参数
 
 ### enable
-设置是否启用中间件，默认是 `true`。
+是否启用中间件，默认是 `true`。
 
 ### options
 `options` 是一个可选的对象参数，它可能包含下面其中一个参数：
 
 #### endpoint
-设置 check urls 的访问地址。请保证该地址和发布系统中配置 check-urls 的地址一致，默认值为 `/healthcheck.html`。
+心跳检查的地址。请保证该地址和发布系统中配置 healthcheck 的地址一致，默认值为 `/healthcheck.html`。
 
 ## 相关的环境变量
 ```

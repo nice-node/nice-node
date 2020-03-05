@@ -29,7 +29,7 @@ interface HttpProxyMiddlewareOptions {
 }
 ```
 
-* `HttpProxyMiddlewareOptions.key` 网址匹配规则，和 [koa-router](https://www.npmjs.com/package/koa-router) 一样，都是使用的  [path-to-regexp](https://www.npmjs.com/package/path-to-regexp)
+* `HttpProxyMiddlewareOptions.key` 路由匹配规则，和 [koa-router](https://www.npmjs.com/package/koa-router) 一样，都是使用的  [path-to-regexp](https://www.npmjs.com/package/path-to-regexp)
 * `HttpProxyMiddlewareOptions.key.target` 代理的目标服务器域名
 * `HttpProxyMiddlewareOptions.key.logs` 是否输出日志，默认为 `false`
 * `HttpProxyMiddlewareOptions.key.rewrite` 重写地址的函数，入参为当前请求的地址

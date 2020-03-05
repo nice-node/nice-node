@@ -5,9 +5,12 @@ import qs from 'qs';
 
 export interface HttpProxyMiddlewareOptions {
   [key: string]: {
+    /** 代理的目标服务器域名 */
     target: string;
+    /** 是否输出日志 */
     logs?: boolean;
-    rewrite?: (path: string) => string;
+    /** 重写地址的函数 */
+    rewrite?: (/** 当前请求的地址 */path: string) => string;
   }
 }
 
