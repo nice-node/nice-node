@@ -3,9 +3,9 @@ id: profiles
 title: profiles
 ---
 
-在开发过程中经常会遇到代码需要在不同的环境下某些变量的值是不同的，比如某些请求地址、debug 开关等。为了解决这类问题， nice-node 提供了类似 maven 中的 profiles 功能。
+在开发过程中经常会遇到代码需要在不同的环境下某些变量的值是不同的，比如某些请求地址、debug 开关等。为了解决这类问题， nice-node 提供了类似 maven 中的 profiles 功能，不同的是 nice-node 中的 profiles 变量都挂在 `process.env` 上，因为是在 `process.env` 上，所以在 nice-node 实例化之后的任何代码都能很方便的获取到变量。
 
->profile可以让我们定义一系列的配置信息，然后指定其激活条件，这样我们就可以定义多个profile，然后每个 profile 对应不同的激活条件和配置信息，从而达到不同环境使用不同配置信息的效果。
+>profile 允许用户定义一系列的配置信息，然后指定其激活条件，这样我们就可以定义多个profile，然后每个 profile 对应不同的激活条件和配置信息，从而达到不同环境使用不同配置的目的。
 
 下面我们动手来创建一个 profile 变量。
 
@@ -75,7 +75,7 @@ Profiles 配置文件是存放在 `profiles` 目录（或子目录）下的 `*.e
 - `beta`：测试环境
 - `prod`：线上环境
 
-`profiles` 目录能看到，其实就是三个子目录，你可根据实际情况创建属于自己的 profile ，如多个测试环境使用不同的配置，可以创建 `betaA` `betaB` 等，发布时修改发布系统的 `profileId` 为需要的环境即可。
+`profiles` 目录能看到，其实就是三个子目录，用户可根据实际情况创建属于自己的 profile ，如多个测试环境使用不同的配置，可以创建 `betaA` `betaB` 等，如下图所示，发布时修改发布系统的 `profileId` 为对应的环境即可。
 
 ![profileId](https://m.qunar.com/zhuanti/profiles-1.jpg)
 

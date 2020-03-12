@@ -36,26 +36,23 @@ title: 路由
 
 1. 重启服务后，访问 `http://localhost:3000/list` 就能看到新的网页了。
 
-nice-node 内置了路由自动注册功能，默认该功能是关闭的。开启该功能的话， `src/routes/list.ts` 下的路由文件会自动注册到服务器，支持该目录下的文件、目录和目录嵌套。
-
-可以使用下面两种方式来启用路由自动注册功能：
-- 设置环境变量 `REQUIRE_ALL_ROUTES_ENABLE=true` ，相关的环境变量配置参数和默认值如下：
+Nice-node 具有路由自动注册功能，该功能是把指定目录（默认是 `src/routes`）下的路由文件自动注册到 nice-node ，包含该目录下的文件、目录和目录嵌套。默认该功能是关闭的。可以使用下面两种方式来启用路由自动注册功能：
+- 设置环境变量 `AUTO_REGISTER_ROUTER_ENABLE=true` 。和该功能相关的其他环境变量配置参数及默认值如下：
     ```
     ################################
-    # REQUIRE_ALL_ROUTES
+    # autoRegisterRouter
     ################################
     # 是否启用路由文件自动加载功能
-    REQUIRE_ALL_ROUTES_ENABLE=false
+    AUTO_REGISTER_ROUTER_ENABLE=false
     # 路由文件存放目录，{src}会替换成src或dist
-    REQUIRE_ALL_ROUTES_ROOR={src}/routes
+    AUTO_REGISTER_ROUTER_ROOR={src}/routes
     # 路由文件匹配(正则)规则，{ext}会替换成js或ts
-    REQUIRE_ALL_ROUTES_PATTERN=^([^.].*).{ext}(x)?$
+    AUTO_REGISTER_ROUTER_PATTERN=^([^.].*).{ext}(x)?$
     ```
-    [如何修改环境变量?](./profiles.md)
 
-- 实例化 nice-node 时传入 `requireAllRoutes.enable: true` 参数，相关的 js 参数如下：
+- 实例化 nice-node 时传入 `autoRegisterRouter.enable: true` 参数，相关的 js 参数如下：
     ```js
-    export interface RequireAllRoutesOptions {
+    interface AutoRegisterRouterOptions {
       enable?: boolean;
       options?: {
         root?: string;
@@ -64,7 +61,7 @@ nice-node 内置了路由自动注册功能，默认该功能是关闭的。开�
     }
     ```
 
-我们启用路由自动注册功能，将刚才第二步的代码改一下：
+现在我们启用路由自动注册功能，将刚才的代码改一下：
 ```js
 // index.ts
 import NiceNode from 'nice-node';
@@ -72,7 +69,7 @@ import NiceNode from 'nice-node';
 const { PORT } = process.env;
 
 const app = new NiceNode({
-  requireAllRoutes: {
+  autoRegisterRouter: {
     enable: true
   }
 });
@@ -85,3 +82,6 @@ app.server.listen(PORT, () => {
 这样同样能看到 `http://localhost:3000/list` 页面。
 
 >如果只是将请求代理到第三方服务、不需要对数据做任何加工处理的话，请使用 [http-proxy 中间件](./http-proxy.md)
+
+## 相关链接
+- [如何修改环境变量?](./profiles.md)

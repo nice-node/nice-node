@@ -1,7 +1,7 @@
 # 文档目录
 ## 新手入门
 - [x] [创建新项目](./get-started/create.md)
-- [x] [路由](./get-started/route.md)
+- [x] [路由](./get-started/router.md)
 - [x] [profiles](./get-started/profiles.md)
 - [x] [配置和环境变量](./get-started/configuration.md)
 - [x] [代理请求](./get-started/http-proxy.md)
@@ -12,6 +12,7 @@
 - [ ] [添加打点监控](./get-started/watcher.md)
 - [x] [自定义 web 服务器](./get-started/custom.md)
 - [x] [部署项目](./get-started/deploy.md)
+- [x] [PM2 管理多个网站](./other/pm2.md)
 
 ## API
 ### 命令行
@@ -34,5 +35,3 @@
 - [ ] [pug](./api/util/pug.md)
 - [ ] [request](./api/util/request.md)
 - [ ] [watcher](./api/util/watcher.md)
-## 其他
-- [x] [pm2](./other/pm2.md)
