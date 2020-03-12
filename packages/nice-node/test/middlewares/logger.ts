@@ -1,5 +1,6 @@
 import request from 'supertest';
 import Koa from 'koa';
+import Router from 'koa-router';
 import NiceNode from '../../src/server';
 
 describe('middlewares/logger.ts', () => {
@@ -9,6 +10,18 @@ describe('middlewares/logger.ts', () => {
       app.server.use(async (ctx: Koa.Context) => {
         ctx.status = 'logger' in ctx ? 200 : 500;
       });
+      await request(app.server.listen())
+        .get('/')
+        .expect(200);
+    });
+
+    it('should works well with koa-router', async () => {
+      const app = new NiceNode();
+      const router = new Router();
+      router.all('/', async (ctx: Koa.Context) => {
+        ctx.status = 'logger' in ctx ? 200 : 500;
+      });
+      app.server.use(router.routes());
       await request(app.server.listen())
         .get('/')
         .expect(200);

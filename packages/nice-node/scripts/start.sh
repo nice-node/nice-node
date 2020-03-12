@@ -27,7 +27,7 @@ cd ${APP_WEBAPPS_PATH}
 echo "Starting ${APP_CODE}"
 
 # 启动当前目录的 ecosystem.config.js
-pm2 start --name ${APP_CODE} || exit 1
+pm2 start || exit 1
 
 echo "Start server done"
 
