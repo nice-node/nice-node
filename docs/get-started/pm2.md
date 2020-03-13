@@ -209,7 +209,8 @@ Removed symlink /etc/systemd/system/multi-user.target.wants/pm2-root.service.
 ## pm2 resurrect
 根据存档信息，手动恢复 `pm2 save` 时的网站服务。
 
-## pm2 delete 和 pm2 kill 的区别
+## pm2 stop、 pm2 delete、 pm2 kill 的区别
+- `pm2 stop` 停止网站进程，在 `pm2 list` 列表中还能看到，再次启动时还使用之前的进程编号，其他表现和 `pm2 delete` 相同。
 - `pm2 delete` 删除网站进程，再次启动时，会网站代码重新加载，但 **`ecosystem.config.js` 不会重新加载** ，因此如果是改了 `ecosystem.config.js` ，那用 `pm2 delete` 删除网站再重启是不会生效的。
 - `pm2 kill` 退出 PM2 。再次启动时，网站代码和 `ecosystem.config.js` 都会重新加载。
 

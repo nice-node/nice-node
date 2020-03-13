@@ -3,7 +3,7 @@ id: deploy
 title: 部署项目
 ---
 
-## node 和 pm2 部署
+## 在服务器上安装 node 和 pm2
 使用 salt 脚本，在目标服务器上安装 `node` 和 `pm2` 。
 
 >确保账号拥有目标服务器的 `sudo` 权限，且远程登录过，否则会提示无权限或 ip 地址有问题。
@@ -20,6 +20,17 @@ sudo salt-call state.sls qunardev.hnode.nodejs_lts12 && sudo salt-call state.sls
 ```
 
 ## 添加定时任务
+Linux `crontab` 是用来定期执行程序的命令。当安装完成操作系统之后，默认便会启动此任务调度命令。crond 命令每分钟会定期检查是否有要执行的工作，如果有要执行的工作便会自动执行该工作。
+
+我们经常会用到 crontab ，如日志文件定期清理、定时执行数据抓取任务等。通常配置 crontab 任务需要远程登录到服务器，这个过程比较浪费时间，而且当服务器集群过大时，如何保证所有服务器配置一致也是个问题。对于这个问题，nice-node 的解决方式是 `本地编辑、远程同步` ，就是在本地编辑 crontab 任务列表，发布时同步到服务器，这样操作起来简单方便，而且能保证多服务器上配置完全一致，具体做法是：
+1. 在项目根目录新建 `crontab` 目录和 `crontab/crontab.txt` 文件
+1. 按着标准的 linux crontab 任务配置方式在 `crontab/crontab.txt` 中创建任务，如
+    ```sh
+    # 每天凌晨5点删除过期的日志文件
+    0 5 * * * sh /some-where/your-script.sh 1>/dev/null
+
+    ```
+Nice-node 发布时会根据 `appCode` 先清除已有的 crontab 任务（执行脚本的路径中能模糊匹配到 appCode 的任务），然后再将 `crontab/crontab.txt` 中配置的任务添加服务器的系统任务列表。
 
 ## 排除不需要部署的文件
 项目源代码都放在 `src` 目录下，发布时会编译到 `dist` ， `src` 下的文件没有必要发布到目标服务器。同理，像 `package-lock.json` 这种文件也不需要发布到目标服务器。
@@ -50,3 +61,7 @@ src
 # 不支持通配符，下面的指定是不合法的
 # src/*.ts
 ```
+
+## 相关链接
+- [Linux crontab](https://www.runoob.com/linux/linux-comm-crontab.html)
+- [Maven pom.xml](http://maven.apache.org/pom.html)
