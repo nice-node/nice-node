@@ -1,6 +1,6 @@
 dist
 node_modules
 .env
-package-lock.json
+# package-lock.json
 .DS_Store
 packages/nice-node/test.js
