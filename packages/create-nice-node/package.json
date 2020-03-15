@@ -1,6 +1,6 @@
 {
   "name": "create-nice-node",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create nice node apps with no build configuration.",
   "engines": {
     "node": ">=8"
@@ -14,6 +14,7 @@
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
     "build": "tsc",
+    "prerelease": "npm run build",
     "postrelease": "git push && git push origin --tags",
     "release": "standard-version --release-as patch && npm publish",
     "lint": "eslint \"src/**/*.{ts,js,tsx,jsx}\""
