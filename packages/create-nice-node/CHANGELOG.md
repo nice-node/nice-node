@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/zhongzhi107/nice-node/compare/v1.0.3...v1.0.4) (2020-03-15)
+
+
+### Bug Fixes
+
+* no such file or directory, stat '/profiles/default/nicenode.env' ([389f7e2](https://github.com/zhongzhi107/nice-node/commit/389f7e2da78fff0d0f5e7f24d913f86423e198f4))
+
 ### [1.0.3](https://github.com/zhongzhi107/nice-node/compare/v1.0.2...v1.0.3) (2020-03-15)
 
 
