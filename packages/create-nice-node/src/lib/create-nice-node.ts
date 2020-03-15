@@ -96,15 +96,17 @@ function create(opts: any) {
       templatePath,
       projectPath: opts.projectPath,
       templateFiles: [
-        'README.md',
-        'package.json',
-        'nodemon.json',
-        'pom.xml',
-        'profiles/default/nicenode.env',
         'crontab/crontab.txt',
-        'crontab/deleteLogs.sh',
         'deploy_scripts/<%=appCode%>_start',
-        'deploy_scripts/<%=appCode%>_stop'
+        'deploy_scripts/<%=appCode%>_stop',
+        'profiles/beta/nicenode.env',
+        'profiles/local/nicenode.env',
+        'profiles/prod/nicenode.env',
+        'nodemon-debug.json',
+        'nodemon.json',
+        'package.json',
+        'pom.xml',
+        'README.md'
       ]
     })
       .then(deleteUnusedFiles(opts))
