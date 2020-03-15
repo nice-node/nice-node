@@ -1,5 +1,5 @@
 {
-  "watch": ["src"],
-  "ext": "ts",
+  "watch": ["src", "profiles"],
+  "ext": "ts,env<%if (graphql) {%>,graphql<%}%>",
   "exec": "node --inspect-brk=9226 -r ts-node/register -r tsconfig-paths/register src/index.ts"
 }

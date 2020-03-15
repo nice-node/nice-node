@@ -1,2 +1,2 @@
 # 每天凌晨5点删除过期的日志文件
-0 5 * * * sh /home/q/www/<%=appCode%>/webapps/crontab/deleteLogs.sh 1>/dev/null
+# 0 5 * * * sh /home/q/www/<%=appCode%>/webapps/node_modules/nice-node/scripts/delete_logs.sh 1>/dev/null

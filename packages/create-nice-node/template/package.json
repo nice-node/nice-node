@@ -1,11 +1,9 @@
 {
   "name": "<%=projectName%>",
   "version": "1.0.0",
-  "scripts": {
-    "clean": "rimraf dist",<%if (graphql) {%>
+  "scripts": {<%if (graphql) {%>
     "copy:graphql": "cd src && tar cvf - `find . -type f -name '*.graphql'` | tar xf - -C ../dist",
     "postbuild": "npm run copy:graphql",<%}%>
-    "prebuild": "npm run clean",
     "build": "nice-node build",
     "start": "PROFILE=local nodemon",
     "start:prod": "npm run build && node dist/index.js",
