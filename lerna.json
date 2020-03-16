@@ -1,7 +1,0 @@
-{
-  "packages": [
-    "packages/nice-node",
-    "packages/create-nice-node"
-  ],
-  "version": "1.0.0"
-}

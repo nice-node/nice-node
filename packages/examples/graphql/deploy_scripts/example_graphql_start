@@ -1,5 +1,0 @@
-#! /bin/bash
-
-APP_CODE="example_graphql"
-
-source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/start.sh"

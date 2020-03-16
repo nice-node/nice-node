@@ -1,5 +1,0 @@
-{
-  "watch": ["src", "profiles"],
-  "ext": "ts,env<%if (graphql) {%>,graphql<%}%>",
-  "exec": "ts-node -r tsconfig-paths/register src/index.ts"
-}
