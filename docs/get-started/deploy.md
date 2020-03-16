@@ -35,6 +35,8 @@ Nice-node 发布时会根据 `appCode` 先清除已有的 crontab 任务（执�
 ## 排除不需要部署的文件
 项目源代码都放在 `src` 目录下，发布时会编译到 `dist` ， `src` 下的文件没有必要发布到目标服务器。同理，像 `package-lock.json` 这种文件也不需要发布到目标服务器。
 
+>Portal 上有个 `部署时需排除文件(excludes) ` 参数，目的就是排除不需要部署的文件，但这个功能有bug，比如配置了 `src` ，那么所有路径中包含 src 关键字的文件都会被忽略，包括 `node_module/debug/src/index.js` 这种文件，这和我们期望的不一致。
+
 >注意：`pom.xml` 是用来做前端工程关联的，`maven` 同步前端资源是发生在目标服务器上，因此 `pom.xml` 必须发布到目标服务器。
 
 Nice-node 内置了一个默认同步忽略文件列表，[点击查看](https://github.com/zhongzhi107/nice-node/blob/master/packages/nice-node/.syncignore) 。如果默认列表满足不了需要，你可以创建一个自定义的同步忽略文件列表，具体做法是：
@@ -60,6 +62,41 @@ src
 
 # 不支持通配符，下面的指定是不合法的
 # src/*.ts
+```
+
+## job 配置
+以下是在新建发布任务时需要配置的参数，没有提到的参数不用修改，使用默认值即可。
+- 基础信息
+  - 应用类型：`node`
+- 编译参数
+  - 分支策略(branch_strategy) `分支发布`
+  - 编译方法(compile_method) `node`
+  - node_version `12.x`
+  - 编译自定义命令(compile_command) `npm run build`
+- 部署参数
+  - 部署源路径(target_dir) `./`
+  - 部署目标路径(deploy_dst) `/home/q/www/${appcode}/webapps`
+  - 服务心跳检测路径(healthcheck_root) `/home/q/www/${appcode}/webapps`
+  - 应用端口(app_port) `7001`
+  - 服务启动检测地址(check_urls) `/check_urls`
+  - 启服务脚本(start_websrv_scripts) `${appcode}_start`
+  - 停服务脚本(stop_websrv_scripts) `${appcode}_stop`
+
+## 前后端关联
+如需关联前端项目，需要检查 `pom.xml` 设置，确保包含 <%=appname%> 的参数都配置正确。
+
+## deploy_scripts
+`/deploy_scripts` 目录下存放发布过程需要的启停服务脚本。文件名称需要配置到 portal 。
+
+为了减少开发和调试的时间，nice-node 封装了启停服务的通用脚本，使用方式如下：
+```sh
+#! /bin/bash
+
+# 这里需要传 appcode
+APP_CODE="xxx"
+
+source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/start.sh"
+# source "/home/q/www/${APP_CODE}/webapps/node_modules/nice-node/scripts/stop.sh"
 ```
 
 ## 相关链接

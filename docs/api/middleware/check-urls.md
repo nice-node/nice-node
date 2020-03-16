@@ -3,7 +3,7 @@ id: middleware-check-urls
 title: check-urls
 ---
 
-提供发布系统 check-urls 时需要的网址的中间件。
+提供发布系统 check-urls 时需要的网址的中间件。发布系统通过访问目标机器上的某些地址的返回结果来判断目标机器是否具备对外提供服务的能力。
 
 ## 用法
 ```js

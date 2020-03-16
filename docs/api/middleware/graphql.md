@@ -72,6 +72,12 @@ GRAPHQL_TYPEDEFS_PATTERN={src}/graphql/**/*.graphql
 GRAPHQL_RESOLVERS_PATTERN={src}/graphql/**/resolver.{ext}
 ```
 
+## 依赖包
+需要额外安装以下依赖包：
+```
+npm i graphql graphql-tools graphql-type-json koa-graphql-fix merge-graphql-schemas
+```
+
 ## 相关链接
 - [koa-graphql](https://www.npmjs.com/package/koa-graphql)
 - [GraphiQL](https://github.com/graphql/graphiql)

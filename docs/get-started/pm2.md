@@ -214,6 +214,14 @@ Removed symlink /etc/systemd/system/multi-user.target.wants/pm2-root.service.
 - `pm2 delete` 删除网站进程，再次启动时，会网站代码重新加载，但 **`ecosystem.config.js` 不会重新加载** ，因此如果是改了 `ecosystem.config.js` ，那用 `pm2 delete` 删除网站再重启是不会生效的。
 - `pm2 kill` 退出 PM2 。再次启动时，网站代码和 `ecosystem.config.js` 都会重新加载。
 
+## 相关配置
+相关配置参数：
+```
+# PM2 启动模式 [fork/cluster]
+PM2_EXEC_MODE=cluster
+# PM2 启动服务进程的数量
+PM2_INSTANCES=0
+```
 
 ## 总结
 所以，正确的使用姿势是：
