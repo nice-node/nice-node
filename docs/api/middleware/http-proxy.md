@@ -9,7 +9,7 @@ title: http-proxy
 ```js
 const app = new NiceNode({
   httpProxy: {
-    '/api/:action': {
+    '/api/(.*)': {
       target: 'http://api.test.com'
     }
   }
@@ -36,3 +36,5 @@ const app = new NiceNode({
 
 ## 相关链接
 - [axios](https://www.npmjs.com/package/axios)
+- [path-to-regexp](https://www.npmjs.com/package/path-to-regexp)
+- [koa-router](https://www.npmjs.com/package/koa-router)

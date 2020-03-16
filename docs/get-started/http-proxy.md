@@ -23,7 +23,7 @@ const app = new NiceNode({
     '/api/:action': {
       target: 'http://api.test.com'
     },
-    '/others/:action': {
+    '/others/(.*)': {
       rewrite: (path) => path.replace('/others', ''),
       target: 'http://others.test.com'
     }

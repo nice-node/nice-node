@@ -35,7 +35,7 @@ export default (opts: HttpProxyMiddlewareOptions = {}) => {
        * 虽然 node webserver 的 body-parser 中间件会兼容处理 string 和 json 类型参数
        * 但还是在这里统一对 data 参数做兼容性处理
        */
-      if (ctx.method === 'POST') {
+      if (ctx.method === 'POST' && ctx.headers['content-type'].indexOf('x-www-form-urlencoded') > -1) {
         data = qs.stringify(data); // 如 a=a&b=b
       }
       const options: AxiosRequestConfig = {

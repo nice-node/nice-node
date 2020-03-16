@@ -1,5 +1,5 @@
 module.exports = {
-  spec: 'test/**/logger.ts',
+  spec: 'test/**/*.ts',
   extension: ['ts'],
   require: ['should', 'ts-node/register'],
   exit: true
