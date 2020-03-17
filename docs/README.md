@@ -27,7 +27,7 @@
 - [x] [http-proxy](./api/middleware/http-proxy.md)
 - [x] [logger](./api/middleware/logger.md)
 - [x] [static-file](./api/middleware/static-file.md)
-- [ ] [validate](./api/middleware/validate.md)
+- [x] [validate](./api/middleware/validate.md)
 - [x] [watcher](./api/middleware/watcher.md)
 ### 公用模块
 - [x] [ecosystem-config](./api/util/ecosystem-config.md)

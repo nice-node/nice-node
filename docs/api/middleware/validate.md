@@ -2,29 +2,41 @@
 id: validate
 title: validate
 ---
-提供发布系统 check-urls 时需要的网址的中间件。发布系统通过访问目标机器上的某些地址的返回结果来判断目标机器是否具备对外提供服务的能力。
+用 [joi](https://hapi.dev/family/joi/) schema 拦截验证请求参数的中间件。
 
 ## 用法
 ```js
-const app = new NiceNode({
-  checkUrl: { enable: true }
+import Router from 'koa-router';
+import { mwValidate } from 'nice-node';
+
+const app = new NiceNode();
+const router = new Router();
+router.get('/', mwValidate({
+  query: {
+    name: Joi.string().required()
+  }
+}), async (ctx: Koa.Context) => {
+  ctx.status = 200;
 });
+app.server.use(router.routes());
 ```
 
 ## 参数
 
-### enable
-是否启用中间件，默认是 `true`。
-
 ### options
 `options` 是一个可选的对象参数，它可能包含下面其中一个参数：
 
-#### endpoint
- check urls 访问的地址。请保证该地址和发布系统中配置 check-urls 的地址一致，默认值为 `/check_urls`。
+#### headers
+校验请求头的 joi schema。
 
-## 相关的环境变量
-```
-CHECK_URLS_ENABLE=true
-# check url 地址
-CHECK_URLS_ENDPOINT=/check_urls
-```
+#### params
+校验请求参数的 joi schema。
+
+#### query
+校验 url 参数的 joi schema。
+
+#### body
+校验请求体的 joi schema。
+
+## 相关链接
+- [@hapi/joi](https://hapi.dev/family/joi/)
