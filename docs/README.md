@@ -16,7 +16,7 @@
 
 ## API
 ### 命令行
-- [ ] [nice-node](./api/bin/nice-node.md)
+- [x] [nice-node](./api/bin/nice-node.md)
 ### 中间件
 - [x] [access-log](./api/middleware/access-log.md)
 - [x] [body-parser](./api/middleware/body-parser.md)
@@ -28,10 +28,10 @@
 - [x] [logger](./api/middleware/logger.md)
 - [x] [static-file](./api/middleware/static-file.md)
 - [ ] [validate](./api/middleware/validate.md)
-- [ ] [watcher](./api/middleware/watcher.md)
+- [x] [watcher](./api/middleware/watcher.md)
 ### 公用模块
-- [ ] [ecosystem-config](./api/util/ecosystem-config.md)
-- [ ] [logger](./api/util/logger.md)
-- [ ] [pug](./api/util/pug.md)
-- [ ] [request](./api/util/request.md)
-- [ ] [watcher](./api/util/watcher.md)
+- [x] [ecosystem-config](./api/util/ecosystem-config.md)
+- [x] [logger](./api/util/logger.md)
+- [x] [pug](./api/util/pug.md)
+- [x] [request](./api/util/request.md)
+- [x] [watcher](./api/util/watcher.md)

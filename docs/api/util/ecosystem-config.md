@@ -1,6 +1,6 @@
 ---
-id:
-title:
+id: util-ecosystem-config
+title: ecosystem-config
 ---
 
 nice-node 内置了一份 tsconfig.json
@@ -25,6 +25,8 @@ nice-node 内置了一份 tsconfig.json
   "exclude": ["node_modules"]
 }
 ```
+
+## 用法
 
 建议项目中的 tsconfig.json 从 nice-node 内置的文件中继承，由于配置中的路径都是相对于原始 json 文件的，所以继承后需要重新覆盖所有和路径相关的参数，其他参数也可以根据实际情况覆盖或者新增。
 

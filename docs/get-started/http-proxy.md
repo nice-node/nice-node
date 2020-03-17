@@ -9,7 +9,7 @@ title: 代理请求
 ```js
 const app = new NiceNode({
   httpProxy: {
-    '/api/:action': {
+    '/api/(.*)': {
       target: 'http://api.test.com'
     }
   }
@@ -20,7 +20,7 @@ const app = new NiceNode({
 ```js
 const app = new NiceNode({
   httpProxy: {
-    '/api/:action': {
+    '/api/(.*)': {
       target: 'http://api.test.com'
     },
     '/others/(.*)': {

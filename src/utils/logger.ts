@@ -41,7 +41,7 @@ const {
   LOG_DATEFORMAT
 } = process.env;
 
-const isDisplayInConsole = PROFILE === 'local' && NODE_ENV !== 'test';
+const isDisplayOnConsole = PROFILE === 'local' && NODE_ENV !== 'test';
 
 const rotateOptions = {
   dirname: LOG_ROOT,
@@ -87,7 +87,7 @@ const logger: any = createLogger({
 });
 
 /* istanbul ignore next */
-if (isDisplayInConsole) {
+if (isDisplayOnConsole) {
   // 本地开发时在控制台输出日志
   logger.add(new transports.Console());
 }

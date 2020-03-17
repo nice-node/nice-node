@@ -9,6 +9,18 @@ title: access-log
 - 日志文件分割策略
 
 ## 用法
+```js
+const { LOG_ROOT } = process.env;
+
+const app = new NiceNode({
+  accessLog: {
+    enable: true,
+    options: {
+      root: LOG_ROOT
+    }
+  }
+});
+```
 
 ## 参数
 
