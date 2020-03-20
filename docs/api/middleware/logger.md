@@ -9,7 +9,7 @@ title: logger
 ```js
 const app = new NiceNode({
   logger: {
-    enable: false
+    enable: true
   }
 });
 ```

@@ -5,14 +5,14 @@
 - [x] [profiles](./get-started/profiles.md)
 - [x] [配置和环境变量](./get-started/configuration.md)
 - [x] [代理请求](./get-started/http-proxy.md)
-- [ ] [解析 pug 模版](./get-started/template.md)
-- [ ] [提供静态文件服务](./get-started/static.md)
+- [x] [解析 pug 模版](./get-started/template.md)
+- [x] [提供静态文件服务](./get-started/static.md)
 - [ ] [提供 GraphQL 服务](./get-started/graphql.md)
-- [ ] [记录日志](./get-started/logger.md)
-- [ ] [添加打点监控](./get-started/watcher.md)
+- [x] [记录日志](./get-started/logger.md)
+- [x] [添加打点监控](./get-started/watcher.md)
 - [x] [自定义 web 服务器](./get-started/custom.md)
 - [x] [部署项目](./get-started/deploy.md)
-- [x] [PM2 管理多个网站](./other/pm2.md)
+- [x] [PM2 管理多个网站](./get-started/pm2.md)
 
 ## API
 ### 命令行
