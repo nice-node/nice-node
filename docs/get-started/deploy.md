@@ -77,7 +77,7 @@ src
   - 部署源路径(target_dir) `./`
   - 部署目标路径(deploy_dst) `/home/q/www/${appcode}/webapps`
   - 服务心跳检测路径(healthcheck_root) `/home/q/www/${appcode}/webapps`
-  - 应用端口(app_port) `7001`
+  - 应用端口(app_port) `3000`
   - 服务启动检测地址(check_urls) `/check_urls`
   - 启服务脚本(start_websrv_scripts) `${appcode}_start`
   - 停服务脚本(stop_websrv_scripts) `${appcode}_stop`
