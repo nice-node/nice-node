@@ -33,7 +33,7 @@ export interface QconfigOptions {
 /**
  * 执行初始化config
  */
-export default async (opts: QconfigOptions = {}) => {
+export const initQconfig = async (opts: QconfigOptions = {}) => {
   const {
     QCONFIG_ENABLE,
     QCONFIG_TOKEN,
@@ -72,3 +72,5 @@ export default async (opts: QconfigOptions = {}) => {
   }
   // checkQconfigEnv();
 };
+
+export const client = qconfigClient;

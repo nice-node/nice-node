@@ -1,4 +1,6 @@
-const { KNEX_CLIENT, MYSQL_ENABLE } = process.env;
+const { KNEX_CLIENT, MYSQL_ENABLE, NODE_ENV } = process.env;
 
-// eslint-disable-next-line global-require
-export default MYSQL_ENABLE === 'true' ? require('knex')({ client: KNEX_CLIENT }) : null;
+export default MYSQL_ENABLE === 'true' || NODE_ENV === 'test'
+  // eslint-disable-next-line global-require
+  ? require('knex')({ client: KNEX_CLIENT })
+  : null;

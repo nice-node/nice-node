@@ -1,10 +1,16 @@
 import should from 'should';
-import NiceNode from '../../src/server';
-import knex from '../../src/utils/knex';
+// import NiceNode from '../../src/server';
+
+process.env.MYSQL_ENABLE = 'true';
+const knex = require('../../src/utils/knex').default;
 
 describe('utils/knex.ts', () => {
+  after(() => {
+    delete process.env.MYSQL_ENABLE;
+  });
+
   // eslint-disable-next-line no-new
-  new NiceNode();
+  // new NiceNode();
 
   it('should return query sql', async () => {
     const sql = knex.select('*').from('account').toString();

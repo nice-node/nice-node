@@ -78,3 +78,4 @@ typings/
 /dist
 /coverage/
 /test/fixtures/logs
+/test/utils/qconfig.ts
