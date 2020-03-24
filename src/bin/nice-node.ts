@@ -42,7 +42,7 @@ function createDotenv() {
   } = process.env;
   const profileId = profile || PROFILE;
 
-  log.info('nice-node', `process.env=${process.env}`);
+  log.info('nice-node', 'process.env=%o', process.env);
 
   if (!profileId) {
     log.error('nice-node', 'Missing environment variable `PROFILE`, build failed.');

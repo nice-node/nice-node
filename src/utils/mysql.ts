@@ -1,4 +1,3 @@
-import mysqlPXC from '@qnpm/mysql-pxc';
 import deepmerge from 'deepmerge';
 
 /** 访问日志中间件选项参数 */
@@ -72,7 +71,8 @@ export const init = (opts: MysqlOptions = {}) => {
   } = deepmerge(defaultOptions, opts);
 
   if (enable) {
-    mysqlInstance = mysqlPXC.createWriteDelegator({
+    // eslint-disable-next-line global-require
+    mysqlInstance = require('@qnpm/mysql-pxc').createWriteDelegator({
       zkConnection,
       namespace,
       options: {
