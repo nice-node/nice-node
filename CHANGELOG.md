@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/nice-node/nice-node/compare/v1.0.0...v1.1.0) (2020-03-24)
+
+
+### Features
+
+* 增加 mysql 模块 ([41b9dd1](https://github.com/nice-node/nice-node/commit/41b9dd1d897f4dc38e57b8e5d108ff497b82bd74))
+* 添加 mysql 模块 ([cea0a06](https://github.com/nice-node/nice-node/commit/cea0a06347181d5f4425c9c0d757cb8c7ea88980))
+* 默认端口改成 3000 ([8ad01d0](https://github.com/nice-node/nice-node/commit/8ad01d0302a9c8f8d68341315f3b9669f469b253))
+
 ## [1.0.0](https://github.com/nice-node/nice-node/compare/v1.0.4...v1.0.0) (2020-03-16)
 
 
