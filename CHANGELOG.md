@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/nice-node/nice-node/compare/v1.1.1...v1.1.2) (2020-03-24)
+
+
+### Bug Fixes
+
+* Cannot find module 'knex' ([ccf30bc](https://github.com/nice-node/nice-node/commit/ccf30bce96defc586378ed3fbb90b77444008c07))
+
 ### [1.1.1](https://github.com/nice-node/nice-node/compare/v1.1.0...v1.1.1) (2020-03-24)
 
 
