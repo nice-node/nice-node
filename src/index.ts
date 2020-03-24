@@ -1,6 +1,8 @@
 import NiceNode from './server';
 
 export default NiceNode;
+export { init as initMysql, query } from './utils/mysql';
+export { default as knex } from './utils/knex';
 export { default as request } from './utils/request';
 export { timing, increment } from './utils/watcher';
 export { default as logger } from './utils/logger';
