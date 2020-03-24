@@ -2,7 +2,7 @@ import should from 'should';
 import NiceNode from '../../src/server';
 import knex from '../../src/utils/knex';
 
-describe('utils/log.ts', () => {
+describe('utils/knex.ts', () => {
   // eslint-disable-next-line no-new
   new NiceNode();
 

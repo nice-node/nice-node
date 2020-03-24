@@ -1,11 +1,31 @@
 import Koa from 'koa';
-import { PugOptions as KoaPugOptions } from 'koa-pug';
+// import { PugOptions as KoaPugOptions } from 'koa-pug';
 import { resolve } from 'path';
 import deepmerge from 'deepmerge';
 
 export interface PugOptions {
   enable?: boolean;
-  options?: KoaPugOptions
+  options?: {
+    [key: string]: any;
+    /**
+     * Koa instance
+     */
+    app?: Koa;
+    /**
+     * Paths of helpers.
+     */
+    helperPath?: any[];
+    /**
+     * Add a list of variables to make accessible in templates
+     */
+    locals?: {
+        [key: string]: any;
+    };
+    /**
+     * The root directory of all Pug templates
+     */
+    viewPath?: string;
+  }
 }
 
 export default (server: Koa, opts: PugOptions = {}) => {

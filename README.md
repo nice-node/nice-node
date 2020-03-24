@@ -85,18 +85,18 @@ npx create-nice-node
 - [x] [profiles](./docs/get-started/profiles.md)
 - [x] [配置和环境变量](./docs/get-started/configuration.md)
 - [x] [代理请求](./docs/get-started/http-proxy.md)
-- [ ] [解析 pug 模版](./docs/get-started/template.md)
-- [ ] [提供静态文件服务](./docs/get-started/static.md)
+- [x] [解析 pug 模版](./docs/get-started/template.md)
+- [x] [提供静态文件服务](./docs/get-started/static.md)
 - [ ] [提供 GraphQL 服务](./docs/get-started/graphql.md)
-- [ ] [记录日志](./docs/get-started/logger.md)
-- [ ] [添加打点监控](./docs/get-started/watcher.md)
+- [x] [记录日志](./docs/get-started/logger.md)
+- [x] [添加打点监控](./docs/get-started/watcher.md)
 - [x] [自定义 web 服务器](./docs/get-started/custom.md)
 - [x] [部署项目](./docs/get-started/deploy.md)
 - [x] [PM2 管理多个网站](./docs/other/pm2.md)
 
 ### API
 #### 命令行
-- [ ] [nice-node](./docs/api/bin/nice-node.md)
+- [x] [nice-node](./docs/api/bin/nice-node.md)
 #### 中间件
 - [x] [access-log](./docs/api/middleware/access-log.md)
 - [x] [body-parser](./docs/api/middleware/body-parser.md)

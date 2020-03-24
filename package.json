@@ -92,6 +92,7 @@
   },
   "devDependencies": {
     "@qnpm/mysql-pxc": "^0.2.0",
+    "@qnpm/qconfig-client-plus": "0.0.14",
     "@types/graphql-type-json": "^0.3.2",
     "@types/koa-graphql": "^0.8.3",
     "@types/mocha": "^7.0.2",

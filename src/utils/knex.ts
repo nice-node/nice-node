@@ -1,5 +1,4 @@
-import knex from 'knex';
-
 const { KNEX_CLIENT } = process.env;
 
-export default knex({ client: KNEX_CLIENT });
+// eslint-disable-next-line global-require
+export default require('knex')({ client: KNEX_CLIENT });
