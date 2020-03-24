@@ -30,8 +30,11 @@
 - [x] [validate](./api/middleware/validate.md)
 - [x] [watcher](./api/middleware/watcher.md)
 ### 公用模块
+- [x] [auto-register-router](./api/util/auto-register-router.md)
 - [x] [ecosystem-config](./api/util/ecosystem-config.md)
+- [x] [knex](./api/util/knex.md)
 - [x] [logger](./api/util/logger.md)
+- [x] [mysql](./api/util/mysql.md)
 - [x] [pug](./api/util/pug.md)
 - [x] [request](./api/util/request.md)
 - [x] [watcher](./api/util/watcher.md)
