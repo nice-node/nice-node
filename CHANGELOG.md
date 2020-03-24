@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/nice-node/nice-node/compare/v1.1.0...v1.1.1) (2020-03-24)
+
+
+### Bug Fixes
+
+* Cannot find module '@qnpm/mysql-pxc' ([696f426](https://github.com/nice-node/nice-node/commit/696f426636567116a06a2fea014d8d2ac546c4b5))
+
 ## [1.1.0](https://github.com/nice-node/nice-node/compare/v1.0.0...v1.1.0) (2020-03-24)
 
 
