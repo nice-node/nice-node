@@ -1,7 +1,9 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import qconfigClient from '@qnpm/qconfig-client-plus';
 import deepmerge from 'deepmerge';
+import missModuleMessage from './miss-module-message';
+
+let qconfigClient: any;
 
 export interface QconfigOptions {
   enable?: boolean;
@@ -65,6 +67,13 @@ export const initQconfig = async (opts: QconfigOptions = {}) => {
   if (enable) {
     const files = ['pom.xml', 'package.json'];
     if (files.every((file) => existsSync(resolve(file)))) {
+      try {
+        // eslint-disable-next-line global-require
+        qconfigClient = require('@qnpm/qconfig-client-plus');
+      } catch (e) {
+        missModuleMessage('@qnpm/qconfig-client-plus');
+        throw e;
+      }
       await qconfigClient.init(options);
     } else {
       console.error(`qconfig client can not found ${files.join(',')} at project root.`);

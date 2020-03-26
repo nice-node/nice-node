@@ -5,6 +5,8 @@ title: knex
 
 用 [knex](http://knexjs.org) 拼接 SQL 语句。
 
+> 需要手动安装依赖包 `npm install knex`
+
 ## 用法
 ```js
 import { knex } from 'nice-node';

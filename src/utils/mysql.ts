@@ -1,4 +1,5 @@
 import deepmerge from 'deepmerge';
+import missModuleMessage from './miss-module-message';
 
 /** 访问日志中间件选项参数 */
 export interface MysqlOptions {
@@ -71,8 +72,16 @@ export const init = (opts: MysqlOptions = {}) => {
   } = deepmerge(defaultOptions, opts);
 
   if (enable) {
+    let mysqlPxc: any;
+    try {
+      // eslint-disable-next-line global-require
+      mysqlPxc = require('@qnpm/mysql-pxc');
+    } catch (e) {
+      missModuleMessage('@qnpm/mysql-pxc');
+      throw e;
+    }
     // eslint-disable-next-line global-require
-    mysqlInstance = require('@qnpm/mysql-pxc').createWriteDelegator({
+    mysqlInstance = mysqlPxc.createWriteDelegator({
       zkConnection,
       namespace,
       options: {

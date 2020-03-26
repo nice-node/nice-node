@@ -1,11 +1,11 @@
 ---
-id: pug
-title: pug
+id: qconfig
+title: qconfig
 ---
 
-解析 [pug](https://pugjs.org) 模版的模块。
+使用 qconfig 的模块。
 
-> 需要手动安装依赖包 `npm install koa-pug`
+> 需要手动安装依赖包 `npm install @qnpm/qconfig-client-plus`
 
 ## 用法
 ```js

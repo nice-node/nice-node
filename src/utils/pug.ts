@@ -1,7 +1,7 @@
 import Koa from 'koa';
-// import { PugOptions as KoaPugOptions } from 'koa-pug';
 import { resolve } from 'path';
 import deepmerge from 'deepmerge';
+import missModuleMessage from './miss-module-message';
 
 export interface PugOptions {
   enable?: boolean;
@@ -49,8 +49,14 @@ export default (server: Koa, opts: PugOptions = {}) => {
   } = deepmerge(defaultOptions, opts);
 
   if (enable) {
-    // eslint-disable-next-line global-require,import/no-unresolved
-    const Pug = require('koa-pug');
+    let Pug: any;
+    try {
+      // eslint-disable-next-line global-require
+      Pug = require('koa-pug');
+    } catch (e) {
+      missModuleMessage('koa-pug');
+      throw e;
+    }
     const pug = new Pug({
       ...options,
       basedir: resolve(options.basedir),
