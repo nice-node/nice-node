@@ -13,6 +13,7 @@ import loggerMiddleware, { LoggerMiddlewareOptions } from './middlewares/logger'
 import catchThrowMiddleware, { CatchThrowMiddlewareOptions } from './middlewares/catch-throw';
 import httpProxyMiddleware, { HttpProxyMiddlewareOptions } from './middlewares/http-proxy';
 import graphqlMiddleware, { GraphqlMiddlewareOptions } from './middlewares/graphql';
+import corsMiddleware, { CorsMiddlewareOptions } from './middlewares/cors';
 
 interface NiceNodeOptions {
   staticFile?: StaticFileMiddlewareOptions,
@@ -25,7 +26,8 @@ interface NiceNodeOptions {
   httpProxy?: HttpProxyMiddlewareOptions,
   pug?: PugOptions,
   autoRegisterRouter?: AutoRegisterRouterOptions,
-  graphql?: GraphqlMiddlewareOptions
+  graphql?: GraphqlMiddlewareOptions,
+  cors?: CorsMiddlewareOptions
 }
 
 export default class NiceNode {
@@ -51,11 +53,13 @@ export default class NiceNode {
       httpProxy: httpProxyOptions,
       pug: pugOptions,
       autoRegisterRouter: autoRegisterRouterOptions,
-      graphql: graphqlOptions
+      graphql: graphqlOptions,
+      cors: corsOptions
     } = this.options;
 
     this.server = new Koa();
     this.server
+      .use(corsMiddleware(corsOptions))
       .use(staticFileMiddleware(staticFileOptions))
       .use(catchThrowMiddleware(catchThrowOptions))
       .use(accessLogMiddleware(accessLogOptions))

@@ -18,3 +18,4 @@ export { default as mwHealthCheck } from './middlewares/health-check';
 export { default as mwLogger } from './middlewares/logger';
 export { default as mwHttpProxy } from './middlewares/http-proxy';
 export { default as mwWatcher } from './middlewares/watcher';
+export { default as mwCors } from './middlewares/cors';

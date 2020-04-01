@@ -21,6 +21,7 @@
 - [x] [access-log](./api/middleware/access-log.md)
 - [x] [body-parser](./api/middleware/body-parser.md)
 - [x] [catch-throw](./api/middleware/catch-throw.md)
+- [x] [cors](./api/middleware/cors.md)
 - [x] [check-urls](./api/middleware/check-urls.md)
 - [x] [graphql](./api/middleware/graphql.md)
 - [x] [health-check](./api/middleware/health-check.md)
