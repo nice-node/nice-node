@@ -6,10 +6,9 @@ import log from './log';
 export default (name: string): void => {
   log('error', `
 
-  Cannot find module '${name}'
+  Cannot find module '${name}'.
 
-  Please run the following command to install the missing dependencies:
-  > npm i ${name}
+  Do you need to install the missing dependencies? Try \`npm i ${name}\`.
 
-  `);
+`);
 };
