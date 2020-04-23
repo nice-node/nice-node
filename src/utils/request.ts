@@ -35,20 +35,19 @@ const instance: AxiosInstance = axios.create({
 
 instance.interceptors.request.use((config) => {
   // Do something before request is sent
-  const { metric } = config.headers.watcher;
+  const watcher = config.headers?.watcher;
+  const metric = watcher?.metric;
   if (metric) {
     // 记录总请求数
     increment(`${metric}.request`);
     // 记录请求开始时间
-    config.headers.watcher.startTime = new Date();
-  } else {
-    console.log(`${config.url} 缺少 metric 参数`);
+    watcher.startTime = new Date();
   }
 
   return config;
 }, (error) => {
   // Do something with request error
-  const { metric } = error.config.headers.watcher;
+  const { metric } = error.config.headers?.watcher;
 
   if (metric) {
     increment(`${metric}.error`);
@@ -58,24 +57,22 @@ instance.interceptors.request.use((config) => {
 });
 
 instance.interceptors.response.use((response) => {
-  // Do something with response data
-  // debug('response:', response);
-  const { metric, startTime } = response.config.headers.watcher;
+  const watcher = response?.config?.headers?.watcher;
 
-  if (metric) {
-    timing(metric, startTime);
+  if (watcher?.metric) {
+    timing(watcher?.metric, watcher?.startTime);
   }
   return response;
 }, (error) => {
-  // Do something with response error
-  const { metric } = error.config.headers.watcher;
+  const watcher = error.config?.headers?.watcher;
+  const metric = watcher?.metric;
   if (metric) {
     increment(`${metric}.error`);
     if (error.message.indexOf('timeout') > -1) {
       increment(`${metric}.timeout`);
     }
   }
-  console.error(`[error]${error.config.method} ${error.config.url} fail!\n${error}`);
+  console.error(`[error]${error?.config?.method} ${error?.config?.url} fail!`);
   return Promise.reject(error);
 });
 
