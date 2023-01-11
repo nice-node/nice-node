@@ -106,7 +106,7 @@
     "graphql": "^14.6.0",
     "graphql-tools": "^4.0.7",
     "graphql-type-json": "^0.3.1",
-    "knex": "^0.20.13",
+    "knex": "^2.4.0",
     "koa-graphql-fix": "^0.8.1",
     "koa-pug": "^4.0.3",
     "merge-graphql-schemas": "^1.7.6",
